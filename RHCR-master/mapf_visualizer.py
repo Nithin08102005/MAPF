@@ -7,13 +7,27 @@ import matplotlib.colors as mcolors
 import os
 import math
 
+# Resolve data files relative to this script so `python mapf_visualizer.py` works from any cwd.
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def _resolve_data_path(path):
+    if not path or os.path.isabs(path):
+        return path
+    return os.path.normpath(os.path.join(_SCRIPT_DIR, path))
+
+
 class GeneralizedKivaVisualizer:
-    def __init__(self, map_file='kiva.map', results_file='my_results_paths.txt'):
+    def __init__(self, map_file='maps/kiva.map', results_file='exp/test/paths.txt'):
+        map_file = _resolve_data_path(map_file)
+        results_file = _resolve_data_path(results_file)
         print("Loading Generalized Kiva Warehouse MAPF data...")
+        print(f"  map: {map_file}")
+        print(f"  paths: {results_file}")
         
         # Load data
         self.map_data = self.load_kiva_map(map_file)
-        self.grid_height, self.grid_width = self.map_data.shape
+        self.grid_height,self.grid_width = self.map_data.shape
         self.raw_data = self.load_raw_data(results_file)
         self.solution = self.convert_to_solution()
         
@@ -605,7 +619,7 @@ def main():
     print("=" * 70)
     
     try:
-        visualizer = GeneralizedKivaVisualizer('kiva.map', 'my_results_paths.txt')
+        visualizer = GeneralizedKivaVisualizer()
         visualizer.run()
     except Exception as e:
         print(f"Error: {e}")
@@ -613,4 +627,4 @@ def main():
         traceback.print_exc()
 
 if __name__ == '__main__':
-    main()
+     main()

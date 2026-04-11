@@ -1,0 +1,14 @@
+# Install required Boost components for 64-bit Windows
+./vcpkg install boost-program-options:x64-windows boost-system:x64-windows boost-filesystem:x64-windows boost-heap:x64-windows boost-graph:x64-windows
+# 1. Delete the old build artifacts
+Remove-Item -Recurse -Force build
+
+# 2. Configure for Windows 64-bit (Update the toolchain path to your actual vcpkg location)
+cmake -S . -B build -A x64 -DCMAKE_TOOLCHAIN_FILE="C:/Users/raoni/Downloads/GitHub/GitHub/vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows
+
+# 3. Compile the High-Performance version (Release)
+cmake --build build --config Release
+
+# 4. Compile the Debug version (if you need to troubleshoot)
+cmake --build build --config Debug
+Remove-Item -Path ./test/* -Force; ./build/Release/lifelong.exe --scenario KIVA --map ./maps/kiva.map --agentNum 20 --simulation_time 1000

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\BasicGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\BasicSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\BeeGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\BeeSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\BundlePlanner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\DSS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\ECBS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\ECBSNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\ID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\KivaGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\KivaSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\LRAStar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\MAPFSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\MultiGoalSIPPAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\OnlineGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\OnlineSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\PBS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\PBSNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\PathTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\PriorityGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\ReservationTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\SIPP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\SingleAgentSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\SortingGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\SortingSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\StateTimeAStar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\States.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\WHCAStar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\src\driver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\MAPF-with-multi-level-architecture\RHCR-master\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="C:\Users\raoni\OneDrive\Desktop\GitHub - Copy\vcpkg\installed\x64-windows\share\boost-1.90.0\assert\boost_assert.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{EFE7EB00-7850-345D-BF75-B41980C5643C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

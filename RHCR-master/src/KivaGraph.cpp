@@ -14,6 +14,7 @@ bool KivaGrid::load_map(std::string fname)
         return load_weighted_map(fname);
     else if (ext_name == ".map")
         return load_unweighted_map(fname);
+		
     else
     {
         std::cout << "Map file name should end with either .grid or .map. " << std::endl;

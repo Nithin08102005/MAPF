@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/inc",
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_CRT_SECURE_NO_WARNINGS",
+                "BOOST_DESCRIBE_CXX14",
+                "BOOST_ALLOW_DEPRECATED_HEADERS",
+                "_HAS_AUTO_PTR_ETC=1"
+            ],
+            "cppStandard": "c++14",
+            "intelliSenseMode": "windows-msvc-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/inc",
+                    "${workspaceFolder}/src"
+                ],
+                "limitSymbolsToIncludedHeaders": false
+            }
+        }
+    ],
+    "version": 4
+}

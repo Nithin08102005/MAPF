@@ -482,6 +482,7 @@ void BasicSystem::save_results()
     output << num_of_drives << std::endl;
     for (int k = 0; k < num_of_drives; k++)
     {
+        output<<k<<" ";
         int prev = finished_tasks[k].front().first;
         for (auto task : finished_tasks[k])
         {

@@ -631,6 +631,22 @@ void KivaSystem::initialize()
     bundle_configure(num_of_drives, default_agent_capacity, randomize_sequences, rng_seed);
     if (!given_goals.empty())
         bundle_initialize_from_given(given_goals);
+    else if (capacity_mode && succ) {
+        // load_records() filled goal_locations from paths.txt/tasks.txt but left bundle/rest
+        // empty. bundle_mirror_to_engine() would then wipe goal_locations to one random goal.
+        for (int k = 0; k < num_of_drives; ++k) {
+            if (goal_locations[k].empty()) continue;
+            if (!bundle[k].empty() || !rest[k].empty()) continue;
+            const int cap = cap_of(k);
+            for (const auto& g : goal_locations[k]) {
+                std::pair<int, int> gg = { clamp_vertex(G, g.first), g.second };
+                if ((int)bundle[k].size() < cap) bundle[k].push_back(gg);
+                else rest[k].push_back(gg);
+            }
+            bundle_dirty[k] = true;
+        }
+        bundle_mirror_to_engine();
+    }
 }
 
 void KivaSystem::initialize_start_locations()
@@ -709,13 +725,24 @@ bool KivaSystem::bundle_on_goal_reached(int k)
     if (k < 0 || k >= (int)bundle.size()) return false;
     if (bundle[k].empty()) return false;
 
-    const int curr = safe_path_at(paths, G, k, timestep, consider_rotation).location;
     const auto& front = bundle[k].front();
-    if (curr == clamp_vertex(G, front.first) && timestep >= front.second) {
-        bundle[k].pop_front();
-        bundle_dirty[k] = true;
-        m_restitches_total++;
-        return true;
+    const int target = clamp_vertex(G, front.first);
+    const int release_t = front.second;
+
+    // Scan the last simulation window, not only paths[k][timestep]. If the agent hits the
+    // front goal mid-window and the plan already moves them toward the next goal before the
+    // window ends, a single-index check never pops and we keep replanning to the old goal.
+    const int t1 = timestep;
+    const int t0 = std::max(0, timestep - simulation_window);
+    for (int t = t0; t <= t1 && k < (int)paths.size(); ++t) {
+        if (t >= (int)paths[k].size()) break;
+        const State& st = paths[k][t];
+        if (clamp_vertex(G, st.location) == target && st.timestep >= release_t) {
+            bundle[k].pop_front();
+            bundle_dirty[k] = true;
+            m_restitches_total++;
+            return true;
+        }
     }
     return false;
 }
