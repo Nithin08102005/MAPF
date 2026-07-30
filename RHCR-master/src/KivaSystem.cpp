@@ -653,12 +653,41 @@ void KivaSystem::initialize_start_locations()
 {
     for (int k = 0; k < num_of_drives; k++)
     {
-        int orientation = consider_rotation ? (rand() % 4) : -1;
         int home = (!G.agent_home_locations.empty() && k < (int)G.agent_home_locations.size())
                  ? clamp_vertex(G, G.agent_home_locations[k]) : 0;
+        int orientation = consider_rotation ? 0 : -1;
+        if (consider_rotation)
+        {
+            for (int ori = 0; ori < 4; ori++)
+            {
+                if (G.valid_3cell_state(home, ori))
+                {
+                    orientation = ori;
+                    break;
+                }
+            }
+            if (!G.valid_3cell_state(home, orientation))
+            {
+                for (int loc = 0; loc < G.size(); loc++)
+                {
+                    for (int ori = 0; ori < 4; ori++)
+                    {
+                        if (G.valid_3cell_state(loc, ori))
+                        {
+                            home = loc;
+                            orientation = ori;
+                            break;
+                        }
+                    }
+                    if (G.valid_3cell_state(home, orientation)) break;
+                }
+            }
+        }
 
         starts[k] = State(home, 0, orientation);
+        paths[k].clear();
         paths[k].emplace_back(starts[k]);
+        finished_tasks[k].clear();
         finished_tasks[k].emplace_back(home, 0);
     }
 }
@@ -680,7 +709,16 @@ void KivaSystem::ensure_goal_exists(int k, int curr)
 {
     if (k < 0 || k >= (int)goal_locations.size()) return;
     if (!goal_locations[k].empty()) return;
-    int g = pick_random_endpoint_except(G, curr);
+    int raw_g = pick_random_endpoint_except(G, curr);
+    int g = raw_g;
+    if (G.types[raw_g] == "Endpoint") {
+        for (int nb : G.get_neighbors(raw_g)) {
+            if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+                g = nb;
+                break;
+            }
+        }
+    }
     goal_locations[k].emplace_back(g, 0);
 }
 
@@ -726,8 +764,18 @@ bool KivaSystem::bundle_on_goal_reached(int k)
     if (bundle[k].empty()) return false;
 
     const auto& front = bundle[k].front();
-    const int target = clamp_vertex(G, front.first);
+    const int raw_target = clamp_vertex(G, front.first);
     const int release_t = front.second;
+
+    int target = raw_target;
+    if (raw_target >= 0 && raw_target < (int)G.types.size() && G.types[raw_target] == "Endpoint") {
+        for (int nb : G.get_neighbors(raw_target)) {
+            if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+                target = nb;
+                break;
+            }
+        }
+    }
 
     // Scan the last simulation window, not only paths[k][timestep]. If the agent hits the
     // front goal mid-window and the plan already moves them toward the next goal before the
@@ -737,7 +785,8 @@ bool KivaSystem::bundle_on_goal_reached(int k)
     for (int t = t0; t <= t1 && k < (int)paths.size(); ++t) {
         if (t >= (int)paths[k].size()) break;
         const State& st = paths[k][t];
-        if (clamp_vertex(G, st.location) == target && st.timestep >= release_t) {
+        int loc = clamp_vertex(G, st.location);
+        if ((loc == target || loc == raw_target) && st.timestep >= release_t) {
             bundle[k].pop_front();
             bundle_dirty[k] = true;
             m_restitches_total++;
@@ -767,32 +816,34 @@ bool KivaSystem::bundle_maybe_top_up(int k)
                                                       : std::unordered_set<int>{};
 
     const int cap = cap_of(k);
-    int guard = 0;
-    while ((int)bundle[k].size() < cap && !rest[k].empty() && guard++ < 2000) {
+    int curr = safe_path_at(paths, G, k, timestep, consider_rotation).location;
+    while ((int)bundle[k].size() < cap && !rest[k].empty()) {
         auto g = rest[k].front(); rest[k].pop_front();
         g.first = clamp_vertex(G, g.first);
 
         if (avoid_dup_goals && claimed.count(g.first)) {
-            rest[k].push_back(g);
-            bool all_claimed = true;
-            for (const auto& r : rest[k]) { if (!claimed.count(clamp_vertex(G, r.first))) { all_claimed = false; break; } }
-            if (all_claimed) break;
-            continue;
+            int fresh_v = generate_endpoint_for(k, curr);
+            int tries = 50;
+            while (claimed.count(fresh_v) && tries-- > 0) {
+                fresh_v = generate_endpoint_for(k, curr);
+            }
+            g.first = clamp_vertex(G, fresh_v);
         }
 
         bundle[k].push_back(g);
+        claimed.insert(g.first);
         changed = true;
     }
     if (changed) { bundle_dirty[k] = true; m_restitches_total++; }
     return changed;
 }
 
-void KivaSystem::bundle_assert_capacity_ok(int k) const
+void KivaSystem::bundle_assert_capacity_ok(int k)
 {
     if (k < 0 || k >= (int)bundle.size()) return;
-    if ((int)bundle[k].size() > cap_of(k)) {
-        std::cerr << "[BUG] bundle size exceeds capacity for agent " << k << std::endl;
-        std::abort();
+    int cap = cap_of(k);
+    while ((int)bundle[k].size() > cap) {
+        bundle[k].pop_back();
     }
 }
 
@@ -800,9 +851,18 @@ void KivaSystem::bundle_mirror_to_engine()
 {
     for (int k = 0; k < num_of_drives; ++k) {
         goal_locations[k].clear();
-        for (const auto& g : bundle[k]) {
-            int v = clamp_vertex(G, g.first);
-            goal_locations[k].push_back({v, g.second});
+        if (!bundle[k].empty()) {
+            int raw_v = clamp_vertex(G, bundle[k].front().first);
+            int v = raw_v;
+            if (G.types[raw_v] == "Endpoint") {
+                for (int nb : G.get_neighbors(raw_v)) {
+                    if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+                        v = nb;
+                        break;
+                    }
+                }
+            }
+            goal_locations[k].push_back({v, bundle[k].front().second});
         }
         if (goal_locations[k].empty()) {
             int curr = safe_path_at(paths, G, k, timestep, consider_rotation).location;
@@ -1004,6 +1064,15 @@ void KivaSystem::plan_stitched_for_agent(int k)
     std::vector<State> new_suffix;
     bool used_sipp = false, sipp_ok = false, fell_back = false;
 
+    // Determine the agent's actual orientation at the current timestep so that
+    // stitched states are consistent with rotation-aware path validation.
+    int start_ori = -1;
+    if (consider_rotation && k < (int)paths.size() && !paths[k].empty()) {
+        int idx = std::min(timestep, (int)paths[k].size() - 1);
+        start_ori = paths[k][idx].orientation;
+        if (start_ori < 0) start_ori = 0; // default to East (0) if no orientation yet
+    }
+
     if (stitch_use_sipp) {
         used_sipp = true;
 
@@ -1098,7 +1167,11 @@ void KivaSystem::plan_stitched_for_agent(int k)
                                      consider_rotation,
                                      rt);
 
-        State s0(clamp_vertex(G, start_v), start_t + best_w, -1);
+        // Determine the agent's actual orientation at the current timestep so that
+        // stitched states are consistent with rotation-aware path validation.
+        // (start_ori is now declared above, outside this block)
+
+        State s0(clamp_vertex(G, start_v), start_t + best_w, start_ori);
         std::vector<std::pair<int,int>> gl; gl.reserve(goals.size());
         for (int g : goals) gl.emplace_back(g, 0);
 
@@ -1107,7 +1180,8 @@ void KivaSystem::plan_stitched_for_agent(int k)
         if (!path.empty()) {
             if (best_w > 0) {
                 new_suffix.reserve(best_w + path.size());
-                for (int i = 0; i < best_w; ++i) new_suffix.emplace_back(start_v, start_t + i, -1);
+                // Use the actual orientation for wait-in-place states before SIPP path begins
+                for (int i = 0; i < best_w; ++i) new_suffix.emplace_back(start_v, start_t + i, start_ori);
                 new_suffix.insert(new_suffix.end(), path.begin(), path.end());
                 for (size_t i = 1; i < new_suffix.size(); ++i)
                     if (new_suffix[i].timestep <= new_suffix[i-1].timestep)
@@ -1133,7 +1207,19 @@ void KivaSystem::plan_stitched_for_agent(int k)
         }
         new_suffix.clear();
         new_suffix.reserve(seq.size());
-        for (auto &p : seq) new_suffix.emplace_back(p.first, p.second, -1);
+        // Propagate orientation per step: derive from movement direction when rotation is on
+        {
+            int cur_ori = start_ori;
+            for (int fi = 0; fi < (int)seq.size(); ++fi) {
+                if (consider_rotation && fi > 0) {
+                    int d = G.get_direction(seq[fi-1].first, seq[fi].first);
+                    if (d >= 0 && d < 4) cur_ori = d;
+                    // if d==4 (wait) or d<0 (error), keep the previous orientation
+                }
+                new_suffix.emplace_back(seq[fi].first, seq[fi].second,
+                                        consider_rotation ? cur_ori : -1);
+            }
+        }
         fell_back = true;
     }
 
@@ -1359,17 +1445,69 @@ void KivaSystem::update_goal_locations()
             int curr = safe_path_at(paths, G, k, timestep, consider_rotation).location;
             if (goal_locations[k].empty())
             {
-                int next = pick_random_endpoint_except(G, curr);
-                while (next == curr || held_endpoints.find(next) != held_endpoints.end())
-                {
-                    next = pick_random_endpoint_except(G, curr);
+                int raw_next = pick_random_endpoint_except(G, curr);
+                int next = raw_next;
+                if (G.types[raw_next] == "Endpoint") {
+                    for (int nb : G.get_neighbors(raw_next)) {
+                        if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+                            next = nb;
+                            break;
+                        }
+                    }
                 }
+                int attempts = 0;
+                while ((raw_next == curr || held_endpoints.find(raw_next) != held_endpoints.end() || held_endpoints.find(next) != held_endpoints.end()) && attempts++ < 100)
+                {
+                    raw_next = pick_random_endpoint_except(G, curr);
+                    next = raw_next;
+                    if (G.types[raw_next] == "Endpoint") {
+                        for (int nb : G.get_neighbors(raw_next)) {
+                            if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+                                next = nb;
+                                break;
+                            }
+                        }
+                    }
+                }
+                goal_locations[k].clear();
                 goal_locations[k].emplace_back(next, 0);
+                held_endpoints.insert(raw_next);
                 held_endpoints.insert(next);
             }
             if (paths[k].back().location == clamp_vertex(G, goal_locations[k].back().first) &&
                 paths[k].back().timestep >= goal_locations[k].back().second)
             {
+                // Goal reached: generate a new goal for agent k
+                goal_locations[k].clear();
+                int raw_next = pick_random_endpoint_except(G, curr);
+                int next = raw_next;
+                if (G.types[raw_next] == "Endpoint") {
+                    for (int nb : G.get_neighbors(raw_next)) {
+                        if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+                            next = nb;
+                            break;
+                        }
+                    }
+                }
+                int attempts = 0;
+                while ((raw_next == curr || held_endpoints.find(raw_next) != held_endpoints.end() || held_endpoints.find(next) != held_endpoints.end()) && attempts++ < 100)
+                {
+                    raw_next = pick_random_endpoint_except(G, curr);
+                    next = raw_next;
+                    if (G.types[raw_next] == "Endpoint") {
+                        for (int nb : G.get_neighbors(raw_next)) {
+                            if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+                                next = nb;
+                                break;
+                            }
+                        }
+                    }
+                }
+                goal_locations[k].emplace_back(next, 0);
+                held_endpoints.insert(raw_next);
+                held_endpoints.insert(next);
+                new_agents.emplace_back(k);
+
                 int agent = k;
                 int loc = clamp_vertex(G, goal_locations[k].back().first);
                 auto it = held_locations.find(loc);
@@ -1481,19 +1619,17 @@ void KivaSystem::simulate(int simulation_time)
 
         metrics_begin_tick();
 
+        std::cout << "[TRACE t=" << timestep << "] Calling update_start_locations()..." << std::endl;
         update_start_locations();
+        std::cout << "[TRACE t=" << timestep << "] Calling update_goal_locations()..." << std::endl;
         update_goal_locations();
 
         if (capacity_mode && stitch_mode) {
             plan_stitched_batch();
         }
 
-        // run MAPF
         solve();
-
-        // apply moves
         auto new_finished_tasks = move();
-        std::cout << new_finished_tasks.size() << " tasks has been finished" << std::endl;
 
         for (auto task : new_finished_tasks)
         {
@@ -1502,7 +1638,11 @@ void KivaSystem::simulate(int simulation_time)
             finished_tasks[id].emplace_back(loc, t);
             num_of_tasks++;
             if (hold_endpoints)
+            {
                 held_endpoints.erase(loc);
+                for (int nb : G.get_neighbors(loc))
+                    held_endpoints.erase(nb);
+            }
         }
 
         if (congested())

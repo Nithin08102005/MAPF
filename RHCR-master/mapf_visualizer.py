@@ -18,7 +18,7 @@ def _resolve_data_path(path):
 
 
 class GeneralizedKivaVisualizer:
-    def __init__(self, map_file='maps/kiva.map', results_file='exp/test/paths.txt'):
+    def __init__(self, map_file='kiva_shaved.map', results_file='exp/test/paths.txt'):
         map_file = _resolve_data_path(map_file)
         results_file = _resolve_data_path(results_file)
         print("Loading Generalized Kiva Warehouse MAPF data...")
@@ -30,6 +30,8 @@ class GeneralizedKivaVisualizer:
         self.grid_height,self.grid_width = self.map_data.shape
         self.raw_data = self.load_raw_data(results_file)
         self.solution = self.convert_to_solution()
+        tasks_file = results_file.replace('paths.txt', 'tasks.txt')
+        self.tasks = self.load_tasks(tasks_file)
         
         # **ADAPTIVE SETUP: Configure based on robot count**
         self.num_agents = len(self.solution['agents'])
@@ -46,6 +48,7 @@ class GeneralizedKivaVisualizer:
         # Setup visualization
         self.setup_adaptive_layout()
         self.current_timestep = 0
+        self.substeps = 1
         self.max_timestep = max(len(path) for path in self.solution['agents'].values()) if self.solution['agents'] else 1
         
         # Pre-render static elements
@@ -114,13 +117,13 @@ class GeneralizedKivaVisualizer:
         
         # **ADAPTIVE ANIMATION SPEED**
         if self.num_agents <= 10:
-            self.animation_interval = 300
+            self.animation_interval = 1
         elif self.num_agents <= 50:
-            self.animation_interval = 400
+            self.animation_interval = 75
         elif self.num_agents <= 200:
-            self.animation_interval = 500
+            self.animation_interval = 100
         else:
-            self.animation_interval = 600
+            self.animation_interval = 150
 
     def setup_adaptive_colors(self):
         """Generate colors that work for any number of robots"""
@@ -203,11 +206,11 @@ class GeneralizedKivaVisualizer:
                 elif cell == 'e':
                     rect = Rectangle((x-0.5, y-0.5), 1, 1, facecolor='orange', edgecolor='darkorange', alpha=0.8)
                     self.ax_main.add_patch(rect)
-                    self.ax_main.text(x, y, 'E', ha='center', va='center', fontweight='bold', fontsize=6, color='white')
+                    self.ax_main.text(x, y, 'E', ha='center', va='center', fontweight='bold', fontsize=6, color='white', zorder=10)
                 elif cell == 'r':
                     rect = Rectangle((x-0.5, y-0.5), 1, 1, facecolor='lightblue', edgecolor='blue', alpha=0.6)
                     self.ax_main.add_patch(rect)
-                    self.ax_main.text(x, y, 'R', ha='center', va='center', fontweight='bold', fontsize=6, color='darkblue')
+                    self.ax_main.text(x, y, 'R', ha='center', va='center', fontweight='bold', fontsize=6, color='darkblue', zorder=10)
 
     def render_medium_warehouse(self):
         """Simplified warehouse for 10-30 robots"""
@@ -280,58 +283,108 @@ class GeneralizedKivaVisualizer:
             return self.render_individual_robots(timestep)
 
     def render_individual_robots(self, timestep):
-        """Render robots individually"""
+        """Render robots individually with interpolation"""
         robot_status = []
         active_count = 0
         picking_count = 0
         completed_count = 0
         
+        t_int = int(timestep)
+        t_frac = timestep - t_int
+        
         for agent_id, path in self.solution['agents'].items():
-            if timestep < len(path):
-                x, y = path[timestep]
+            if t_int < len(path):
+                # Current state
+                tup_curr = path[t_int]
+                if len(tup_curr) == 3:
+                    x_curr, y_curr, orient_curr = tup_curr
+                else:
+                    x_curr, y_curr = tup_curr[:2]
+                    orient_curr = -1
+                
+                # Next state
+                if t_int + 1 < len(path):
+                    tup_next = path[t_int + 1]
+                    if len(tup_next) == 3:
+                        x_next, y_next, orient_next = tup_next
+                    else:
+                        x_next, y_next = tup_next[:2]
+                        orient_next = -1
+                else:
+                    x_next, y_next, orient_next = x_curr, y_curr, orient_curr
+                
+                # Interpolate position
+                x = x_curr + (x_next - x_curr) * t_frac
+                y = y_curr + (y_next - y_curr) * t_frac
+                
+                # Interpolate orientation/angle
+                if orient_curr != -1:
+                    angle_curr = orient_curr * 90
+                    angle_next = orient_next * 90 if orient_next != -1 else angle_curr
+                    angle_diff = (angle_next - angle_curr + 180) % 360 - 180
+                    angle = angle_curr + angle_diff * t_frac
+                else:
+                    angle = 0
+                
                 color = self.colors[agent_id % len(self.colors)]
                 
-                # Draw robot
-                circle = Circle((x, y), self.robot_size, facecolor=color, edgecolor='black', linewidth=1)
-                self.ax_main.add_patch(circle)
-                self.agent_artists.append(circle)
+                # Draw rotating 3x1 footprint
+                if orient_curr != -1:
+                    rect = Rectangle((-1.5, -0.5), 3, 1, facecolor=color, edgecolor='black', linewidth=1.5, alpha=0.9, zorder=5)
+                    import matplotlib.transforms as mtransforms
+                    trans = mtransforms.Affine2D().rotate_deg(-angle).translate(x, y) + self.ax_main.transData
+                    rect.set_transform(trans)
+                else:
+                    rect = Rectangle((x - 0.5, y - 0.5), 1, 1, facecolor=color, edgecolor='black', linewidth=1, alpha=0.8, zorder=5)
                 
-                # Robot ID (if enabled)
+                self.ax_main.add_patch(rect)
+                self.agent_artists.append(rect)
+                
+                # Robot ID and task count
                 if self.show_robot_ids and self.font_size > 0:
-                    text = self.ax_main.text(x, y, str(agent_id), ha='center', va='center',
-                                           fontweight='bold', fontsize=self.font_size, color='white')
+                    completed_tasks = self.get_completed_tasks_count(agent_id, timestep)
+                    label = f"{agent_id}[{completed_tasks}]"
+                    text = self.ax_main.text(x, y, label, ha='center', va='center',
+                                           fontweight='bold', fontsize=self.font_size, color='white', zorder=6)
                     self.agent_artists.append(text)
                 
                 # Trail
-                if timestep > 0 and self.trail_length > 0:
-                    trail_len = min(self.trail_length, timestep)
+                if t_int > 0 and self.trail_length > 0:
+                    trail_len = min(self.trail_length, t_int)
                     if trail_len > 1:
-                        trail_points = [path[t] for t in range(timestep-trail_len, timestep)]
-                        trail_x, trail_y = zip(*trail_points)
+                        trail_points = [path[t] for t in range(t_int-trail_len, t_int)]
+                        trail_x = [pt[0] for pt in trail_points]
+                        trail_y = [pt[1] for pt in trail_points]
+                        trail_x.append(x)
+                        trail_y.append(y)
                         line, = self.ax_main.plot(trail_x, trail_y, color=color, alpha=self.trail_alpha, linewidth=1)
                         self.trail_artists.append(line)
                 
-                # Status tracking
-                cell_type = self.map_data[y, x] if 0 <= y < self.grid_height and 0 <= x < self.grid_width else '?'
+                # Status tracking (based on nearest grid point)
+                cell_x, cell_y = int(round(x)), int(round(y))
+                cell_type = self.map_data[cell_y, cell_x] if 0 <= cell_y < self.grid_height and 0 <= cell_x < self.grid_width else '?'
                 if cell_type == 'e':
                     picking_count += 1
                     if self.show_individual_status:
-                        robot_status.append(f"R{agent_id}: ({x},{y}) PICKING")
-                    # Highlight
-                    star = self.ax_main.plot(x, y, '*', color='yellow', markersize=max(6, 12-self.num_agents//10), markeredgecolor='black')[0]
+                        completed_tasks = self.get_completed_tasks_count(agent_id, timestep)
+                        robot_status.append(f"R{agent_id}: ({x:.1f},{y:.1f}) PICKING ({completed_tasks} tasks)")
+                    star = self.ax_main.plot(cell_x, cell_y, '*', color='yellow', markersize=max(6, 12-self.num_agents//10), markeredgecolor='black')[0]
                     self.agent_artists.append(star)
                 else:
                     active_count += 1
                     if self.show_individual_status:
-                        robot_status.append(f"R{agent_id}: ({x},{y}) ACTIVE")
+                        completed_tasks = self.get_completed_tasks_count(agent_id, timestep)
+                        robot_status.append(f"R{agent_id}: ({x:.1f},{y:.1f}) ACTIVE ({completed_tasks} tasks)")
             else:
                 completed_count += 1
                 if self.show_individual_status:
-                    robot_status.append(f"R{agent_id}: COMPLETED")
+                    completed_tasks = self.get_completed_tasks_count(agent_id, timestep)
+                    robot_status.append(f"R{agent_id}: COMPLETED ({completed_tasks} tasks)")
         
-        # Update title with summary
-        summary = f"Active: {active_count} | Picking: {picking_count} | "
-        self.ax_main.set_title(f'Kiva Warehouse ({self.num_agents} robots) - {summary} - Step: {timestep}', 
+        # Update title
+        total_tasks_completed = sum(self.get_completed_tasks_count(agent_id, timestep) for agent_id in self.solution['agents'].keys())
+        summary = f"Active: {active_count} | Picking: {picking_count} | Tasks: {total_tasks_completed} | "
+        self.ax_main.set_title(f'Kiva Warehouse ({self.num_agents} robots) - {summary} - Step: {timestep:.1f}', 
                               fontsize=12, fontweight='bold')
         
         return robot_status, {'active': active_count, 'picking': picking_count, 'completed': completed_count}
@@ -426,12 +479,13 @@ Top 8 Robots:
                          bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcyan", alpha=0.8))
 
     def animate(self, frame):
-        """Generalized animation function"""
-        self.current_timestep = frame
-        robot_status, summary_stats = self.update_dynamic_elements(frame)
+        """Generalized animation function with interpolation"""
+        t = frame / self.substeps
+        self.current_timestep = t
+        robot_status, summary_stats = self.update_dynamic_elements(t)
         
         if self.use_info_panel:
-            self.update_info_panel(frame, robot_status, summary_stats)
+            self.update_info_panel(t, robot_status, summary_stats)
         
         return self.agent_artists + self.trail_artists
 
@@ -450,10 +504,11 @@ Top 8 Robots:
         endpoint_locs = [(y * self.grid_width + x, x, y) for y, x in zip(endpoint_positions[0], endpoint_positions[1])]
         
         # **ADAPTIVE: Generate appropriate number of demo robots**
+        num_agents = getattr(self, 'num_agents', 0)
         if not robot_locs:  # If no robot positions in map, create distributed starts
-            num_demo_robots = min(self.num_agents, 50) if self.num_agents > 0 else 25
+            num_demo_robots = min(num_agents, 50) if num_agents > 0 else 5
         else:
-            num_demo_robots = min(self.num_agents, len(robot_locs) * 3) if self.num_agents > 0 else min(25, len(robot_locs))
+            num_demo_robots = min(num_agents, len(robot_locs) * 3) if num_agents > 0 else 5
         
         for agent_id in range(num_demo_robots):
             # Distribute starting positions
@@ -550,18 +605,60 @@ Top 8 Robots:
                             try:
                                 parts = pos.split(',')
                                 location_id = int(parts[0])
-                                timestep = int(parts[2])
-                                agent_data.append((location_id, timestep))
+                                orientation = int(parts[1]) if len(parts) > 1 else -1
+                                timestep = int(parts[2]) if len(parts) > 2 else -1
+                                agent_data.append((location_id, orientation, timestep))
                             except:
                                 continue
                     
-                    raw_data[agent_id] = sorted(agent_data, key=lambda x: x[1])
+                    raw_data[agent_id] = sorted(agent_data, key=lambda x: x[2])
             
             return raw_data
             
         except Exception as e:
             print(f"Error loading results: {e}")
             return self.generate_demo_data()
+
+    def load_tasks(self, tasks_file):
+        tasks = {}
+        if not os.path.exists(tasks_file):
+            return tasks
+        try:
+            with open(tasks_file, 'r') as f:
+                lines = f.readlines()
+            if not lines:
+                return tasks
+            num_agents = int(lines[0].strip())
+            for idx in range(num_agents):
+                if idx + 1 < len(lines):
+                    line = lines[idx + 1].strip()
+                    if not line:
+                        continue
+                    parts = line.split(' ')
+                    agent_id = int(parts[0])
+                    task_tokens = parts[1].split(';')
+                    agent_tasks = []
+                    for tok in task_tokens:
+                        if not tok.strip():
+                            continue
+                        subparts = tok.split(',')
+                        if len(subparts) >= 2:
+                            loc = int(subparts[0])
+                            finish_time = int(subparts[1])
+                            agent_tasks.append((loc, finish_time))
+                    tasks[agent_id] = agent_tasks
+        except Exception as e:
+            print(f"Error loading tasks: {e}")
+        return tasks
+
+    def get_completed_tasks_count(self, agent_id, t):
+        if agent_id not in self.tasks:
+            return 0
+        count = 0
+        for loc, finish_time in self.tasks[agent_id][1:]:
+            if finish_time >= 0 and finish_time <= t:
+                count += 1
+        return count
 
     def location_to_xy(self, location_id):
         """Convert location ID to x,y coordinates"""
@@ -573,11 +670,16 @@ Top 8 Robots:
         
         for agent_id, agent_data in self.raw_data.items():
             agent_path = []
-            for location_id, timestep in agent_data:
+            for item in agent_data:
+                if len(item) == 3:
+                    location_id, orientation, timestep = item
+                else:
+                    location_id, timestep = item
+                    orientation = -1
                 x, y = self.location_to_xy(location_id)
                 x = max(0, min(x, self.grid_width - 1))
                 y = max(0, min(y, self.grid_height - 1))
-                agent_path.append((x, y))
+                agent_path.append((x, y, orientation))
             
             solution['agents'][agent_id] = agent_path
         
@@ -601,8 +703,8 @@ Top 8 Robots:
         print("Close window to exit")
         
         anim = animation.FuncAnimation(
-            self.fig, self.animate, frames=self.max_timestep,
-            interval=self.animation_interval,
+            self.fig, self.animate, frames=(self.max_timestep - 1) * self.substeps,
+            interval=int(self.animation_interval / self.substeps),
             blit=False,
             repeat=True,
             cache_frame_data=False

@@ -39,7 +39,9 @@ public:
 
 	// functions for state-time A*
 	bool isConstrained(int curr_id, int next_id, int next_timestep) const;
+	bool isConstrained(const State& curr_s, const State& next_s) const;
 	bool isConflicting(int curr_id, int next_id, int next_timestep) const;
+	bool isConflicting(const State& curr_s, const State& next_s) const;
 	int getHoldingTimeFromCT(int location) const;
     set<int> getConstrainedTimesteps(int location) const;
 

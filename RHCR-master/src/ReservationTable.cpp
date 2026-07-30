@@ -90,8 +90,15 @@ int ReservationTable::getHoldingTimeFromCT(int location) const
 	int t = 0;
 	for (auto time_range : it->second)
 	{
-		if (time_range.second > t)
+		if (time_range.second >= 100000)
+		{
+			if (time_range.first > t)
+				t = time_range.first;
+		}
+		else if (time_range.second > t)
+		{
 			t = time_range.second;
+		}
 	}
 	return t;
 }
@@ -202,43 +209,41 @@ void ReservationTable::insertPath2CT(const Path& path)
 {
 	if (path.empty())
 		return;
-	auto prev = path.begin();
-	auto curr = path.begin();
-	++curr;
-	while (curr != path.end() && curr->timestep - k_robust <= window)
+	for (size_t i = 0; i < path.size(); i++)
 	{
-		if (prev->location != curr->location)
+		int cells[3];
+		G.get_occupied_cells(path[i].location, path[i].orientation, cells);
+		int t = path[i].timestep;
+		if (t - k_robust <= window)
 		{
-			if (G.types[prev->location] != "Magic")
-				ct[prev->location].emplace_back(prev->timestep - k_robust, curr->timestep + k_robust);
-			if (k_robust == 0) // add edge constraint
+			for (int c = 0; c < 3; c++)
 			{
-				ct[getEdgeIndex(curr->location, prev->location)].emplace_back(curr->timestep, curr->timestep + 1);
+				if (G.types[cells[c]] != "Magic")
+				{
+					ct[cells[c]].emplace_back(max(0, t - k_robust), t + 1 + k_robust);
+				}
 			}
-			prev = curr;
+			if (k_robust == 0 && i > 0 && path[i-1].location != path[i].location)
+			{
+				int prev_cells[3];
+				G.get_occupied_cells(path[i-1].location, path[i-1].orientation, prev_cells);
+				for (int c = 0; c < 3; c++)
+				{
+					ct[getEdgeIndex(cells[c], prev_cells[c])].emplace_back(t, t + 1);
+				}
+			}
 		}
-		++curr;
 	}
-	if (curr != path.end())
+	if (G.types[path.back().location] != "Magic")
 	{
-		if (G.types[prev->location] != "Magic")
-			ct[prev->location].emplace_back(prev->timestep - k_robust, curr->timestep + k_robust);
-		if (k_robust == 0) // add edge constraint
+		int cells[3];
+		G.get_occupied_cells(path.back().location, path.back().orientation, cells);
+		int end_t = INTERVAL_MAX;
+		for (int c = 0; c < 3; c++)
 		{
-			ct[getEdgeIndex(curr->location, prev->location)].emplace_back(curr->timestep, curr->timestep + 1);
+			ct[cells[c]].emplace_back(path.back().timestep, end_t);
 		}
 	}
-	else
-	{
-		if (G.types[prev->location] != "Magic")
-			ct[prev->location].emplace_back(prev->timestep - k_robust, path.back().timestep + 1 + k_robust);
-		if (k_robust == 0) // add edge constraint
-		{
-			ct[getEdgeIndex(path.back().location, prev->location)].emplace_back(path.back().timestep, path.back().timestep + 1);
-		}
-	}
-	if (hold_endpoints && G.types[prev->location] != "Magic")
-		ct[path.back().location].emplace_back(path.back().timestep, INTERVAL_MAX);
 }
 
 void ReservationTable::addInitialConstraints(const list< tuple<int, int, int> >& initial_constraints, int current_agent)
@@ -261,21 +266,30 @@ void ReservationTable::insertPath2CAT(const Path& path)
 	int timestep = 0;
 	while (timestep <= max_timestep)
 	{
-		int location = path[timestep].location;
-		if (G.types[location] != "Magic")
+		int cells[3];
+		G.get_occupied_cells(path[timestep].location, path[timestep].orientation, cells);
+		for (int c = 0; c < 3; c++)
 		{
-			for (int t = max(0, timestep - k_robust); t <= min((int)cat.size() - 1, timestep + k_robust); t++)
+			if (G.types[cells[c]] != "Magic")
 			{
-				cat[t][location] = true;
+				for (int t = max(0, timestep - k_robust); t <= min((int)cat.size() - 1, timestep + k_robust); t++)
+				{
+					cat[t][cells[c]] = true;
+				}
 			}
 		}
 		timestep++;
 	}
 	if (G.types[path.back().location] != "Magic")
 	{
+		int cells[3];
+		G.get_occupied_cells(path.back().location, path.back().orientation, cells);
 		while (timestep < (int)cat.size()) // assume that the agent waits at its last location
 		{
-			cat[timestep][path.back().location] = true;
+			for (int c = 0; c < 3; c++)
+			{
+				cat[timestep][cells[c]] = true;
+			}
 			timestep++;
 		}
 	}
@@ -539,47 +553,78 @@ void ReservationTable::printCT(size_t location) const
 }
 
 
-bool ReservationTable::isConstrained(int curr_id, int next_id, int next_timestep) const
+bool ReservationTable::isConstrained(const State& curr_s, const State& next_s) const
 {
-	auto it = ct.find(next_id);
-	if (it != ct.end())
+	int next_cells[3];
+	G.get_occupied_cells(next_s.location, next_s.orientation, next_cells);
+	for (int c = 0; c < 3; c++)
 	{
-		for (auto time_range : it->second)
-		{
-			if (next_timestep >= time_range.first && next_timestep < time_range.second)
-				return true;
-		}
-	}
-
-	if (curr_id != next_id)
-	{
-		it = ct.find(getEdgeIndex(curr_id, next_id));
+		auto it = ct.find(next_cells[c]);
 		if (it != ct.end())
 		{
 			for (auto time_range : it->second)
 			{
-				if (next_timestep >= time_range.first && next_timestep < time_range.second)
+				if (next_s.timestep >= time_range.first && next_s.timestep < time_range.second)
 					return true;
+			}
+		}
+	}
+
+	if (curr_s.location != next_s.location)
+	{
+		int curr_cells[3];
+		G.get_occupied_cells(curr_s.location, curr_s.orientation, curr_cells);
+		for (int c = 0; c < 3; c++)
+		{
+			if (curr_cells[c] != next_cells[c])
+			{
+				auto it = ct.find(getEdgeIndex(curr_cells[c], next_cells[c]));
+				if (it != ct.end())
+				{
+					for (auto time_range : it->second)
+					{
+						if (next_s.timestep >= time_range.first && next_s.timestep < time_range.second)
+							return true;
+					}
+				}
 			}
 		}
 	}
 	return false;
 }
 
+bool ReservationTable::isConstrained(int curr_id, int next_id, int next_timestep) const
+{
+	return isConstrained(State(curr_id, next_timestep - 1, -1), State(next_id, next_timestep, -1));
+}
+
+bool ReservationTable::isConflicting(const State& curr_s, const State& next_s) const
+{
+	if (next_s.timestep >= (int)cat.size())
+		return false;
+
+	int next_cells[3];
+	G.get_occupied_cells(next_s.location, next_s.orientation, next_cells);
+	for (int c = 0; c < 3; c++)
+	{
+		if (cat[next_s.timestep][next_cells[c]])
+			return true;
+	}
+
+	if (curr_s.location != next_s.location && next_s.timestep > 0)
+	{
+		int curr_cells[3];
+		G.get_occupied_cells(curr_s.location, curr_s.orientation, curr_cells);
+		for (int c = 0; c < 3; c++)
+		{
+			if (cat[next_s.timestep][curr_cells[c]] && cat[next_s.timestep - 1][next_cells[c]])
+				return true;
+		}
+	}
+	return false;
+}
 
 bool ReservationTable::isConflicting(int curr_id, int next_id, int next_timestep) const
 {
-	if (next_timestep >= (int)cat.size())
-		return false;
-
-	// check vertex constraints (being in next_id at next_timestep is disallowed)
-	if (cat[next_timestep][next_id])
-		return true;
-	// check edge constraints (the move from curr_id to next_id at next_timestep-1 is disallowed)
-	// which means that res_table is occupied with another agent for [curr_id,next_timestep] and [next_id,next_timestep-1]
-	// WRONG!
-	else if (curr_id != next_id && cat[next_timestep][curr_id] && cat[next_timestep - 1][next_id])
-		return true;
-	else
-		return false;
+	return isConflicting(State(curr_id, next_timestep - 1, -1), State(next_id, next_timestep, -1));
 }

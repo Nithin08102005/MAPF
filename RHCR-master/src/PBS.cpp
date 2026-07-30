@@ -90,78 +90,59 @@ void PBS::find_conflicts(list<Conflict>& conflicts, int a1, int a2)
     clock_t t = clock();
     if (paths[a1] == nullptr || paths[a2] == nullptr)
         return;
-	if (hold_endpoints)
-	{ 
-		// TODO: add k-robust
-		size_t min_path_length = paths[a1]->size() < paths[a2]->size() ? paths[a1]->size() : paths[a2]->size();
-		for (size_t timestep = 0; timestep < min_path_length; timestep++)
-		{
-			int loc1 = paths[a1]->at(timestep).location;
-			int loc2 = paths[a2]->at(timestep).location;
-			if (loc1 == loc2 && G.types[loc1] != "Magic")
-			{
-				conflicts.emplace_back(a1, a2, loc1, -1, timestep);
-				return;
-			}
-			else if (timestep < min_path_length - 1
-				&& loc1 == paths[a2]->at(timestep + 1).location
-				&& loc2 == paths[a1]->at(timestep + 1).location)
-			{
-				conflicts.emplace_back(a1, a2, loc1, loc2, timestep + 1); // edge conflict
-				return;
-			}
-		}
 
-		if (paths[a1]->size() != paths[a2]->size())
-		{
-			int a1_ = paths[a1]->size() < paths[a2]->size() ? a1 : a2;
-			int a2_ = paths[a1]->size() < paths[a2]->size() ? a2 : a1;
-			int loc1 = paths[a1_]->back().location;
-			for (size_t timestep = min_path_length; timestep < paths[a2_]->size(); timestep++)
-			{
-				int loc2 = paths[a2_]->at(timestep).location;
-				if (loc1 == loc2 && G.types[loc1] != "Magic")
-				{
-					conflicts.emplace_back(a1_, a2_, loc1, -1, timestep); // It's at least a semi conflict		
-					return;
-				}
-			}
-		}
-	}
-	else
-	{
-		int size1 = min(window + 1, (int)paths[a1]->size());
-		int size2 = min(window + 1, (int)paths[a2]->size());
-		for (int timestep = 0; timestep < size1; timestep++)
-		{
-			if (size2 <= timestep - k_robust)
-				break;
-			int loc = paths[a1]->at(timestep).location;
-			for (int i = max(0, timestep - k_robust); i <= min(timestep + k_robust, size2 - 1); i++)
-			{
-				if (loc == paths[a2]->at(i).location && G.types[loc] != "Magic")
-				{
-					conflicts.emplace_back(a1, a2, loc, -1, min(i, timestep)); // k-robust vertex conflict
-					runtime_detect_conflicts += (double)(std::clock() - t) / CLOCKS_PER_SEC;
-					return;
-				}
-			}
-			if (k_robust == 0 && timestep < size1 - 1 && timestep < size2 - 1) // detect edge conflicts
-			{
-				int loc1 = paths[a1]->at(timestep).location;
-				int loc2 = paths[a2]->at(timestep).location;
-				if (loc1 != loc2 && loc1 == paths[a2]->at(timestep + 1).location
-						 && loc2 == paths[a1]->at(timestep + 1).location)
-				{
-					conflicts.emplace_back(a1, a2, loc1, loc2, timestep + 1); // edge conflict
-					runtime_detect_conflicts += (double)(std::clock() - t) / CLOCKS_PER_SEC;
-					return;
-				}
-			}
+    int size1 = (int)paths[a1]->size();
+    int size2 = (int)paths[a2]->size();
+    int max_t = min(window + 1, std::max(size1, size2));
 
-		}
+    for (int timestep = 0; timestep < max_t; timestep++)
+    {
+        State s1 = (timestep < size1) ? paths[a1]->at(timestep) : paths[a1]->back();
+        State s2 = (timestep < size2) ? paths[a2]->at(timestep) : paths[a2]->back();
+
+        int c1[3], c2[3];
+        G.get_occupied_cells(s1.location, s1.orientation, c1);
+        G.get_occupied_cells(s2.location, s2.orientation, c2);
+
+        // Check 3-cell vertex / footprint overlap
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (c1[i] == c2[j] && G.types[c1[i]] != "Magic")
+                {
+                    conflicts.emplace_back(a1, a2, c1[i], -1, timestep);
+                    runtime_detect_conflicts += (double)(std::clock() - t) / CLOCKS_PER_SEC;
+                    return;
+                }
+            }
+        }
+
+        // Check edge / swap conflicts between timestep-1 and timestep
+        if (timestep > 0 && timestep < size1 && timestep < size2)
+        {
+            State prev_s1 = paths[a1]->at(timestep - 1);
+            State prev_s2 = paths[a2]->at(timestep - 1);
+
+            int prev_c1[3], prev_c2[3];
+            G.get_occupied_cells(prev_s1.location, prev_s1.orientation, prev_c1);
+            G.get_occupied_cells(prev_s2.location, prev_s2.orientation, prev_c2);
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (c1[i] == prev_c2[j] && prev_c1[i] == c2[j] && c1[i] != prev_c1[i] && G.types[c1[i]] != "Magic")
+                    {
+                        conflicts.emplace_back(a1, a2, prev_c1[i], c1[i], timestep);
+                        runtime_detect_conflicts += (double)(std::clock() - t) / CLOCKS_PER_SEC;
+                        return;
+                    }
+                }
+            }
+        }
     }
-	runtime_detect_conflicts += (double)(std::clock() - t) / CLOCKS_PER_SEC;
+    runtime_detect_conflicts += (double)(std::clock() - t) / CLOCKS_PER_SEC;
 }
 
 void PBS::find_conflicts(list<Conflict>& conflicts)
@@ -410,17 +391,14 @@ void PBS::find_replan_agents(PBSNode* node, const list<Conflict>& conflicts,
 bool PBS::find_consistent_paths(PBSNode* node, int agent)
 {
     clock_t t = clock();
-    int count = 0; // count the times that we call the low-level search.
+    int count = 0;
     unordered_set<int> replan;
     if (agent >= 0 && agent < num_of_agents)
         replan.insert(agent);
     find_replan_agents(node, node->conflicts, replan);
-    /*clock_t t2 = clock();
-    PathTable pt(paths, window, k_robust);
-    runtime_detect_conflicts += (double)(std::clock() - t2) / CLOCKS_PER_SEC;*/
     while (!replan.empty())
     {
-        if (count > (int) node->paths.size() * 5)
+        if (count > (int) node->paths.size() * 5 || std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count() > time_limit)
         {
             runtime_find_consistent_paths += (double)(std::clock() - t) / CLOCKS_PER_SEC;
             return false;
@@ -428,9 +406,6 @@ bool PBS::find_consistent_paths(PBSNode* node, int agent)
         int a = *replan.begin();
         replan.erase(a);
         count++;
-        /*t2 = clock();
-        pt.remove(paths[a], a);
-        runtime_detect_conflicts += (double)(std::clock() - t2) / CLOCKS_PER_SEC;*/
         if (!find_path(node, a))
         {
             runtime_find_consistent_paths += (double)(std::clock() - t) / CLOCKS_PER_SEC;
@@ -439,9 +414,6 @@ bool PBS::find_consistent_paths(PBSNode* node, int agent)
         remove_conflicts(node->conflicts, a);
         list<Conflict> new_conflicts;
         find_conflicts(new_conflicts, a);
-        /*t2 = clock();
-        std::list< std::shared_ptr<Conflict> > new_conflicts = pt.add(paths[a], a);
-        runtime_detect_conflicts += (double)(std::clock() - t2) / CLOCKS_PER_SEC;*/
         find_replan_agents(node, new_conflicts, replan);
 
         node->conflicts.splice(node->conflicts.end(), new_conflicts);
@@ -581,7 +553,6 @@ bool PBS::generate_root_node()
 
         if (path.empty())
         {
-            std::cout << "NO SOLUTION EXISTS";
             return false;
         }
 
@@ -640,7 +611,7 @@ bool PBS::run(const vector<State>& starts,
     clear();
 
     // set timer
-	start = std::clock();
+	start = std::chrono::steady_clock::now();
     
     this->starts = starts;
     this->goal_locations = goal_locations;
@@ -672,7 +643,7 @@ bool PBS::run(const vector<State>& starts,
     // start the loop
 	while (!dfs.empty() && !solution_found)
 	{
-		runtime = (double)(std::clock() - start)  / CLOCKS_PER_SEC;
+		runtime = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
         if (runtime > time_limit)
 		{  // timeout
 			solution_cost = -1;
@@ -776,7 +747,7 @@ bool PBS::run(const vector<State>& starts,
 	}  // end of while loop
 
 
-	runtime = (double)(std::clock() - start) / CLOCKS_PER_SEC;
+	runtime = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
     get_solution();
 	if (solution_found && !validate_solution())
 	{
@@ -790,7 +761,11 @@ bool PBS::run(const vector<State>& starts,
         int start_loc = starts[i].location;
         for (const auto& goal : goal_locations[i])
         {
-            min_sum_of_costs += G.heuristics.at(goal.first)[start_loc];
+            auto it = G.heuristics.find(goal.first);
+            if (it != G.heuristics.end())
+                min_sum_of_costs += it->second[start_loc];
+            else
+                min_sum_of_costs += G.get_Manhattan_distance(start_loc, goal.first);
             start_loc = goal.first;
         }
     }
@@ -924,6 +899,7 @@ void PBS::update_CAT(int ex_ag)
 
 void PBS::print_results() const
 {
+    if (dummy_start == nullptr) return;
     std::cout << "PBS:";
 	if(solution_cost >= 0) // solved
 		std::cout << "Succeed,";
@@ -951,6 +927,7 @@ void PBS::print_results() const
 
 void PBS::save_results(const std::string &fileName, const std::string &instanceName) const
 {
+	if (dummy_start == nullptr) return;
 	std::ofstream stats;
 	stats.open(fileName, std::ios::app);
 	stats << runtime << "," <<
@@ -992,6 +969,7 @@ void PBS::save_search_tree(const std::string &fname) const
 
 void PBS::save_constraints_in_goal_node(const std::string &fileName) const
 {
+	if (best_node == nullptr) return;
 	best_node->priorities.save_as_digraph(fileName );
 }
 

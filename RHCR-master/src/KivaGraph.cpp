@@ -216,16 +216,25 @@ void KivaGrid::preprocessing(bool consider_rotation)
 		succ = load_heuristics_table(myfile);
 		myfile.close();
 	}
-	if (!succ)
+	bool missing = false;
+	for (auto endpoint : endpoints)
 	{
-		for (auto endpoint : endpoints)
+		if (heuristics.find(endpoint) == heuristics.end())
 		{
 			heuristics[endpoint] = compute_heuristics(endpoint);
+			missing = true;
 		}
-		for (auto home : agent_home_locations)
+	}
+	for (auto home : agent_home_locations)
+	{
+		if (heuristics.find(home) == heuristics.end())
 		{
 			heuristics[home] = compute_heuristics(home);
+			missing = true;
 		}
+	}
+	if (!succ || missing)
+	{
 		save_heuristics_table(fname);
 	}
 

@@ -2,6 +2,7 @@
 #include "PBSNode.h"
 #include "MAPFSolver.h"
 #include <ctime>
+#include <chrono>
 
 // TODO: add topological sorting
 
@@ -66,7 +67,7 @@ private:
    //  vector<State> starts;
     // vector< vector<int> > goal_locations;
 
-    std::clock_t start = 0;
+    std::chrono::steady_clock::time_point start;
 
 	// double focal_w = 1.0;
     unordered_set<pair<int, int>> nogood;

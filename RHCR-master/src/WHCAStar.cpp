@@ -66,7 +66,11 @@ bool WHCAStar::run(const vector<State>& starts,
                 int start = starts[i].location;
                 for (const auto& goal : goal_locations[i])
                 {
-                    min_sum_of_costs += G.heuristics.at(goal.first)[start];
+                    auto it = G.heuristics.find(goal.first);
+                    if (it != G.heuristics.end())
+                        min_sum_of_costs += it->second[start];
+                    else
+                        min_sum_of_costs += G.get_Manhattan_distance(start, goal.first);
                     start = goal.first;
                 }
             }

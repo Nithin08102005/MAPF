@@ -3,21 +3,25 @@
 
 Path StateTimeAStar::updatePath(const StateTimeAStarNode* goal)
 {
-    // std::cout << "Update path .. " << std::endl;
     Path path(goal->state.timestep + 1);
     path_cost = goal->getFVal();
-    // std::cout << goal->timestep << "," << path.size() <<
-    //    "," << goal->conflicts << std::endl;
     num_of_conf = goal->conflicts;
     const StateTimeAStarNode* curr = goal;
-    for(int t = goal->state.timestep; t >= 0; t--)
+    while (curr != nullptr)
     {
-        if (curr->state.timestep > t)
+        path[curr->state.timestep] = curr->state;
+        if (curr->parent != nullptr)
         {
-            curr = curr->parent;
-            assert (curr->state.timestep <= t);
+            int dt = curr->state.timestep - curr->parent->state.timestep;
+            if (dt > 1)
+            {
+                for (int t = curr->state.timestep - 1; t > curr->parent->state.timestep; t--)
+                {
+                    path[t] = State(curr->parent->state.location, t, curr->parent->state.orientation);
+                }
+            }
         }
-        path[t] = curr->state;
+        curr = curr->parent;
     }
     return path;
 }
@@ -55,7 +59,7 @@ Path StateTimeAStar::run(const BasicGraph& G, const State& start,
 		cout << "The start and goal locations are disconnected!" << endl;
 		return Path();
 	}
-    if (rt.isConstrained(start.location, start.location, 0))
+    if (rt.isConstrained(start, start))
         return Path();
 
 	// generate root and add it to the OPEN list
@@ -73,7 +77,7 @@ Path StateTimeAStar::run(const BasicGraph& G, const State& start,
 	if (hold_endpoints)
 		earliest_holding_time = rt.getHoldingTimeFromCT(goal_location.back().first);
 
-    while (!focal_list.empty())
+    while (!focal_list.empty() && num_expanded < 3000)
     {
         StateTimeAStarNode* curr = focal_list.top(); focal_list.pop();
         open_list.erase(curr->open_handle);
@@ -99,7 +103,7 @@ Path StateTimeAStar::run(const BasicGraph& G, const State& start,
 
         for (const auto& next_state: G.get_neighbors(curr->state))
         {
-            if (!rt.isConstrained(curr->state.location, next_state.location, next_state.timestep))
+            if (!rt.isConstrained(curr->state, next_state))
             {
                 // compute cost to next_id via curr node
                 double next_g_val = curr->g_val + G.get_weight(curr->state.location, next_state.location);
@@ -107,7 +111,7 @@ Path StateTimeAStar::run(const BasicGraph& G, const State& start,
                 if (next_h_val >= INT_MAX) // This vertex cannot reach the goal vertex
                     continue;
                 int next_conflicts = curr->conflicts;
-				if (rt.isConflicting(curr->state.location, next_state.location, next_state.timestep))
+				if (rt.isConflicting(curr->state, next_state))
 					next_conflicts++;
 
                 // generate (maybe temporary) node
@@ -201,6 +205,10 @@ Path StateTimeAStar::run(const BasicGraph& G, const State& start,
                 node2->open_handle = open_list.push(node2);
                 node2->in_openlist = true;
                 allNodes_table.insert(node2);
+            }
+            if (open_list.empty())
+            {
+                break;
             }
             min_f_val = open_list.top()->getFVal();
             lower_bound = min_f_val;

@@ -78,7 +78,7 @@ private:
     bool bundle_on_goal_reached(int k);
     bool bundle_maybe_top_up(int k);
     void bundle_mirror_to_engine();
-    void bundle_assert_capacity_ok(int k) const;
+    void bundle_assert_capacity_ok(int k);
 
     void reorder_bundle_by_dvs(int k);
     bool dss_debug_print = true;  

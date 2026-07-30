@@ -1,4 +1,4 @@
-﻿#include "KivaSystem.h"
+#include "KivaSystem.h"
 #include "SortingSystem.h"
 #include "OnlineSystem.h"
 #include "BeeSystem.h"
@@ -95,6 +95,7 @@ MAPFSolver* set_solver(const BasicGraph& G, const boost::program_options::variab
 
 int main(int argc, char** argv) 
 {
+	std::setvbuf(stdout, NULL, _IONBF, 0);
 	namespace po = boost::program_options;
 	// Declare the supported options.
 	po::options_description desc("Allowed options");

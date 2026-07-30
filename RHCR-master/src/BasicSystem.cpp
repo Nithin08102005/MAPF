@@ -309,7 +309,7 @@ bool BasicSystem::check_collisions(const vector<Path>& input_paths) const
 
 bool BasicSystem::congested() const
 {
-	if (simulation_window <= 1)
+	if (simulation_window <= 1 || num_of_drives <= 2)
 		return false;
     int wait_agents = 0;
     for (const auto& path : paths)
@@ -418,12 +418,21 @@ list<tuple<int, int, int>> BasicSystem::move()
 					{
 						if ((int)paths[j].size() <= i)
 							break;
-						if (paths[j][i].location == curr.location)
+						int k_cells[3], j_cells[3];
+						G.get_occupied_cells(curr.location, curr.orientation, k_cells);
+						G.get_occupied_cells(paths[j][i].location, paths[j][i].orientation, j_cells);
+						for (int kc = 0; kc < 3; kc++)
 						{
-							cout << "Drive " << k << " at " << curr << " has a conflict with drive " << j
-								<< " at " << paths[j][i] << endl;
-							save_results(); //TODO: write termination reason to files
-							exit(-1);
+							for (int jc = 0; jc < 3; jc++)
+							{
+								if (k_cells[kc] == j_cells[jc] && G.types[k_cells[kc]] != "Magic")
+								{
+									cout << "Drive " << k << " at " << curr << " has a conflict with drive " << j
+										<< " at " << paths[j][i] << endl;
+									save_results(); //TODO: write termination reason to files
+									exit(-1);
+								}
+							}
 						}
 					}
 				}
@@ -488,7 +497,13 @@ void BasicSystem::save_results()
         {
             output << task.first << "," << task.second << ",";
             if (task.second != 0)
-                output << G.heuristics.at(task.first)[prev];
+            {
+                auto it = G.heuristics.find(task.first);
+                if (it != G.heuristics.end())
+                    output << it->second[prev];
+                else
+                    output << G.get_Manhattan_distance(prev, task.first);
+            }
             output << ";";
             prev = task.first;
         }
@@ -598,7 +613,6 @@ void BasicSystem::solve()
 	}
 	 else // PBS or ECBS
 	 {
-		 //PriorityGraph initial_priorities;
 		 update_initial_constraints(solver.initial_constraints);
 
 		 // solve
@@ -613,21 +627,27 @@ void BasicSystem::solve()
 			 }
 			 vector<Path> planned_paths(num_of_drives);
 			 solver.initial_rt.clear();
-			 auto p = new_agents.begin();
 			 for (int i = 0; i < num_of_drives; i++)
 			 {
-                 planned_paths[i].resize(paths[i].size() - timestep);
-                 for (int t = 0; t < (int)planned_paths[i].size(); t++)
+                 int rem_len = (int)paths[i].size() - timestep;
+                 if (rem_len < 1)
                  {
-                     planned_paths[i][t] = paths[i][timestep + t];
-                     planned_paths[i][t].timestep = t;
+                     State curr_st = (paths[i].empty() ? starts[i] : paths[i].back());
+                     planned_paths[i] = { State(curr_st.location, 0, curr_st.orientation) };
                  }
-				 if (p == new_agents.end() || *p != i)
+                 else
+                 {
+                     planned_paths[i].resize(rem_len);
+                     for (int t = 0; t < rem_len; t++)
+                     {
+                         planned_paths[i][t] = paths[i][timestep + t];
+                         planned_paths[i][t].timestep = t;
+                     }
+                 }
+                 if (std::find(new_agents.begin(), new_agents.end(), i) == new_agents.end())
 				 {
 					 solver.initial_rt.insertPath2CT(planned_paths[i]);
 				 }
-				 else
-					 ++p;
 			 }
 			 if (!new_agents.empty())
 			 {
@@ -636,6 +656,7 @@ void BasicSystem::solve()
                     sol = solver.run(new_starts, new_goal_locations, 10 * time_limit);
                 else
                     sol = solver.run(new_starts, new_goal_locations, time_limit);
+
                 if (sol)
 				 {
 					 auto pt = solver.solution.begin();
@@ -653,10 +674,12 @@ void BasicSystem::solve()
 				 else
 				 {
 					 sol = solve_by_WHCA(planned_paths, new_starts, new_goal_locations);
-                     assert(sol);
+					 if (!sol)
+					 {
+						 lra.resolve_conflicts(planned_paths);
+					 }
 				 }
 			 }
-			 // lra.resolve_conflicts(planned_paths, k_robust);
 			 update_paths(planned_paths);
 		 }
 		 else

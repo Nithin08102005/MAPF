@@ -35,6 +35,58 @@ public:
 	bool load_heuristics_table(std::ifstream& myfile);
 	void save_heuristics_table(string fname);
 
+    void get_occupied_cells(int loc, int orientation, int out_cells[3]) const
+    {
+        out_cells[0] = loc;
+        if (orientation >= 0 && orientation < 4)
+        {
+            out_cells[1] = loc + move[orientation];
+            out_cells[2] = loc - move[orientation];
+        }
+        else
+        {
+            out_cells[1] = loc;
+            out_cells[2] = loc;
+        }
+    }
+
+    bool is_cell_valid_for_robot(int cell) const
+    {
+        if (cell < 0 || cell >= rows * cols)
+            return false;
+        if (types[cell] == "Obstacle" || types[cell] == "Endpoint")
+            return false;
+        return true;
+    }
+
+    bool valid_3cell_state(int loc, int orientation) const
+    {
+        if (loc < 0 || loc >= rows * cols)
+            return false;
+        if (!is_cell_valid_for_robot(loc))
+            return false;
+        if (orientation >= 0 && orientation < 4)
+        {
+            int front = loc + move[orientation];
+            int back = loc - move[orientation];
+            if (get_Manhattan_distance(loc, front) != 1 || !is_cell_valid_for_robot(front))
+                return false;
+            if (get_Manhattan_distance(loc, back) != 1 || !is_cell_valid_for_robot(back))
+                return false;
+        }
+        return true;
+    }
+
+    bool has_valid_3cell_orientation(int loc) const
+    {
+        for (int dir = 0; dir < 4; ++dir)
+        {
+            if (valid_3cell_state(loc, dir))
+                return true;
+        }
+        return false;
+    }
+
     int rows;
     int cols;
     vector<vector<double> > weights; // (directed) weighted 4-neighbor grid
