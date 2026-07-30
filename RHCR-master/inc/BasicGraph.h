@@ -87,6 +87,52 @@ public:
         return false;
     }
 
+    // Returns true if a 3-cell robot centered at loc has AT LEAST 2 valid
+    // orientations, meaning it can arrive from one direction and turn/leave
+    // in another. Cells with only 1 valid orientation are dead-ends: a robot
+    // can enter but cannot turn to exit, so they must never be used as goals.
+    bool is_robot_maneuverable(int loc) const
+    {
+        int count = 0;
+        for (int dir = 0; dir < 4; ++dir)
+        {
+            if (valid_3cell_state(loc, dir))
+                ++count;
+        }
+        return count >= 2;
+    }
+
+    // Checks ALL 9 cells of the 3x3 area swept during an in-place 90-degree rotation.
+    // A 3-cell robot sweeps a 3x3 footprint when turning: before it occupies 3 cells in
+    // one axis, after it occupies 3 cells in the perpendicular axis. Together they form a
+    // 3x3 grid around the center cell. All 9 must be valid travel cells for the turn to
+    // be physically safe. This restricts turns to the CENTER cell of a 3-wide corridor.
+    bool valid_3cell_rotation(int loc, int from_ori, int to_ori) const
+    {
+        if (!valid_3cell_state(loc, from_ori)) return false;
+        if (!valid_3cell_state(loc, to_ori))   return false;
+        int row = loc / cols;
+        int col = loc % cols;
+        // Check all 9 cells in the 3x3 block around center.
+        // It should not turn if any endpoint or obstacle is in its 9 proximity cells.
+        for (int dr = -1; dr <= 1; ++dr)
+        {
+            for (int dc = -1; dc <= 1; ++dc)
+            {
+                int r = row + dr;
+                int c = col + dc;
+                if (r < 0 || r >= rows || c < 0 || c >= cols)
+                    return false;
+                int cell = r * cols + c;
+                if (!is_cell_valid_for_robot(cell))
+                    return false;
+                if (types[cell] == "Endpoint")
+                    return false;
+            }
+        }
+        return true;
+    }
+
     int rows;
     int cols;
     vector<vector<double> > weights; // (directed) weighted 4-neighbor grid

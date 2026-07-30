@@ -176,13 +176,13 @@ bool KivaGrid::load_unweighted_map(std::string fname)
 	shuffle(agent_home_locations.begin(), agent_home_locations.end(), std::default_random_engine());
 	for (int i = 0; i < cols * rows; i++)
 	{
-		if (types[i] == "Obstacle")
+		if (types[i] == "Obstacle" || types[i] == "Endpoint")
 		{
 			continue;
 		}
 		for (int dir = 0; dir < 4; dir++)
 		{
-			if (0 <= i + move[dir] && i + move[dir] < cols * rows && get_Manhattan_distance(i, i + move[dir]) <= 1 && types[i + move[dir]] != "Obstacle")
+			if (0 <= i + move[dir] && i + move[dir] < cols * rows && get_Manhattan_distance(i, i + move[dir]) <= 1 && types[i + move[dir]] != "Obstacle" && types[i + move[dir]] != "Endpoint")
 				weights[i][dir] = 1;
 			else
 				weights[i][dir] = WEIGHT_MAX;
@@ -221,7 +221,20 @@ void KivaGrid::preprocessing(bool consider_rotation)
 	{
 		if (heuristics.find(endpoint) == heuristics.end())
 		{
-			heuristics[endpoint] = compute_heuristics(endpoint);
+			auto h_tbl = compute_heuristics(endpoint);
+			heuristics[endpoint] = h_tbl;
+			for (int dir = 0; dir < 4; dir++)
+			{
+				int nb = endpoint + move[dir];
+				if (nb >= 0 && nb < rows * cols && get_Manhattan_distance(endpoint, nb) == 1)
+				{
+					if (is_cell_valid_for_robot(nb) && is_robot_maneuverable(nb))
+					{
+						heuristics[nb] = h_tbl;
+						break;
+					}
+				}
+			}
 			missing = true;
 		}
 	}

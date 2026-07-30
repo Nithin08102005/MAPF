@@ -649,9 +649,9 @@ void BasicSystem::solve()
 					 solver.initial_rt.insertPath2CT(planned_paths[i]);
 				 }
 			 }
-			 if (!new_agents.empty())
-			 {
-				 bool sol;
+			if (!new_agents.empty())
+			{
+				bool sol;
                 if (timestep == 0)
                     sol = solver.run(new_starts, new_goal_locations, 10 * time_limit);
                 else
@@ -693,8 +693,16 @@ void BasicSystem::solve()
 			 }
 			 else
 			 {
-				 lra.resolve_conflicts(solver.solution);
-				 update_paths(lra.solution);
+				 vector<Path> fallback_paths(num_of_drives);
+				 for (int i = 0; i < num_of_drives; i++)
+				 {
+					 fallback_paths[i].resize(simulation_window + 1);
+					 for (int t = 0; t <= simulation_window; t++)
+					 {
+						 fallback_paths[i][t] = State(starts[i].location, t, starts[i].orientation);
+					 }
+				 }
+				 update_paths(fallback_paths);
 			 }
 		 }
 		 if (log)

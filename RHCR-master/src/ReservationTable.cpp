@@ -239,6 +239,8 @@ void ReservationTable::insertPath2CT(const Path& path)
 		int cells[3];
 		G.get_occupied_cells(path.back().location, path.back().orientation, cells);
 		int end_t = INTERVAL_MAX;
+		if (window < INT_MAX / 2 && !hold_endpoints)
+			end_t = window + 1;
 		for (int c = 0; c < 3; c++)
 		{
 			ct[cells[c]].emplace_back(path.back().timestep, end_t);
@@ -511,17 +513,16 @@ bool ReservationTable::findSafeInterval(Interval& interval, int location, int t_
     auto it = sit.find(location);
     if (it == sit.end())
     {
-		return t_min == 0;
+		interval = make_tuple(0, INTERVAL_MAX, 0);
+		return true;
     }
     for( auto i : it->second)
     {
-        if (t_min == std::get<0>(i))
+        if (t_min >= std::get<0>(i) && t_min < std::get<1>(i))
         {
             interval = i;
             return true;
         }
-        else if (t_min < std::get<0>(i))
-            break;
     }
     return false;
 }

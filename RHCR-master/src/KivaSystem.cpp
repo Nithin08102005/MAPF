@@ -713,7 +713,7 @@ void KivaSystem::ensure_goal_exists(int k, int curr)
     int g = raw_g;
     if (G.types[raw_g] == "Endpoint") {
         for (int nb : G.get_neighbors(raw_g)) {
-            if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+            if (G.is_cell_valid_for_robot(nb) && G.is_robot_maneuverable(nb)) {
                 g = nb;
                 break;
             }
@@ -770,7 +770,7 @@ bool KivaSystem::bundle_on_goal_reached(int k)
     int target = raw_target;
     if (raw_target >= 0 && raw_target < (int)G.types.size() && G.types[raw_target] == "Endpoint") {
         for (int nb : G.get_neighbors(raw_target)) {
-            if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+            if (G.is_cell_valid_for_robot(nb) && G.is_robot_maneuverable(nb)) {
                 target = nb;
                 break;
             }
@@ -856,7 +856,7 @@ void KivaSystem::bundle_mirror_to_engine()
             int v = raw_v;
             if (G.types[raw_v] == "Endpoint") {
                 for (int nb : G.get_neighbors(raw_v)) {
-                    if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
+                    if (G.is_cell_valid_for_robot(nb) && G.is_robot_maneuverable(nb)) {
                         v = nb;
                         break;
                     }
@@ -1408,11 +1408,58 @@ void KivaSystem::debug_print_capacity_state() const
     std::cout << oss.str();
 }
 
+static int find_exterior_travel_cell_for_endpoint(const BasicGraph& G, int raw_ep)
+{
+    if (raw_ep >= 0 && raw_ep < (int)G.types.size() && G.types[raw_ep] == "Endpoint")
+    {
+        // Only allow NORTH (1) and SOUTH (3) neighbors — horizontal travel aisles.
+        // EAST/WEST neighbors are in the same shelf row or 3-wide corridor;
+        // the robot must not be assigned a service cell there.
+        for (int dir : {1, 3})
+        {
+            int nb = raw_ep + G.move[dir];
+            if (nb >= 0 && nb < G.rows * G.cols && G.get_Manhattan_distance(raw_ep, nb) == 1)
+            {
+                if (G.is_cell_valid_for_robot(nb) && G.is_robot_maneuverable(nb))
+                {
+                    return nb;
+                }
+            }
+        }
+    }
+    return raw_ep;
+}
+
 // -------------------------------- update ------------------------------------
 void KivaSystem::update_goal_locations()
 {
     if (!LRA_called)
         new_agents.clear();
+
+    // Sanitize initial start orientations and goal locations for 3-cell footprint
+    for (int k = 0; k < num_of_drives; k++)
+    {
+        if (timestep == 0 && !G.valid_3cell_state(starts[k].location, starts[k].orientation))
+        {
+            for (int dir = 0; dir < 4; dir++)
+            {
+                if (G.valid_3cell_state(starts[k].location, dir))
+                {
+                    starts[k].orientation = dir;
+                    if (!paths[k].empty())
+                        paths[k][0].orientation = dir;
+                    break;
+                }
+            }
+        }
+        for (auto& g : goal_locations[k])
+        {
+            if (g.first >= 0 && g.first < (int)G.types.size() && G.types[g.first] == "Endpoint")
+            {
+                g.first = find_exterior_travel_cell_for_endpoint(G, g.first);
+            }
+        }
+    }
 
     if (capacity_mode)
     {
@@ -1446,28 +1493,12 @@ void KivaSystem::update_goal_locations()
             if (goal_locations[k].empty())
             {
                 int raw_next = pick_random_endpoint_except(G, curr);
-                int next = raw_next;
-                if (G.types[raw_next] == "Endpoint") {
-                    for (int nb : G.get_neighbors(raw_next)) {
-                        if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
-                            next = nb;
-                            break;
-                        }
-                    }
-                }
+                int next = find_exterior_travel_cell_for_endpoint(G, raw_next);
                 int attempts = 0;
                 while ((raw_next == curr || held_endpoints.find(raw_next) != held_endpoints.end() || held_endpoints.find(next) != held_endpoints.end()) && attempts++ < 100)
                 {
                     raw_next = pick_random_endpoint_except(G, curr);
-                    next = raw_next;
-                    if (G.types[raw_next] == "Endpoint") {
-                        for (int nb : G.get_neighbors(raw_next)) {
-                            if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
-                                next = nb;
-                                break;
-                            }
-                        }
-                    }
+                    next = find_exterior_travel_cell_for_endpoint(G, raw_next);
                 }
                 goal_locations[k].clear();
                 goal_locations[k].emplace_back(next, 0);
@@ -1480,28 +1511,12 @@ void KivaSystem::update_goal_locations()
                 // Goal reached: generate a new goal for agent k
                 goal_locations[k].clear();
                 int raw_next = pick_random_endpoint_except(G, curr);
-                int next = raw_next;
-                if (G.types[raw_next] == "Endpoint") {
-                    for (int nb : G.get_neighbors(raw_next)) {
-                        if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
-                            next = nb;
-                            break;
-                        }
-                    }
-                }
+                int next = find_exterior_travel_cell_for_endpoint(G, raw_next);
                 int attempts = 0;
                 while ((raw_next == curr || held_endpoints.find(raw_next) != held_endpoints.end() || held_endpoints.find(next) != held_endpoints.end()) && attempts++ < 100)
                 {
                     raw_next = pick_random_endpoint_except(G, curr);
-                    next = raw_next;
-                    if (G.types[raw_next] == "Endpoint") {
-                        for (int nb : G.get_neighbors(raw_next)) {
-                            if (G.is_cell_valid_for_robot(nb) && G.has_valid_3cell_orientation(nb)) {
-                                next = nb;
-                                break;
-                            }
-                        }
-                    }
+                    next = find_exterior_travel_cell_for_endpoint(G, raw_next);
                 }
                 goal_locations[k].emplace_back(next, 0);
                 held_endpoints.insert(raw_next);
@@ -1572,34 +1587,22 @@ void KivaSystem::update_goal_locations()
                 }
                 if (goal_locations[k].size() == 1)
                 {
-                    int next = pick_random_endpoint_except(G, curr);
-                    goal_locations[k].emplace(goal_locations[k].begin(), next, 0);
+                    int raw_next = pick_random_endpoint_except(G, curr);
+                    int target_cell = find_exterior_travel_cell_for_endpoint(G, raw_next);
+                    goal_locations[k].emplace(goal_locations[k].begin(), target_cell, 0);
                     new_agents.emplace_back(k);
                 }
             }
             else
             {
-                std::pair<int, int> goal = goal_locations[k].empty()
-                    ? std::make_pair(curr, 0)
-                    : std::make_pair(clamp_vertex(G, goal_locations[k].back().first), goal_locations[k].back().second);
-
-                double min_timesteps = G.get_Manhattan_distance(goal.first, curr);
-                while (min_timesteps <= simulation_window)
+                // Ensure there is always at least 1 goal in the queue.
+                // Do NOT queue multiple goals: SIPP plans through ALL queued goals
+                // as chained waypoints which explodes search space and causes timeouts.
+                if (goal_locations[k].empty())
                 {
-                    std::pair<int, int> next;
-                    if (is_endpoint_safe(G, goal.first))
-                    {
-                        next = std::make_pair(pick_random_endpoint_except(G, curr), 0);
-                    }
-                    else
-                    {
-                        std::cout << "WARN update_goal_locations(): non-endpoint goal " << goal.first
-                                  << " – sampling an endpoint instead.\n";
-                        next = std::make_pair(pick_random_endpoint_except(G, curr), 0);
-                    }
-                    goal_locations[k].emplace_back(next);
-                    min_timesteps += G.get_Manhattan_distance(next.first, goal.first);
-                    goal = next;
+                    int raw_next = pick_random_endpoint_except(G, curr);
+                    int target_cell = find_exterior_travel_cell_for_endpoint(G, raw_next);
+                    goal_locations[k].emplace_back(target_cell, 0);
                 }
             }
         }
@@ -1619,9 +1622,7 @@ void KivaSystem::simulate(int simulation_time)
 
         metrics_begin_tick();
 
-        std::cout << "[TRACE t=" << timestep << "] Calling update_start_locations()..." << std::endl;
         update_start_locations();
-        std::cout << "[TRACE t=" << timestep << "] Calling update_goal_locations()..." << std::endl;
         update_goal_locations();
 
         if (capacity_mode && stitch_mode) {

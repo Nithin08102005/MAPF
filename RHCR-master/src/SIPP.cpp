@@ -62,10 +62,9 @@ Path SIPP::run(const BasicGraph& G, const State& start,
     num_generated = 0;
     runtime = 0;
     clock_t t = std::clock();
-	double h_val = compute_h_value(G, start.location, 0, goal_location);
+    double h_val = compute_h_value(G, start.location, 0, goal_location);
 	if (h_val > INT_MAX)
 	{
-		cout << "The start and goal locations are disconnected!" << endl;
 		return Path();
 	}
     Interval interval = rt.getFirstSafeInterval(start.location);
@@ -99,7 +98,7 @@ Path SIPP::run(const BasicGraph& G, const State& start,
 	int earliest_holding_time = 0;
 	if (hold_endpoints)
 		earliest_holding_time = rt.getHoldingTimeFromSIT(goal_location.back().first);
-    while (!focal_list.empty())
+    while (!focal_list.empty() && num_expanded < 50000)
     {
         SIPPNode* curr = focal_list.top(); focal_list.pop();
         open_list.erase(curr->open_handle);
@@ -140,6 +139,16 @@ Path SIPP::run(const BasicGraph& G, const State& start,
             if (degree > std::get<1>(curr->interval) - curr->state.timestep) // don't have enough time to turn
                 continue;
             int location = curr->state.location + G.move[orientation];
+            if (curr->state.orientation >= 0)
+            {
+                // Check move destination and intermediate rotation if turning 180 degrees
+                if (!G.valid_3cell_state(location, orientation))
+                    continue;
+                if (degree == 2 && !G.valid_3cell_rotation(curr->state.location, curr->state.orientation, (curr->state.orientation + 1) % 4))
+                    continue;
+                if (degree > 0 && !G.valid_3cell_rotation(curr->state.location, curr->state.orientation, orientation))
+                    continue;
+            }
             double h_val = compute_h_value(G, location, curr->goal_id, goal_location);
             if (h_val > INT_MAX)   // This vertex cannot reach the goal vertex
                 continue;
@@ -147,14 +156,17 @@ Path SIPP::run(const BasicGraph& G, const State& start,
             for (auto interval : rt.getSafeIntervals(curr->state.location, location, min_timestep, std::get<1>(curr->interval) + 1))
             {
                 if (curr->state.orientation < 0)
-                    generate_node(interval, curr, G, location, min_timestep, -1, h_val);
+                {
+                    generate_node(interval, curr, G, location, min_timestep, -1, curr->h_val);
+                }
                 else
-                    generate_node(interval, curr, G, location, min_timestep, orientation, h_val);
+                {
+                    generate_node(interval, curr, G, location, min_timestep, orientation, curr->h_val);
+                }
             }
-
         }  // end for loop that generates successors
 
-        if(rt.use_cat) // wait to the successive interval
+        // wait to the successive interval (always allowed in SIPP)
         {
             int location = curr->state.location;
             int min_timestep = std::get<1>(curr->interval);
@@ -170,9 +182,11 @@ Path SIPP::run(const BasicGraph& G, const State& start,
 				else
 				{
 					generate_node(interval, curr, G, location, min_timestep, orientation, curr->h_val);
-					generate_node(interval, curr, G, location, min_timestep, (orientation + 1) % 4, curr->h_val);
-					generate_node(interval, curr, G, location, min_timestep, (orientation + 3) % 4, curr->h_val);
-					if (std::get<1>(curr->interval) - curr->state.timestep > 1)
+					if (G.valid_3cell_rotation(location, orientation, (orientation + 1) % 4))
+						generate_node(interval, curr, G, location, min_timestep, (orientation + 1) % 4, curr->h_val);
+					if (G.valid_3cell_rotation(location, orientation, (orientation + 3) % 4))
+						generate_node(interval, curr, G, location, min_timestep, (orientation + 3) % 4, curr->h_val);
+					if (std::get<1>(curr->interval) - curr->state.timestep > 1 && G.valid_3cell_rotation(location, orientation, (orientation + 2) % 4))
 						generate_node(interval, curr, G, location, min_timestep, (orientation + 2) % 4, curr->h_val);
 				}
             }

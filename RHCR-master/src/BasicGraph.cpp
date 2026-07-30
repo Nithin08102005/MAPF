@@ -169,14 +169,16 @@ bool BasicGraph::load_heuristics_table(std::ifstream& myfile)
         boost::tokenizer< boost::char_separator<char> > tok(line, sep);
 	    beg = tok.begin();
         std::vector<double> h_table(this->size());
+        bool valid_entry = false;
         for (int j = 0; j < this->size(); j++)
         {
             h_table[j] = atof((*beg).c_str());
-            // if (h_table[j] >= INT_MAX && types[j] != "Obstacle")
-            //     types[j] = "Obstacle";
+            if (h_table[j] < 1e8)
+                valid_entry = true;
             beg++;
         }
-        heuristics[loc] = h_table;
+        if (valid_entry)
+            heuristics[loc] = h_table;
     }
 	return true;
 }
@@ -202,19 +204,37 @@ void BasicGraph::save_heuristics_table(std::string fname)
 
 std::vector<double> BasicGraph::compute_heuristics(int root_location)
 {
+    int actual_root = root_location;
+    if (actual_root >= 0 && actual_root < (int)types.size() && types[actual_root] == "Endpoint")
+    {
+        for (int dir = 0; dir < 4; dir++)
+        {
+            int nb = actual_root + move[dir];
+            if (nb >= 0 && nb < rows * cols && get_Manhattan_distance(actual_root, nb) == 1)
+            {
+                if (is_cell_valid_for_robot(nb) && is_robot_maneuverable(nb))
+                {
+                    actual_root = nb;
+                    break;
+                }
+            }
+        }
+    }
     std::vector<double> res(this->size(), DBL_MAX);
 	fibonacci_heap< StateTimeAStarNode*, compare<StateTimeAStarNode::compare_node> > heap;
     unordered_set< StateTimeAStarNode*, StateTimeAStarNode::Hasher, StateTimeAStarNode::EqNode> nodes;
 
-    State root_state(root_location);
-    if(consider_rotation)
+    State root_state(actual_root);
+    if (consider_rotation)
     {
-        for (auto neighbor : get_reverse_neighbors(root_state))
+        for (int dir = 0; dir < 4; dir++)
         {
-            StateTimeAStarNode* root = new StateTimeAStarNode(State(root_location, -1,
-                    get_direction(neighbor.location, root_state.location)), 0, 0, nullptr, 0);
-            root->open_handle = heap.push(root);  // add root to heap
-            nodes.insert(root);       // add root to hash_table (nodes)
+            if (valid_3cell_state(actual_root, dir))
+            {
+                StateTimeAStarNode* root = new StateTimeAStarNode(State(actual_root, 0, dir), 0, 0, nullptr, 0);
+                root->open_handle = heap.push(root);
+                nodes.insert(root);
+            }
         }
     }
     else
@@ -230,7 +250,10 @@ std::vector<double> BasicGraph::compute_heuristics(int root_location)
 		heap.pop();
 		for (auto next_state : get_reverse_neighbors(curr->state))
 		{
-			double next_g_val = curr->g_val + get_weight(next_state.location, curr->state.location);
+			double edge_w = get_weight(next_state.location, curr->state.location);
+			if (edge_w >= WEIGHT_MAX - 1)
+				continue;
+			double next_g_val = curr->g_val + edge_w;
             StateTimeAStarNode* next = new StateTimeAStarNode(next_state, next_g_val, 0, nullptr, 0);
 			auto it = nodes.find(next);
 			if (it == nodes.end()) 

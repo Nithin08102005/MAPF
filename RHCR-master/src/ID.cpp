@@ -90,88 +90,37 @@ bool ID::plan_paths_for_group(int group_id)
 
 bool ID::has_conflicts(const Path& path1, const Path& path2) const
 {
-
-	// TODO: add k-robust
-	if (solver.hold_endpoints)
+	int size1 = min(solver.window + 1, (int)path1.size());
+	int size2 = min(solver.window + 1, (int)path2.size());
+	int max_t = max(size1, size2);
+	for (int timestep = 0; timestep < max_t; timestep++)
 	{
-		size_t min_path_length = path1.size() < path2.size() ? path1.size() : path2.size();
-		for (size_t timestep = 0; timestep < min_path_length; timestep++)
-		{
-			int loc1 = path1[timestep].location;
-			int loc2 = path2[timestep].location;
-			if (loc1 == loc2)
-			{
-				return true;
-			}
-			else if (timestep < min_path_length - 1
-				&& loc1 == path2[timestep + 1].location
-				&& loc2 == path1[timestep + 1].location)
-			{
-				return true;
-			}
-		}
+		State s1 = (timestep < size1) ? path1[timestep] : path1.back();
+		State s2 = (timestep < size2) ? path2[timestep] : path2.back();
 
-		if (path1.size() < path2.size())
+		if (G.consider_rotation && s1.orientation >= 0 && s2.orientation >= 0)
 		{
-			int loc1 = path1.back().location;
-			for (size_t timestep = min_path_length; timestep < path2.size(); timestep++)
+			int c1[3], c2[3];
+			G.get_occupied_cells(s1.location, s1.orientation, c1);
+			G.get_occupied_cells(s2.location, s2.orientation, c2);
+			for (int i = 0; i < 3; i++)
 			{
-				int loc2 = path2[timestep].location;
-				if (loc1 == loc2)
+				for (int j = 0; j < 3; j++)
 				{
-					return true;
-				}
-			}
-		}
-		else if (path2.size() < path1.size())
-		{
-			int loc2 = path2.back().location;
-			for (size_t timestep = min_path_length; timestep < path1.size(); timestep++)
-			{
-				int loc1 = path1[timestep].location;
-				if (loc1 == loc2)
-				{
-					return true;
-				}
-			}
-		}
-	}
-	else
-	{
-		int size1 = min(solver.window + 1, (int)path1.size());
-		int size2 = min(solver.window + 1, (int)path2.size());
-		for (int timestep = 0; timestep < size1; timestep++)
-		{
-			if (size2 <= timestep - k_robust)
-				break;
-			else if (k_robust > 0)
-			{
-				int loc = path1[timestep].location;
-				for (int i = max(0, timestep - k_robust); i <= min(timestep + k_robust, size2 - 1); i++)
-				{
-					if (loc == path2[i].location)
-					{
+					if (c1[i] == c2[j] && G.types[c1[i]] != "Magic")
 						return true;
-					}
 				}
 			}
-			else
+		}
+		else
+		{
+			if (s1.location == s2.location && G.types[s1.location] != "Magic")
+				return true;
+			if (timestep > 0 && timestep < size1 && timestep < size2)
 			{
-
-				int loc1 = path1[timestep].location;
-				int loc2 = path2[timestep].location;
-				if (loc1 == loc2)
-				{
+				if (s1.location == path2[timestep - 1].location && path1[timestep - 1].location == s2.location)
 					return true;
-				}
-				else if (timestep < size1 - 1 && timestep < size2 - 1
-					&& loc1 == path2[timestep + 1].location
-					&& loc2 == path1[timestep + 1].location)
-				{
-					return true;
-				}
 			}
-
 		}
 	}
 	return false;

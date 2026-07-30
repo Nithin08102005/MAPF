@@ -53,14 +53,19 @@ Path StateTimeAStar::run(const BasicGraph& G, const State& start,
 	runtime = 0;
 	clock_t t = std::clock();
 
+	std::cout << "[DEBUG TRACE AStar] run() start=" << start.location << " (ori=" << start.orientation << "), goal=" << (goal_location.empty() ? -1 : goal_location.front().first) << "..." << std::endl << std::flush;
 	double h_val = compute_h_value(G, start.location, 0, goal_location);
+	std::cout << "[DEBUG TRACE AStar] h_val=" << h_val << std::endl << std::flush;
 	if (h_val > INT_MAX)
 	{
-		cout << "The start and goal locations are disconnected!" << endl;
+		cout << "[DEBUG TRACE AStar] DISCONNECTED! h_val > INT_MAX" << endl << std::flush;
 		return Path();
 	}
     if (rt.isConstrained(start, start))
+    {
+		cout << "[DEBUG TRACE AStar] Start location is CONSTRAINED!" << endl << std::flush;
         return Path();
+    }
 
 	// generate root and add it to the OPEN list
 	StateTimeAStarNode* root;
@@ -83,7 +88,12 @@ Path StateTimeAStar::run(const BasicGraph& G, const State& start,
         open_list.erase(curr->open_handle);
         curr->in_openlist = false;
         num_expanded++;
-		
+
+		if (num_expanded % 500 == 0)
+		{
+			std::cout << "[DEBUG TRACE AStar] expanded " << num_expanded << " nodes, focal size=" << focal_list.size() << std::endl;
+		}
+
 		// update goal id
         if (curr->state.location == goal_location[curr->goal_id].first && 
 			curr->state.timestep >= goal_location[curr->goal_id].second &&
@@ -98,6 +108,7 @@ Path StateTimeAStar::run(const BasicGraph& G, const State& start,
 			open_list.clear();
 			focal_list.clear();
 			runtime = (double)(std::clock() - t) / CLOCKS_PER_SEC;
+			std::cout << "[DEBUG TRACE AStar] SUCCESS! Found path size=" << path.size() << " in " << num_expanded << " expansions." << std::endl;
 			return path;
 		}
 

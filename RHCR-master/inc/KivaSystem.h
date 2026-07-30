@@ -61,7 +61,7 @@ private:
     std::vector<std::deque<Goal>> bundle; // active, capped by capacity
     std::vector<std::deque<Goal>> rest;   // backlog
 
-    bool capacity_mode         = true;
+    bool capacity_mode         = false;
     int  default_agent_capacity= 3;
     std::vector<int> per_agent_capacity;
     bool randomize_sequences   = true;
