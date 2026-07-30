@@ -89,9 +89,18 @@ void OnlineSystem::move()
 						save_results();
 						exit(-1);
 					}
-					else if (!G.valid_move(prev.location, prev.orientation) ||
-						prev.location + G.move[prev.orientation] != curr.location)
+					else if (!G.valid_move(prev.location, prev.orientation) &&
+							 !G.valid_move(prev.location, (prev.orientation + 2) % 4))
 					{
+						// Neither forward nor backward move is valid from this location
+						cout << "A drive jumps from " << prev << " to " << curr << endl;
+						save_results();
+						exit(-1);
+					}
+					else if (prev.location + G.move[prev.orientation] != curr.location &&
+							 prev.location + G.move[(prev.orientation + 2) % 4] != curr.location)
+					{
+						// Moved to unexpected location (not forward or backward)
 						cout << "A drive jumps from " << prev << " to " << curr << endl;
 						save_results();
 						exit(-1);

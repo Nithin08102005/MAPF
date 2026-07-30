@@ -73,6 +73,15 @@ public:
                 return false;
             if (get_Manhattan_distance(loc, back) != 1 || !is_cell_valid_for_robot(back))
                 return false;
+            if (orientation == 1 || orientation == 3)
+            {
+                int col = loc % cols;
+                if (col > 0 && col < cols - 1)
+                {
+                    if (!is_cell_valid_for_robot(loc - 1) || !is_cell_valid_for_robot(loc + 1))
+                        return false;
+                }
+            }
         }
         return true;
     }

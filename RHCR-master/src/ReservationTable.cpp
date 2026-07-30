@@ -238,9 +238,9 @@ void ReservationTable::insertPath2CT(const Path& path)
 	{
 		int cells[3];
 		G.get_occupied_cells(path.back().location, path.back().orientation, cells);
-		int end_t = INTERVAL_MAX;
-		if (window < INT_MAX / 2 && !hold_endpoints)
-			end_t = window + 1;
+		int end_t = path.back().timestep + 2;
+		if (hold_endpoints)
+			end_t = (window < 1000000) ? window + 1 : 1000000;
 		for (int c = 0; c < 3; c++)
 		{
 			ct[cells[c]].emplace_back(path.back().timestep, end_t);
@@ -426,10 +426,15 @@ void ReservationTable::insertConstraints4starts(const vector<Path*>& paths, int 
             {
                 if (state.location != start) // The agent starts to move
                 {
-                    // The agent waits at its start locations between [appear_time, state.timestep - 1]
-                    // So other agents cannot use this start location between
-                    // [appear_time - k_robust, state.timestep + k_robust - 1]
-                    ct[start].emplace_back(0, state.timestep + k_robust);
+                    int cells[3];
+                    G.get_occupied_cells(paths[i]->front().location, paths[i]->front().orientation, cells);
+                    for (int c = 0; c < 3; c++)
+                    {
+                        if (G.types[cells[c]] != "Magic")
+                        {
+                            ct[cells[c]].emplace_back(0, state.timestep + k_robust);
+                        }
+                    }
                     break;
                 }
             }
@@ -468,19 +473,12 @@ list<Interval> ReservationTable::getSafeIntervals(int location, int lower_bound,
     return safe_intervals;
 }
 
-// [lower_bound, upper_bound)
-list<Interval> ReservationTable::getSafeIntervals(int from, int to, int lower_bound, int upper_bound)
+static list<Interval> intersect_two_intervals(const list<Interval>& safe1, const list<Interval>& safe2)
 {
-	if (lower_bound >= upper_bound)
-		return list<Interval>();
-	
-	auto safe_vertex_intervals = getSafeIntervals(to, lower_bound, upper_bound);
-	auto safe_edge_intervals = getSafeIntervals(getEdgeIndex(from, to), lower_bound, upper_bound);
-
 	list<Interval> safe_intervals;
-	auto it1 = safe_vertex_intervals.begin();
-	auto it2 = safe_edge_intervals.begin();
-	while (it1 != safe_vertex_intervals.end() && it2 != safe_edge_intervals.end())
+	auto it1 = safe1.begin();
+	auto it2 = safe2.begin();
+	while (it1 != safe1.end() && it2 != safe2.end())
 	{
 		int t_min = max(std::get<0>(*it1), std::get<0>(*it2));
 		int t_max = min(std::get<1>(*it1), std::get<1>(*it2));
@@ -492,6 +490,37 @@ list<Interval> ReservationTable::getSafeIntervals(int from, int to, int lower_bo
 			++it2;
 	}
 	return safe_intervals;
+}
+
+// [lower_bound, upper_bound)
+list<Interval> ReservationTable::getSafeIntervals(int from, int to, int lower_bound, int upper_bound)
+{
+	if (lower_bound >= upper_bound)
+		return list<Interval>();
+	
+	int ori = G.get_direction(from, to);
+	list<Interval> safe_vertex_intervals;
+	if (ori >= 0 && ori < 4)
+	{
+		int cells[3];
+		G.get_occupied_cells(to, ori, cells);
+		safe_vertex_intervals = getSafeIntervals(cells[0], lower_bound, upper_bound);
+		for (int c = 1; c < 3; c++)
+		{
+			if (G.types[cells[c]] != "Magic")
+			{
+				safe_vertex_intervals = intersect_two_intervals(safe_vertex_intervals, getSafeIntervals(cells[c], lower_bound, upper_bound));
+			}
+		}
+	}
+	else
+	{
+		safe_vertex_intervals = getSafeIntervals(to, lower_bound, upper_bound);
+	}
+
+	auto safe_edge_intervals = getSafeIntervals(getEdgeIndex(from, to), lower_bound, upper_bound);
+
+	return intersect_two_intervals(safe_vertex_intervals, safe_edge_intervals);
 }
 
 Interval ReservationTable::getFirstSafeInterval(int location)

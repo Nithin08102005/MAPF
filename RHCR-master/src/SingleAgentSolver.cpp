@@ -22,6 +22,11 @@ double SingleAgentSolver::compute_h_value(const BasicGraph& G, int curr, int goa
                     break;
             }
         }
+        if (it == G.heuristics.end())
+        {
+            const_cast<BasicGraph&>(G).heuristics[target_loc] = const_cast<BasicGraph*>(&G)->compute_heuristics(target_loc);
+            it = G.heuristics.find(target_loc);
+        }
     }
     if (it != G.heuristics.end() && curr >= 0 && curr < (int)it->second.size() && it->second[curr] < INT_MAX)
     {
@@ -49,6 +54,11 @@ double SingleAgentSolver::compute_h_value(const BasicGraph& G, int curr, int goa
                     if (it2 != G.heuristics.end())
                         break;
                 }
+            }
+            if (it2 == G.heuristics.end())
+            {
+                const_cast<BasicGraph&>(G).heuristics[next_target] = const_cast<BasicGraph*>(&G)->compute_heuristics(next_target);
+                it2 = G.heuristics.find(next_target);
             }
         }
         if (it2 != G.heuristics.end() && prev_target >= 0 && prev_target < (int)it2->second.size() && it2->second[prev_target] < INT_MAX)

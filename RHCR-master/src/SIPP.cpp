@@ -65,6 +65,7 @@ Path SIPP::run(const BasicGraph& G, const State& start,
     double h_val = compute_h_value(G, start.location, 0, goal_location);
 	if (h_val > INT_MAX)
 	{
+		std::cout << "[DEBUG SIPP FAIL] compute_h_value returned > INT_MAX for start=" << start.location << " goal=" << goal_location.back().first << std::endl;
 		return Path();
 	}
     Interval interval = rt.getFirstSafeInterval(start.location);
@@ -157,14 +158,35 @@ Path SIPP::run(const BasicGraph& G, const State& start,
             {
                 if (curr->state.orientation < 0)
                 {
-                    generate_node(interval, curr, G, location, min_timestep, -1, curr->h_val);
+                    generate_node(interval, curr, G, location, min_timestep, -1, h_val);
                 }
                 else
                 {
-                    generate_node(interval, curr, G, location, min_timestep, orientation, curr->h_val);
+                    generate_node(interval, curr, G, location, min_timestep, orientation, h_val);
                 }
             }
         }  // end for loop that generates successors
+
+        // Backward movement: robot slides one cell in reverse (opposite direction)
+        // without changing orientation. No rotation needed — like a vehicle reversing.
+        if (curr->state.orientation >= 0)
+        {
+            int back_dir = (curr->state.orientation + 2) % 4; // opposite direction
+            int back_location = curr->state.location + G.move[back_dir];
+            // 3-cell check at new position with SAME orientation
+            if (G.valid_3cell_state(back_location, curr->state.orientation))
+            {
+                double h_val = compute_h_value(G, back_location, curr->goal_id, goal_location);
+                if (h_val <= INT_MAX)
+                {
+                    int min_timestep = curr->state.timestep + 1;
+                    for (auto interval : rt.getSafeIntervals(curr->state.location, back_location, min_timestep, std::get<1>(curr->interval) + 1))
+                    {
+                        generate_node(interval, curr, G, back_location, min_timestep, curr->state.orientation, h_val);
+                    }
+                }
+            }
+        }
 
         // wait to the successive interval (always allowed in SIPP)
         {
@@ -236,7 +258,15 @@ Path SIPP::run(const BasicGraph& G, const State& start,
 
     }  // end while loop
 
+    if (num_expanded >= 50000)
+    {
+        std::cout << "[DEBUG SIPP EXPANDED LIMIT] SIPP hit 50,000 node expansion limit for start=" << start.location 
+                  << " (r=" << start.location/G.cols << ",c=" << start.location%G.cols << ") goal=" << goal_location.back().first << std::endl;
+    }
+
     // no path found
+    std::cout << "[DEBUG SIPP EMPTY] SIPP exhausted open_list! num_expanded=" << num_expanded << " num_generated=" << num_generated 
+              << " for start=" << start.location << " (r=" << start.location/G.cols << ",c=" << start.location%G.cols << ") goal=" << goal_location.back().first << std::endl;
     releaseClosedListNodes();
     open_list.clear();
     focal_list.clear();
@@ -360,6 +390,8 @@ void SIPP::generate_node(const Interval& interval, SIPPNode* curr, const BasicGr
         int location, int min_timestep, int orientation, double h_val)
 {
     int timestep  = max(std::get<0>(interval), min_timestep);
+    if (timestep >= std::get<1>(interval))
+        return;
     int wait_time = timestep - curr->state.timestep - 1; // inlcude rotate time
     double g_val = curr->g_val + wait_time * G.get_weight(curr->state.location, curr->state.location)
                    + G.get_weight(curr->state.location, location);

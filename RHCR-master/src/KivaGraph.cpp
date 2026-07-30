@@ -162,7 +162,7 @@ bool KivaGrid::load_unweighted_map(std::string fname)
 			}
 			else if (line[j] == 'r') //robot rest
 			{
-				types[id] = "Home";
+				types[id] = "Travel";
 				weights[id][4] = 1;
 				agent_home_locations.push_back(id);
 			}

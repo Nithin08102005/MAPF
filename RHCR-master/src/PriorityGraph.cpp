@@ -27,9 +27,9 @@ void PriorityGraph::copy(const PriorityGraph& other, const vector<bool>& exclude
     }
 }
 
-void PriorityGraph::add(int from, int to) // from is lower than to
+void PriorityGraph::add(int from, int to) // from is higher priority than to
 {
-    G[from].insert(to);
+    G[to].insert(from);
 }
 
 void PriorityGraph::remove(int from, int to) // from is lower than to

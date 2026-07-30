@@ -1412,19 +1412,17 @@ static int find_exterior_travel_cell_for_endpoint(const BasicGraph& G, int raw_e
 {
     if (raw_ep >= 0 && raw_ep < (int)G.types.size() && G.types[raw_ep] == "Endpoint")
     {
-        // Only allow NORTH (1) and SOUTH (3) neighbors — horizontal travel aisles.
-        // EAST/WEST neighbors are in the same shelf row or 3-wide corridor;
-        // the robot must not be assigned a service cell there.
+        // Check NORTH (1) and SOUTH (3) neighbors.
+        // The service cell must be in a true travel aisle where a 3-cell robot
+        // can validly occupy the position horizontally (valid_3cell_state(nb, 0)).
         for (int dir : {1, 3})
         {
             int nb = raw_ep + G.move[dir];
             if (nb >= 0 && nb < G.rows * G.cols && G.get_Manhattan_distance(raw_ep, nb) == 1)
-            {
-                if (G.is_cell_valid_for_robot(nb) && G.is_robot_maneuverable(nb))
+                if (G.is_cell_valid_for_robot(nb) && G.valid_3cell_state(nb, 0))
                 {
                     return nb;
                 }
-            }
         }
     }
     return raw_ep;
@@ -1603,6 +1601,7 @@ void KivaSystem::update_goal_locations()
                     int raw_next = pick_random_endpoint_except(G, curr);
                     int target_cell = find_exterior_travel_cell_for_endpoint(G, raw_next);
                     goal_locations[k].emplace_back(target_cell, 0);
+                    new_agents.emplace_back(k);
                 }
             }
         }

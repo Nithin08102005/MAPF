@@ -389,9 +389,18 @@ list<tuple<int, int, int>> BasicSystem::move()
 						save_results();
 						exit(-1);
 					}
-					else if ( !G.valid_move(prev.location, prev.orientation) ||
-                        prev.location + G.move[prev.orientation] != curr.location)
+                    else if (!G.valid_move(prev.location, prev.orientation) &&
+                             !G.valid_move(prev.location, (prev.orientation + 2) % 4))
                     {
+                        // Neither forward nor backward move is valid from this location
+                        cout << "Drive " << k << " jump from " << prev << " to " << curr << endl;
+                        save_results();
+                        exit(-1);
+                    }
+                    else if (prev.location + G.move[prev.orientation] != curr.location &&
+                             prev.location + G.move[(prev.orientation + 2) % 4] != curr.location)
+                    {
+                        // Moved to unexpected location (not forward or backward)
                         cout << "Drive " << k << " jump from " << prev << " to " << curr << endl;
                         save_results();
                         exit(-1);
@@ -651,11 +660,35 @@ void BasicSystem::solve()
 			 }
 			if (!new_agents.empty())
 			{
+				std::cout << "[DEBUG t=" << timestep << "] Requesting plan for " << new_agents.size() << " agent(s):" << std::endl;
+				int idx = 0;
+				for (int i : new_agents)
+				{
+					int st_loc = starts[i].location;
+					int st_ori = starts[i].orientation;
+					int gl_loc = goal_locations[i].empty() ? -1 : goal_locations[i].back().first;
+					bool valid_st = G.valid_3cell_state(st_loc, st_ori);
+					bool valid_gl = (gl_loc >= 0 && gl_loc < G.size()) ? G.valid_3cell_state(gl_loc, 0) : false;
+					std::cout << "  Agent " << i << " (sub-index " << idx++ << "): start loc=" << st_loc
+							  << " (r=" << st_loc/G.cols << ",c=" << st_loc%G.cols << ") ori=" << st_ori
+							  << " valid_3cell_start=" << (valid_st ? "YES" : "NO")
+							  << " | goal loc=" << gl_loc
+							  << " (r=" << (gl_loc >= 0 ? std::to_string(gl_loc/G.cols) : "?")
+							  << ",c=" << (gl_loc >= 0 ? std::to_string(gl_loc%G.cols) : "?") << ")"
+							  << " valid_3cell_goal=" << (valid_gl ? "YES" : "NO")
+							  << std::endl;
+				}
+
 				bool sol;
                 if (timestep == 0)
                     sol = solver.run(new_starts, new_goal_locations, 10 * time_limit);
                 else
                     sol = solver.run(new_starts, new_goal_locations, time_limit);
+
+                if (!sol)
+                {
+                    std::cout << "[DEBUG t=" << timestep << "] PBS failed to find a solution!" << std::endl;
+                }
 
                 if (sol)
 				 {
@@ -684,6 +717,12 @@ void BasicSystem::solve()
 		 }
 		 else
 		 {
+			 std::cout << "[DEBUG solve t=" << timestep << "] Calling solver.run for " << num_of_drives << " agents: ";
+			 for (int i = 0; i < num_of_drives; i++)
+				 std::cout << "A" << i << "=(loc=" << starts[i].location << ",r=" << starts[i].location/G.cols << ",c=" << starts[i].location%G.cols << ",ori=" << starts[i].orientation << ",goal=" << (goal_locations[i].empty() ? -1 : goal_locations[i].back().first) << ") ";
+			 std::cout << std::endl;
+
+			 solver.initial_paths.clear();
 			 bool sol = solver.run(starts, goal_locations, time_limit);
 			 if (sol)
 			 {

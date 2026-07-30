@@ -26,6 +26,7 @@ void PBS::clear()
     // focal_list_threshold = -1;
     avg_path_length = -1;
     paths.clear();
+    initial_paths.clear();
     nogood.clear();
     // focal_list.clear();
     dfs.clear();
@@ -97,6 +98,16 @@ void PBS::find_conflicts(list<Conflict>& conflicts, int a1, int a2)
 
     for (int timestep = 0; timestep < max_t; timestep++)
     {
+        bool a1_parked = (timestep >= size1);
+        bool a2_parked = (timestep >= size2);
+
+        // When hold_endpoints is false, an agent clears its goal cell after servicing (size + 1).
+        if (!hold_endpoints)
+        {
+            if (a1_parked && timestep >= size1 + 1) continue;
+            if (a2_parked && timestep >= size2 + 1) continue;
+        }
+
         State s1 = (timestep < size1) ? paths[a1]->at(timestep) : paths[a1]->back();
         State s2 = (timestep < size2) ? paths[a2]->at(timestep) : paths[a2]->back();
 
@@ -112,6 +123,9 @@ void PBS::find_conflicts(list<Conflict>& conflicts, int a1, int a2)
                 if (c1[i] == c2[j] && G.types[c1[i]] != "Magic")
                 {
                     conflicts.emplace_back(a1, a2, c1[i], -1, timestep);
+                    std::cout << "[DEBUG CONFLICT DETECTED] Agent " << a1 << " (loc=" << s1.location << ",ori=" << s1.orientation 
+                              << ") & Agent " << a2 << " (loc=" << s2.location << ",ori=" << s2.orientation 
+                              << ") overlap at cell=" << c1[i] << " (r=" << c1[i]/G.cols << ",c=" << c1[i]%G.cols << ") t=" << timestep << std::endl;
                     runtime_detect_conflicts += (double)(std::clock() - t) / CLOCKS_PER_SEC;
                     return;
                 }
@@ -298,7 +312,11 @@ bool PBS::find_path(PBSNode* node, int agent)
 
     clock_t t = std::clock();
 	rt.copy(initial_rt);
-    rt.build(paths, initial_constraints, node->priorities.get_reachable_nodes(agent),
+    auto higher_nodes = node->priorities.get_reachable_nodes(agent);
+    std::cout << "[DEBUG FIND_PATH] agent=" << agent << " higher_nodes.size()=" << higher_nodes.size() << ": ";
+    for (auto h : higher_nodes) std::cout << h << " ";
+    std::cout << std::endl;
+    rt.build(paths, initial_constraints, higher_nodes,
              agent, starts[agent].location);
     runtime_get_higher_priority_agents += node->priorities.runtime;
 
@@ -316,8 +334,9 @@ bool PBS::find_path(PBSNode* node, int agent)
 
     if (path.empty())
     {
-        if (screen == 2)
-            std::cout << "Fail to find a path" << std::endl;
+        std::cout << "[DEBUG PBS] find_path returned empty for agent " << agent 
+                  << " (start=" << starts[agent].location << " r=" << starts[agent].location/G.cols << " c=" << starts[agent].location%G.cols
+                  << " ori=" << starts[agent].orientation << ") goal=" << (goal_locations[agent].empty() ? -1 : goal_locations[agent].back().first) << std::endl;
         return false;
     }
     double old_cost = 0;
@@ -358,7 +377,6 @@ void PBS::find_replan_agents(PBSNode* node, const list<Conflict>& conflicts,
     clock_t t2 = clock();
     for (const auto& conflict : conflicts)
     {
-
         int a1, a2, v1, v2, t;
         std::tie(a1, a2, v1, v2, t) = conflict;
         if (replan.find(a1) != replan.end() || replan.find(a2) != replan.end())
@@ -366,23 +384,30 @@ void PBS::find_replan_agents(PBSNode* node, const list<Conflict>& conflicts,
         else if (prioritize_start && wait_at_start(*paths[a1], v1, t))
         {
             replan.insert(a2);
+            std::cout << "[DEBUG REPLAN] wait_at_start(a1=" << a1 << ") -> added a2=" << a2 << " to replan" << std::endl;
             continue;
         }
         else if (prioritize_start && wait_at_start(*paths[a2], v2, t))
         {
             replan.insert(a1);
+            std::cout << "[DEBUG REPLAN] wait_at_start(a2=" << a2 << ") -> added a1=" << a1 << " to replan" << std::endl;
             continue;
         }
-        if (node->priorities.connected(a1, a2))
+        bool conn12 = node->priorities.connected(a1, a2);
+        bool conn21 = node->priorities.connected(a2, a1);
+        if (conn12)
         {
             replan.insert(a1);
+            std::cout << "[DEBUG REPLAN] conflict(" << a1 << "," << a2 << ") conn(" << a1 << "," << a2 << ")=true -> added lower-priority a1=" << a1 << " to replan" << std::endl;
             continue;
         }
-        if (node->priorities.connected(a2, a1))
+        if (conn21)
         {
             replan.insert(a2);
+            std::cout << "[DEBUG REPLAN] conflict(" << a1 << "," << a2 << ") conn(" << a2 << "," << a1 << ")=true -> added lower-priority a2=" << a2 << " to replan" << std::endl;
             continue;
         }
+        std::cout << "[DEBUG REPLAN UNCONNECTED] conflict(" << a1 << "," << a2 << ") no priority link!" << std::endl;
     }
     runtime_find_replan_agents += (double)(std::clock() - t2) / CLOCKS_PER_SEC;
 }
@@ -482,7 +507,7 @@ bool PBS::generate_child(PBSNode* node, PBSNode* parent)
         node->priorities.add(node->priority.first, node->priority.second);
         runtime_copy_priorities += (double)(std::clock() - t) / CLOCKS_PER_SEC;
         copy_conflicts(node->parent->conflicts, node->conflicts, -1); // copy all conflicts
-        if (!find_consistent_paths(node, node->priority.first))
+        if (!find_consistent_paths(node, node->priority.second))
             return false;
     }
 
@@ -551,8 +576,16 @@ bool PBS::generate_root_node()
         LL_num_expanded += path_planner.num_expanded;
         LL_num_generated += path_planner.num_generated;
 
+        std::cout << "[DEBUG ROOT i=" << i << "] start=(" << starts[i].location << ",r=" << starts[i].location/G.cols << ",c=" << starts[i].location%G.cols << ",ori=" << starts[i].orientation << ") goal=" << (goal_locations[i].empty() ? -1 : goal_locations[i].back().first) << " -> path_size=" << path.size() << std::endl;
+
         if (path.empty())
         {
+            std::cout << "[DEBUG PBS] Single-agent path planner (SIPP) returned empty path for agent index " << i
+                      << " starting at loc=" << starts[i].location
+                      << " (r=" << starts[i].location/G.cols << ",c=" << starts[i].location%G.cols << ")"
+                      << " ori=" << starts[i].orientation
+                      << " to goal loc=" << (goal_locations[i].empty() ? -1 : goal_locations[i].back().first)
+                      << std::endl;
             return false;
         }
 
@@ -565,7 +598,10 @@ bool PBS::generate_root_node()
     if (!lazyPriority)
     {
         if(!find_consistent_paths(dummy_start, -1))
+        {
+            std::cout << "[DEBUG PBS] find_consistent_paths failed at root node!" << std::endl;
             return false;
+        }
     }
 
 	dummy_start->f_val = dummy_start->g_val;
@@ -631,7 +667,10 @@ bool PBS::run(const vector<State>& starts,
 	path_planner.prioritize_start = prioritize_start;
 
     if (!generate_root_node())
+    {
+        std::cout << "[DEBUG PBS FAIL] Root node generation failed!" << std::endl;
         return false;
+    }
 
     if (dummy_start->num_of_collisions == 0) //no conflicts at the root node
     {// found a solution (and finish the while look)
@@ -670,15 +709,13 @@ bool PBS::run(const vector<State>& starts,
 		HL_num_expanded++;
 
 		curr->time_expanded = HL_num_expanded;
-		if(screen == 2)
-			std::cout << "Expand Node " << curr->time_generated << " ( cost = " << curr->f_val << " , #conflicts = " <<
-			curr->num_of_collisions << " ) on conflict " << curr->conflict << std::endl;
+		std::cout << "[DEBUG PBS HL] Expand Node " << curr->time_generated << " (cost=" << curr->f_val << ", #conflicts=" <<
+			curr->num_of_collisions << ") on conflict (" << std::get<0>(curr->conflict) << "," << std::get<1>(curr->conflict) << ",loc=" << std::get<2>(curr->conflict) << ",t=" << std::get<4>(curr->conflict) << ")" << std::endl;
 		PBSNode* n[2];
         for (auto & i : n)
                 i = new PBSNode();
 	    resolve_conflict(curr->conflict, n[0], n[1]);
 
-        // int loc = std::get<2>(*curr->conflict);
         vector<Path*> copy(paths);
         for (auto & i : n)
         {
@@ -688,17 +725,11 @@ bool PBS::run(const vector<State>& starts,
                 HL_num_generated++;
                 i->time_generated = HL_num_generated;
             }
+            std::cout << "[DEBUG PBS HL] Child priority (" << i->priority.first << "<" << i->priority.second << ") -> " << (sol ? "SUCCESS" : "FAILED") << std::endl;
             if (sol)
             {
-                if (screen == 2)
-                {
-                    std::cout << "Generate #" << i->time_generated << " with "
-                              << i->paths.size() << " new paths, "
-                              << i->g_val - curr->g_val << " delta cost and "
-                              << i->num_of_collisions << " conflicts " << std::endl;
-                }
                 if (i->num_of_collisions == 0) //no conflicts
-                {// found a solution (and finish the while look)
+                {
                     solution_found = true;
                     solution_cost = i->g_val;
                     best_node = i;
