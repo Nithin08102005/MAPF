@@ -12,6 +12,7 @@ public:
     int conflicts;
     int depth;
     bool in_openlist;
+    bool in_focallist;
     int goal_id; // the id of its current goal.
 
     // the following is used to comapre nodes in the OPEN list
@@ -46,9 +47,9 @@ public:
     fibonacci_heap< StateTimeAStarNode*, compare<StateTimeAStarNode::secondary_compare_node> >::
         handle_type focal_handle;
 
-    StateTimeAStarNode(): g_val(0), h_val(0), parent(nullptr), conflicts(0), depth(0), in_openlist(false), goal_id(0) {}
+    StateTimeAStarNode(): g_val(0), h_val(0), parent(nullptr), conflicts(0), depth(0), in_openlist(false), in_focallist(false), goal_id(0) {}
     StateTimeAStarNode(const State& state, double g_val, double h_val, StateTimeAStarNode* parent, int conflicts):
-        state(state), g_val(g_val), h_val(h_val), parent(parent), conflicts(conflicts), in_openlist(false)
+        state(state), g_val(g_val), h_val(h_val), parent(parent), conflicts(conflicts), in_openlist(false), in_focallist(false)
     {
         if(parent != nullptr)
         {

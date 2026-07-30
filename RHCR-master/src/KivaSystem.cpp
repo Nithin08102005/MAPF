@@ -1510,9 +1510,14 @@ void KivaSystem::update_goal_locations()
     if (!LRA_called)
         new_agents.clear();
 
+    // Open a SEPARATE trace file for UGL (avoid double-handle on crash_trace.txt)
+    std::ofstream gl_trace(outfile + "/ugl_trace.txt", std::ios::app);
+    gl_trace << "  [UGL] enter t=" << timestep << std::endl; gl_trace.flush();
+
     // Sanitize initial start orientations and goal locations for 3-cell footprint
     for (int k = 0; k < num_of_drives; k++)
     {
+        gl_trace << "  [UGL] sanitize k=" << k << std::endl; gl_trace.flush();
         if (timestep == 0 && !G.valid_3cell_state(starts[k].location, starts[k].orientation))
         {
             for (int dir = 0; dir < 4; dir++)
@@ -1528,13 +1533,17 @@ void KivaSystem::update_goal_locations()
         }
         for (auto& g : goal_locations[k])
         {
+            gl_trace << "  [UGL] k=" << k << " find_exterior g.first=" << g.first << std::endl; gl_trace.flush();
             g.first = find_exterior_travel_cell_for_endpoint(G, g.first);
+            gl_trace << "  [UGL] k=" << k << " is_goal_service_cell_conflicting g.first=" << g.first << std::endl; gl_trace.flush();
             if (is_goal_service_cell_conflicting(G, g.first, k, num_of_drives, paths, goal_locations, timestep, consider_rotation))
             {
+                gl_trace << "  [UGL] k=" << k << " pick_random_unblocked g.first=" << g.first << std::endl; gl_trace.flush();
                 g.first = pick_random_unblocked_endpoint(G, g.first, k, num_of_drives, paths, goal_locations, timestep, consider_rotation);
             }
         }
     }
+    gl_trace << "  [UGL] sanitize loop done" << std::endl; gl_trace.flush();
 
     if (capacity_mode)
     {
@@ -1555,15 +1564,18 @@ void KivaSystem::update_goal_locations()
         }
         bundle_mirror_to_engine();
         if (capacity_debug) debug_print_capacity_state();
+        gl_trace << "  [UGL] capacity_mode done" << std::endl; gl_trace.flush();
         return;
     }
 
     // legacy update for non-capacity
     if (hold_endpoints)
     {
+        gl_trace << "  [UGL] hold_endpoints branch" << std::endl; gl_trace.flush();
         unordered_map<int, int> held_locations;
         for (int k = 0; k < num_of_drives; k++)
         {
+            gl_trace << "  [UGL] hold_ep k=" << k << std::endl; gl_trace.flush();
             int curr = safe_path_at(paths, G, k, timestep, consider_rotation).location;
             if (goal_locations[k].empty())
             {
@@ -1649,9 +1661,12 @@ void KivaSystem::update_goal_locations()
     }
     else
     {
+        gl_trace << "  [UGL] non-hold branch" << std::endl; gl_trace.flush();
         for (int k = 0; k < num_of_drives; k++)
         {
+            gl_trace << "  [UGL] else k=" << k << " safe_path_at..." << std::endl; gl_trace.flush();
             int curr = safe_path_at(paths, G, k, timestep, consider_rotation).location;
+            gl_trace << "  [UGL] else k=" << k << " curr=" << curr << " goal_empty=" << goal_locations[k].empty() << std::endl; gl_trace.flush();
             if (useDummyPaths)
             {
                 if (goal_locations[k].empty())
@@ -1673,13 +1688,16 @@ void KivaSystem::update_goal_locations()
                 // Ensure there is always at least 1 goal in the queue.
                 if (goal_locations[k].empty())
                 {
+                    gl_trace << "  [UGL] else k=" << k << " calling pick_random_unblocked..." << std::endl; gl_trace.flush();
                     int target_cell = pick_random_unblocked_endpoint(G, curr, k, num_of_drives, paths, goal_locations, timestep, consider_rotation);
+                    gl_trace << "  [UGL] else k=" << k << " got target_cell=" << target_cell << std::endl; gl_trace.flush();
                     goal_locations[k].emplace_back(target_cell, 0);
                     new_agents.emplace_back(k);
                 }
             }
         }
     }
+    gl_trace << "  [UGL] exit" << std::endl; gl_trace.flush();
 }
 
 // ------------------------------- simulate -----------------------------------
@@ -1689,21 +1707,37 @@ void KivaSystem::simulate(int simulation_time)
     this->simulation_time = simulation_time;
     initialize();
 
+    std::ofstream crash_log(outfile + "/crash_trace.txt", std::ios::out);
+    crash_log << "=== CRASH TRACE START ===" << std::endl;
+    crash_log.flush();
+    // Make crash_log accessible to solve() via a global pointer
+    extern std::ofstream* g_crash_log;
+    g_crash_log = &crash_log;
+
     for (; timestep < simulation_time; timestep += simulation_window)
     {
+        crash_log << "--- LOOP timestep=" << timestep << " ---" << std::endl; crash_log.flush();
         std::cout << "Timestep " << timestep << std::endl;
 
         metrics_begin_tick();
+        crash_log << "  metrics_begin_tick OK" << std::endl; crash_log.flush();
 
         update_start_locations();
+        crash_log << "  update_start_locations OK" << std::endl; crash_log.flush();
+
         update_goal_locations();
+        crash_log << "  update_goal_locations OK" << std::endl; crash_log.flush();
 
         if (capacity_mode && stitch_mode) {
             plan_stitched_batch();
+            crash_log << "  plan_stitched_batch OK" << std::endl; crash_log.flush();
         }
 
         solve();
+        crash_log << "  solve() OK" << std::endl; crash_log.flush();
+
         auto new_finished_tasks = move();
+        crash_log << "  move() OK. finished_tasks.size()=" << new_finished_tasks.size() << std::endl; crash_log.flush();
 
         for (auto task : new_finished_tasks)
         {

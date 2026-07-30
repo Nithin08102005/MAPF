@@ -78,6 +78,20 @@ public:
                   n1->goal_id == n2->goal_id);
         }
     };
+
+    // The following is used to generate the hash value of a SIPP node
+    struct Hasher
+    {
+        std::size_t operator()(const SIPPNode* n) const
+        {
+            size_t loc_hash = std::hash<int>()(n->state.location);
+            size_t ori_hash = std::hash<int>()(n->state.orientation);
+            size_t int_start_hash = std::hash<int>()(std::get<0>(n->interval));
+            size_t int_end_hash = std::hash<int>()(std::get<1>(n->interval));
+            size_t goal_hash = std::hash<int>()(n->goal_id);
+            return loc_hash ^ (ori_hash << 1) ^ (int_start_hash << 2) ^ (int_end_hash << 3) ^ (goal_hash << 4);
+        }
+    };
 };
 
 
@@ -98,7 +112,7 @@ private:
 	inline void releaseClosedListNodes();
 
     void generate_node(const Interval& interval, SIPPNode* curr, const BasicGraph& G,
-                       int location, int min_timestep, int orientation, double h_val);
+                       const ReservationTable& rt, int location, int min_timestep, int orientation, double h_val);
     // Updates the path
     Path updatePath(const BasicGraph& G, const SIPPNode* goal);
 

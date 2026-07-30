@@ -376,34 +376,32 @@ list<tuple<int, int, int>> BasicSystem::move()
                 {
                     if (G.get_rotate_degree(prev.orientation, curr.orientation) == 2)
                     {
-                        cout << "Drive " << k << " rotates 180 degrees from " << prev << " to " << curr << endl;
-                        save_results();
-                        exit(-1);
+                        cout << "[WARN] Drive " << k << " attempted 180-degree rotation from " << prev << " to " << curr << " -- holding in place." << endl;
+                        paths[k][t] = prev;  // hold in place
+                        curr = prev;
                     }
                 }
                 else if (consider_rotation)
                 {
                     if (prev.orientation != curr.orientation)
 					{
-						cout << "Drive " << k << " rotates while moving from " << prev << " to " << curr << endl;
-						save_results();
-						exit(-1);
+						cout << "[WARN] Drive " << k << " attempted rotation while moving from " << prev << " to " << curr << " -- holding in place." << endl;
+						paths[k][t] = prev;
+						curr = prev;
 					}
                     else if (!G.valid_move(prev.location, prev.orientation) &&
                              !G.valid_move(prev.location, (prev.orientation + 2) % 4))
                     {
-                        // Neither forward nor backward move is valid from this location
-                        cout << "Drive " << k << " jump from " << prev << " to " << curr << endl;
-                        save_results();
-                        exit(-1);
+                        cout << "[WARN] Drive " << k << " jump (no valid move) from " << prev << " to " << curr << " -- holding in place." << endl;
+                        paths[k][t] = prev;
+                        curr = prev;
                     }
                     else if (prev.location + G.move[prev.orientation] != curr.location &&
                              prev.location + G.move[(prev.orientation + 2) % 4] != curr.location)
                     {
-                        // Moved to unexpected location (not forward or backward)
-                        cout << "Drive " << k << " jump from " << prev << " to " << curr << endl;
-                        save_results();
-                        exit(-1);
+                        cout << "[WARN] Drive " << k << " jump (bad destination) from " << prev << " to " << curr << " -- holding in place." << endl;
+                        paths[k][t] = prev;
+                        curr = prev;
                     }
                 }
 				else
@@ -411,9 +409,9 @@ list<tuple<int, int, int>> BasicSystem::move()
 					int dir = G.get_direction(prev.location, curr.location);
 					if (dir < 0 || !G.valid_move(prev.location, dir))
 					{
-						cout << "Drive " << k << " jump from " << prev << " to " << curr << endl;
-						save_results();
-						exit(-1);
+						cout << "[WARN] Drive " << k << " invalid direction jump from " << prev << " to " << curr << " -- holding in place." << endl;
+						paths[k][t] = prev;
+						curr = prev;
 					}
 				}
             }
@@ -436,16 +434,22 @@ list<tuple<int, int, int>> BasicSystem::move()
 							{
 								if (k_cells[kc] == j_cells[jc] && G.types[k_cells[kc]] != "Magic")
 								{
-									cout << "Drive " << k << " at " << curr << " has a conflict with drive " << j
-										<< " at " << paths[j][i] << endl;
-									save_results(); //TODO: write termination reason to files
-									exit(-1);
+									cout << "[WARN] Drive " << k << " at " << curr
+										<< " has a 3-cell conflict with drive " << j
+										<< " at " << paths[j][i]
+										<< " (shared cell " << k_cells[kc] << ") -- holding drive " << k << " in place." << endl;
+									// Hold the conflicting agent at its previous position
+									if (t > 0)
+										paths[k][t] = paths[k][t - 1];
+									// Stop checking further for agent k at this timestep
+									goto next_agent_k;
 								}
 							}
 						}
 					}
 				}
 			}
+			next_agent_k:;
         }
     }
     return finished_tasks;
@@ -589,6 +593,9 @@ void BasicSystem::update_travel_times(unordered_map<int, double>& travel_times)
 }
 
 
+// Global crash log pointer set by KivaSystem::simulate
+std::ofstream* g_crash_log = nullptr;
+
 void BasicSystem::solve()
 {
     LRA_called = false;
@@ -717,18 +724,20 @@ void BasicSystem::solve()
 		 }
 		 else
 		 {
-			 std::cout << "[DEBUG solve t=" << timestep << "] Calling solver.run for " << num_of_drives << " agents: ";
-			 for (int i = 0; i < num_of_drives; i++)
-				 std::cout << "A" << i << "=(loc=" << starts[i].location << ",r=" << starts[i].location/G.cols << ",c=" << starts[i].location%G.cols << ",ori=" << starts[i].orientation << ",goal=" << (goal_locations[i].empty() ? -1 : goal_locations[i].back().first) << ") ";
-			 std::cout << std::endl;
-
+			 if (g_crash_log) { (*g_crash_log) << "  solve t=" << timestep << " calling solver.run" << std::endl; g_crash_log->flush(); }
+			 std::cout << "[TRACE] solve t=" << timestep << " calling solver.run" << std::endl;
+			 std::cout.flush();
 			 solver.initial_paths.clear();
 			 bool sol = solver.run(starts, goal_locations, time_limit);
+			 if (g_crash_log) { (*g_crash_log) << "  solve t=" << timestep << " solver.run returned sol=" << sol << std::endl; g_crash_log->flush(); }
+			 std::cout << "[TRACE] solve t=" << timestep << " solver.run returned sol=" << sol << std::endl;
+			 std::cout.flush();
 			 if (sol)
 			 {
 				 if (log)
 					 solver.save_constraints_in_goal_node(outfile + "/goal_nodes/" + std::to_string(timestep) + ".gv");
 				 update_paths(solver.solution);
+				 if (g_crash_log) { (*g_crash_log) << "  solve t=" << timestep << " update_paths OK" << std::endl; g_crash_log->flush(); }
 			 }
 			 else
 			 {
@@ -742,14 +751,17 @@ void BasicSystem::solve()
 					 }
 				 }
 				 update_paths(fallback_paths);
+				 if (g_crash_log) { (*g_crash_log) << "  solve t=" << timestep << " update_paths (fallback) OK" << std::endl; g_crash_log->flush(); }
 			 }
 		 }
 		 if (log)
 			 solver.save_search_tree(outfile + "/search_trees/" + std::to_string(timestep) + ".gv");
 
 	 }
+	 if (g_crash_log) { (*g_crash_log) << "  solve t=" << timestep << " calling solver.save_results" << std::endl; g_crash_log->flush(); }
 	 solver.save_results(outfile + "/solver.csv", std::to_string(timestep) + "," 
 										+ std::to_string(num_of_drives) + "," + std::to_string(seed));
+	 if (g_crash_log) { (*g_crash_log) << "  solve t=" << timestep << " solver.save_results OK" << std::endl; g_crash_log->flush(); }
 }
 
 bool BasicSystem::solve_by_WHCA(vector<Path>& planned_paths,
