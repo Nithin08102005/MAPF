@@ -493,12 +493,12 @@ static list<Interval> intersect_two_intervals(const list<Interval>& safe1, const
 }
 
 // [lower_bound, upper_bound)
-list<Interval> ReservationTable::getSafeIntervals(int from, int to, int lower_bound, int upper_bound)
+list<Interval> ReservationTable::getSafeIntervals(int from, int to, int orientation, int lower_bound, int upper_bound)
 {
 	if (lower_bound >= upper_bound)
 		return list<Interval>();
 	
-	int ori = G.get_direction(from, to);
+	int ori = (orientation >= 0 && orientation < 4) ? orientation : G.get_direction(from, to);
 	list<Interval> safe_vertex_intervals;
 	if (ori >= 0 && ori < 4)
 	{

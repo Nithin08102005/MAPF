@@ -180,7 +180,7 @@ Path SIPP::run(const BasicGraph& G, const State& start,
                 if (h_val <= INT_MAX)
                 {
                     int min_timestep = curr->state.timestep + 1;
-                    for (auto interval : rt.getSafeIntervals(curr->state.location, back_location, min_timestep, std::get<1>(curr->interval) + 1))
+                    for (auto interval : rt.getSafeIntervals(curr->state.location, back_location, curr->state.orientation, min_timestep, std::get<1>(curr->interval) + 1))
                     {
                         generate_node(interval, curr, G, back_location, min_timestep, curr->state.orientation, h_val);
                     }

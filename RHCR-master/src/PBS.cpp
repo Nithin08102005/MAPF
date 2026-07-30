@@ -101,13 +101,6 @@ void PBS::find_conflicts(list<Conflict>& conflicts, int a1, int a2)
         bool a1_parked = (timestep >= size1);
         bool a2_parked = (timestep >= size2);
 
-        // When hold_endpoints is false, an agent clears its goal cell after servicing (size + 1).
-        if (!hold_endpoints)
-        {
-            if (a1_parked && timestep >= size1 + 1) continue;
-            if (a2_parked && timestep >= size2 + 1) continue;
-        }
-
         State s1 = (timestep < size1) ? paths[a1]->at(timestep) : paths[a1]->back();
         State s2 = (timestep < size2) ? paths[a2]->at(timestep) : paths[a2]->back();
 

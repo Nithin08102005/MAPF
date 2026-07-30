@@ -1425,7 +1425,83 @@ static int find_exterior_travel_cell_for_endpoint(const BasicGraph& G, int raw_e
                 }
         }
     }
+
+    // Fallback: Clamp to valid 3-cell interior row (1..rows-2)
+    if (raw_ep >= 0 && raw_ep < G.size())
+    {
+        int r = raw_ep / G.cols;
+        int c = raw_ep % G.cols;
+        int clamped_r = std::max(1, std::min(G.rows - 2, r));
+        int target = clamped_r * G.cols + c;
+        if (G.is_cell_valid_for_robot(target) && G.valid_3cell_state(target, 0))
+            return target;
+    }
     return raw_ep;
+}
+
+static bool is_goal_service_cell_conflicting(const KivaGrid& G, int target_cell, int requesting_agent, int num_of_drives,
+                                            std::vector<std::vector<State>>& paths,
+                                            std::vector<std::vector<std::pair<int, int>>>& goal_locations,
+                                            int timestep, bool consider_rotation)
+{
+    int target_footprint[3];
+    G.get_occupied_cells(target_cell, 0, target_footprint);
+
+    for (int other = 0; other < num_of_drives; other++)
+    {
+        if (other == requesting_agent) continue;
+
+        // 1. Check against other agent's current 3-cell position at this timestep
+        State other_st = safe_path_at(paths, G, other, timestep, consider_rotation);
+        int other_pos_cells[3];
+        G.get_occupied_cells(other_st.location, other_st.orientation, other_pos_cells);
+
+        for (int tc = 0; tc < 3; tc++)
+        {
+            for (int oc = 0; oc < 3; oc++)
+            {
+                if (target_footprint[tc] == other_pos_cells[oc] && G.types[target_footprint[tc]] != "Magic")
+                    return true;
+            }
+        }
+
+        // 2. Check against other agent's queued goal locations
+        for (const auto& g : goal_locations[other])
+        {
+            int other_goal_cells[3];
+            G.get_occupied_cells(g.first, 0, other_goal_cells);
+            for (int tc = 0; tc < 3; tc++)
+            {
+                for (int ogc = 0; ogc < 3; ogc++)
+                {
+                    if (target_footprint[tc] == other_goal_cells[ogc] && G.types[target_footprint[tc]] != "Magic")
+                        return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+static int pick_random_unblocked_endpoint(const KivaGrid& G, int curr_loc, int requesting_agent, int num_of_drives,
+                                           std::vector<std::vector<State>>& paths,
+                                           std::vector<std::vector<std::pair<int, int>>>& goal_locations,
+                                           int timestep, bool consider_rotation)
+{
+    int raw_next = pick_random_endpoint_except(G, curr_loc);
+    int target_cell = find_exterior_travel_cell_for_endpoint(G, raw_next);
+
+    int retry_count = 64;
+    while (retry_count-- > 0)
+    {
+        if (!is_goal_service_cell_conflicting(G, target_cell, requesting_agent, num_of_drives, paths, goal_locations, timestep, consider_rotation))
+        {
+            return target_cell;
+        }
+        raw_next = pick_random_endpoint_except(G, raw_next);
+        target_cell = find_exterior_travel_cell_for_endpoint(G, raw_next);
+    }
+    return target_cell;
 }
 
 // -------------------------------- update ------------------------------------
@@ -1452,9 +1528,10 @@ void KivaSystem::update_goal_locations()
         }
         for (auto& g : goal_locations[k])
         {
-            if (g.first >= 0 && g.first < (int)G.types.size() && G.types[g.first] == "Endpoint")
+            g.first = find_exterior_travel_cell_for_endpoint(G, g.first);
+            if (is_goal_service_cell_conflicting(G, g.first, k, num_of_drives, paths, goal_locations, timestep, consider_rotation))
             {
-                g.first = find_exterior_travel_cell_for_endpoint(G, g.first);
+                g.first = pick_random_unblocked_endpoint(G, g.first, k, num_of_drives, paths, goal_locations, timestep, consider_rotation);
             }
         }
     }
@@ -1594,12 +1671,9 @@ void KivaSystem::update_goal_locations()
             else
             {
                 // Ensure there is always at least 1 goal in the queue.
-                // Do NOT queue multiple goals: SIPP plans through ALL queued goals
-                // as chained waypoints which explodes search space and causes timeouts.
                 if (goal_locations[k].empty())
                 {
-                    int raw_next = pick_random_endpoint_except(G, curr);
-                    int target_cell = find_exterior_travel_cell_for_endpoint(G, raw_next);
+                    int target_cell = pick_random_unblocked_endpoint(G, curr, k, num_of_drives, paths, goal_locations, timestep, consider_rotation);
                     goal_locations[k].emplace_back(target_cell, 0);
                     new_agents.emplace_back(k);
                 }

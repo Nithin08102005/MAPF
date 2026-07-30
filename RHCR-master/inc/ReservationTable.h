@@ -32,7 +32,10 @@ public:
 
     // functions  for SIPP
     list<Interval> getSafeIntervals(int location, int lower_bound, int upper_bound);
-	list<Interval> getSafeIntervals(int from, int to, int lower_bound, int upper_bound);
+	list<Interval> getSafeIntervals(int from, int to, int orientation, int lower_bound, int upper_bound);
+	list<Interval> getSafeIntervals(int from, int to, int lower_bound, int upper_bound) {
+		return getSafeIntervals(from, to, -1, lower_bound, upper_bound);
+	}
 	int getHoldingTimeFromSIT(int location);
     Interval getFirstSafeInterval(int location);
     bool findSafeInterval(Interval& interval, int location, int t_min);
