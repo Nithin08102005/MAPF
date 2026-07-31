@@ -50,6 +50,25 @@ public:
         }
     }
 
+    void get_5cell_occupied_cells(int loc, int orientation, int out_cells[5]) const
+    {
+        out_cells[0] = loc;
+        if (orientation >= 0 && orientation < 4)
+        {
+            out_cells[1] = loc + move[orientation];
+            out_cells[2] = loc - move[orientation];
+            out_cells[3] = loc + 2 * move[orientation];
+            out_cells[4] = loc - 2 * move[orientation];
+        }
+        else
+        {
+            out_cells[1] = loc;
+            out_cells[2] = loc;
+            out_cells[3] = loc;
+            out_cells[4] = loc;
+        }
+    }
+
     bool is_cell_valid_for_robot(int cell) const
     {
         if (cell < 0 || cell >= rows * cols)

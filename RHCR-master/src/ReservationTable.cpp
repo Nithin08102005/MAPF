@@ -212,33 +212,50 @@ void ReservationTable::insertPath2CT(const Path& path)
 		return;
 	for (size_t i = 0; i < path.size(); i++)
 	{
-		int cells[3];
-		G.get_occupied_cells(path[i].location, path[i].orientation, cells);
 		int t = path[i].timestep;
 		if (t - k_robust <= window)
 		{
-			for (int c = 0; c < 3; c++)
+			bool is_moving = (i < path.size() - 1);
+			if (is_moving)
 			{
-				if (cells[c] >= 0 && cells[c] < (int)G.types.size() && G.types[cells[c]] != "Magic")
+				int cells5[5];
+				G.get_5cell_occupied_cells(path[i].location, path[i].orientation, cells5);
+				for (int c = 0; c < 5; c++)
 				{
-					ct[cells[c]].emplace_back(max(0, t - k_robust), t + 1 + k_robust);
+					if (cells5[c] >= 0 && cells5[c] < (int)G.types.size() && G.types[cells5[c]] != "Magic" && G.types[cells5[c]] != "Obstacle" && G.types[cells5[c]] != "Endpoint")
+					{
+						ct[cells5[c]].emplace_back(max(0, t - k_robust), t + 1 + k_robust);
+					}
 				}
 			}
+			else
+			{
+				int cells3[3];
+				G.get_occupied_cells(path[i].location, path[i].orientation, cells3);
+				for (int c = 0; c < 3; c++)
+				{
+					if (cells3[c] >= 0 && cells3[c] < (int)G.types.size() && G.types[cells3[c]] != "Magic")
+					{
+						ct[cells3[c]].emplace_back(max(0, t - k_robust), t + 1 + k_robust);
+					}
+				}
+			}
+
 			if (k_robust == 0 && i > 0 && (path[i-1].location != path[i].location || path[i-1].orientation != path[i].orientation))
 			{
 				int prev_cells[3];
 				G.get_occupied_cells(path[i-1].location, path[i-1].orientation, prev_cells);
-				// Add edge constraints for all 9 cross-cell pairs (ci -> pj and pj -> ci)
-				// to prevent any swap conflict between 3-cell footprint agents
+				int curr_cells[3];
+				G.get_occupied_cells(path[i].location, path[i].orientation, curr_cells);
 				for (int c = 0; c < 3; c++)
 				{
 					for (int p = 0; p < 3; p++)
 					{
-						if (cells[c] >= 0 && cells[c] < (int)G.types.size() && prev_cells[p] >= 0 && prev_cells[p] < (int)G.types.size() &&
-                            cells[c] != prev_cells[p] && G.types[cells[c]] != "Magic" && G.types[prev_cells[p]] != "Magic")
+						if (curr_cells[c] >= 0 && curr_cells[c] < (int)G.types.size() && prev_cells[p] >= 0 && prev_cells[p] < (int)G.types.size() &&
+                            curr_cells[c] != prev_cells[p] && G.types[curr_cells[c]] != "Magic" && G.types[prev_cells[p]] != "Magic")
 						{
-							ct[getEdgeIndex(cells[c], prev_cells[p])].emplace_back(t, t + 1);
-							ct[getEdgeIndex(prev_cells[p], cells[c])].emplace_back(t, t + 1);
+							ct[getEdgeIndex(curr_cells[c], prev_cells[p])].emplace_back(t, t + 1);
+							ct[getEdgeIndex(prev_cells[p], curr_cells[c])].emplace_back(t, t + 1);
 						}
 					}
 				}
@@ -514,15 +531,15 @@ list<Interval> ReservationTable::getSafeIntervals(int from, int to, int orientat
 	list<Interval> safe_vertex_intervals;
 	if (ori >= 0 && ori < 4)
 	{
-		int cells[3];
-		G.get_occupied_cells(to, ori, cells);
-		if (cells[0] >= 0 && cells[0] < (int)G.types.size())
-			safe_vertex_intervals = getSafeIntervals(cells[0], lower_bound, upper_bound);
-		for (int c = 1; c < 3; c++)
+		int cells5[5];
+		G.get_5cell_occupied_cells(to, ori, cells5);
+		if (cells5[0] >= 0 && cells5[0] < (int)G.types.size())
+			safe_vertex_intervals = getSafeIntervals(cells5[0], lower_bound, upper_bound);
+		for (int c = 1; c < 5; c++)
 		{
-			if (cells[c] >= 0 && cells[c] < (int)G.types.size() && G.types[cells[c]] != "Magic")
+			if (cells5[c] >= 0 && cells5[c] < (int)G.types.size() && G.types[cells5[c]] != "Magic" && G.types[cells5[c]] != "Obstacle" && G.types[cells5[c]] != "Endpoint")
 			{
-				safe_vertex_intervals = intersect_two_intervals(safe_vertex_intervals, getSafeIntervals(cells[c], lower_bound, upper_bound));
+				safe_vertex_intervals = intersect_two_intervals(safe_vertex_intervals, getSafeIntervals(cells5[c], lower_bound, upper_bound));
 			}
 		}
 	}
@@ -605,13 +622,19 @@ void ReservationTable::printCT(size_t location) const
 
 bool ReservationTable::isConstrained(const State& curr_s, const State& next_s) const
 {
-	int next_cells[3];
-	G.get_occupied_cells(next_s.location, next_s.orientation, next_cells);
-	for (int c = 0; c < 3; c++)
+	int next_cells5[5];
+	G.get_5cell_occupied_cells(next_s.location, next_s.orientation, next_cells5);
+	for (int c = 0; c < 5; c++)
 	{
-		if (next_cells[c] < 0 || next_cells[c] >= (int)map_size)
-			return true; // Out of bounds is always constrained
-		auto it = ct.find(next_cells[c]);
+		if (next_cells5[c] < 0 || next_cells5[c] >= (int)map_size)
+		{
+			if (c < 3) return true; // Physical 3-cell body out of bounds is constrained
+			continue;
+		}
+		if (G.types[next_cells5[c]] == "Obstacle" || G.types[next_cells5[c]] == "Endpoint" || G.types[next_cells5[c]] == "Magic")
+			continue;
+
+		auto it = ct.find(next_cells5[c]);
 		if (it != ct.end())
 		{
 			for (auto time_range : it->second)
@@ -628,9 +651,9 @@ bool ReservationTable::isConstrained(const State& curr_s, const State& next_s) c
 		G.get_occupied_cells(curr_s.location, curr_s.orientation, curr_cells);
 		for (int c = 0; c < 3; c++)
 		{
-			if (curr_cells[c] >= 0 && curr_cells[c] < (int)map_size && next_cells[c] >= 0 && next_cells[c] < (int)map_size && curr_cells[c] != next_cells[c])
+			if (curr_cells[c] >= 0 && curr_cells[c] < (int)map_size && next_cells5[c] >= 0 && next_cells5[c] < (int)map_size && curr_cells[c] != next_cells5[c])
 			{
-				auto it = ct.find(getEdgeIndex(curr_cells[c], next_cells[c]));
+				auto it = ct.find(getEdgeIndex(curr_cells[c], next_cells5[c]));
 				if (it != ct.end())
 				{
 					for (auto time_range : it->second)

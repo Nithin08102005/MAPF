@@ -101,22 +101,43 @@ void PBS::find_conflicts(list<Conflict>& conflicts, int a1, int a2)
 
     for (int timestep = 0; timestep < max_t; timestep++)
     {
-        bool a1_parked = (timestep >= size1);
-        bool a2_parked = (timestep >= size2);
+        bool a1_parked = (timestep >= size1 - 1);
+        bool a2_parked = (timestep >= size2 - 1);
 
         State s1 = (timestep < size1) ? paths[a1]->at(timestep) : paths[a1]->back();
         State s2 = (timestep < size2) ? paths[a2]->at(timestep) : paths[a2]->back();
 
-        int c1[3], c2[3];
-        G.get_occupied_cells(s1.location, s1.orientation, c1);
-        G.get_occupied_cells(s2.location, s2.orientation, c2);
+        int c1[5], c2[5];
+        int num_c1 = 3, num_c2 = 3;
 
-        // Check 3-cell vertex / footprint overlap
-        for (int i = 0; i < 3; i++)
+        if (a1_parked)
         {
-            for (int j = 0; j < 3; j++)
+            G.get_occupied_cells(s1.location, s1.orientation, c1);
+            num_c1 = 3;
+        }
+        else
+        {
+            G.get_5cell_occupied_cells(s1.location, s1.orientation, c1);
+            num_c1 = 5;
+        }
+
+        if (a2_parked)
+        {
+            G.get_occupied_cells(s2.location, s2.orientation, c2);
+            num_c2 = 3;
+        }
+        else
+        {
+            G.get_5cell_occupied_cells(s2.location, s2.orientation, c2);
+            num_c2 = 5;
+        }
+
+        // Check vertex / footprint overlap across active footprints
+        for (int i = 0; i < num_c1; i++)
+        {
+            for (int j = 0; j < num_c2; j++)
             {
-                if (c1[i] >= 0 && c1[i] < (int)G.types.size() && c1[i] == c2[j] && G.types[c1[i]] != "Magic")
+                if (c1[i] >= 0 && c1[i] < (int)G.types.size() && c1[i] == c2[j] && G.types[c1[i]] != "Magic" && G.types[c1[i]] != "Obstacle" && G.types[c1[i]] != "Endpoint")
                 {
                     if (timestep == 0) continue; // Initial start overlap at t=0 cannot be replanned; plan separation for t >= 1
                     conflicts.emplace_back(a1, a2, c1[i], -1, timestep);
