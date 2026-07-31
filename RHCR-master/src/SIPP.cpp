@@ -15,12 +15,9 @@ Path SIPP::updatePath(const BasicGraph& G, const SIPPNode* goal)
     {
         if (curr->parent == nullptr) // root node
         {
-            int t = curr->state.timestep;
-            path[t] = curr->state;
-            t--;
-            for (; t >= 0; t--)
+            for (int t = curr->state.timestep; t >= 0; t--)
             {
-                path[t] = State(-1, -1); // dummy start states
+                path[t] = State(curr->state.location, t, curr->state.orientation);
             }
             break;
         }
@@ -119,13 +116,20 @@ Path SIPP::run(const BasicGraph& G, const State& start,
         if (g_crash_log) { (*g_crash_log) << "        [SIPP::loop] exp=" << num_expanded << " loc=" << curr->state.location << " t=" << curr->state.timestep << " ori=" << curr->state.orientation << " goal_id=" << curr->goal_id << std::endl; g_crash_log->flush(); }
 
          // update goal id
-        if (curr->state.location == goal_location[curr->goal_id].first &&
-			curr->state.timestep >= goal_location[curr->goal_id].second) // reach the goal location after its release time
+        int req_release = std::max(goal_location[curr->goal_id].second, curr->arrival_t + task_delay);
+        if (curr->state.location == goal_location[curr->goal_id].first)
         {
-            curr->goal_id++;
-			if (curr->goal_id == (int)goal_location.size() &&
-				earliest_holding_time > curr->state.timestep)
-				curr->goal_id--;
+            if (curr->state.timestep < req_release && req_release <= std::get<1>(curr->interval))
+            {
+                curr->state.timestep = req_release;
+            }
+            if (curr->state.timestep >= req_release)
+            {
+                curr->goal_id++;
+                if (curr->goal_id == (int)goal_location.size() &&
+                    earliest_holding_time > curr->state.timestep)
+                    curr->goal_id--;
+            }
         }
 		// check if the popped node is a goal
 		if (curr->goal_id == (int)goal_location.size())

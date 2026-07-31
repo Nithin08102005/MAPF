@@ -56,6 +56,10 @@ public:
 	{
 		rt.use_cat = use_cat;
 		rt.prioritize_start = prioritize_start;
+		initial_rt.use_cat = use_cat;
+		initial_rt.prioritize_start = prioritize_start;
+		rt.task_delay = path_planner.task_delay;
+		initial_rt.task_delay = path_planner.task_delay;
 	}
 
 private:

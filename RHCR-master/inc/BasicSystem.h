@@ -31,6 +31,9 @@ public:
     // params for drive model
     bool consider_rotation;
     int k_robust;
+    int task_delay = 0;
+    std::vector<int> task_arrival_time;
+    std::vector<int> task_service_end_time;
 
     BasicSystem(const BasicGraph& G, MAPFSolver& solver);
     ~BasicSystem();

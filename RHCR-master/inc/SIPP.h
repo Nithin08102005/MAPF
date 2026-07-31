@@ -45,7 +45,9 @@ public:
     handle_type focal_handle;
 
 
-    SIPPNode(): StateTimeAStarNode(), parent(nullptr) {}
+    int arrival_t = 0;
+
+    SIPPNode(): StateTimeAStarNode(), parent(nullptr), arrival_t(0) {}
 
     SIPPNode(const State& state, double g_val, double h_val, const Interval& interval,
             SIPPNode* parent, int conflicts):
@@ -55,11 +57,13 @@ public:
 		{
 			depth = parent->depth + 1;
 			goal_id = parent->goal_id;
+			arrival_t = (state.location == parent->state.location) ? parent->arrival_t : state.timestep;
 		}
 		else
 		{
 			depth = 0;
 			goal_id = 0;
+			arrival_t = state.timestep;
 		}
 	}
 

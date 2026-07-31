@@ -14,9 +14,10 @@ public:
 
     bool prioritize_start;
     double runtime;
+    int task_delay = 0;
 
     void clear() {sit.clear(); ct.clear(); cat.clear(); }
-	void copy(const ReservationTable& other) {sit = other.sit; ct = other.ct; cat = other.cat; }
+	void copy(const ReservationTable& other) {sit = other.sit; ct = other.ct; cat = other.cat; prioritize_start = other.prioritize_start; task_delay = other.task_delay; }
     void build(const vector<Path*>& paths,
                const list< tuple<int, int, int> >& initial_constraints,
                const unordered_set<int>& high_priority_agents, int current_agent, int start_location);

@@ -10,6 +10,7 @@ public:
 	bool prioritize_start;
 	double suboptimal_bound;
 	bool hold_endpoints;
+	int task_delay = 0;
 
 
     uint64_t num_expanded;

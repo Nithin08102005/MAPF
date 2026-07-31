@@ -266,7 +266,7 @@ void ReservationTable::insertPath2CT(const Path& path)
 	{
 		int cells[3];
 		G.get_occupied_cells(path.back().location, path.back().orientation, cells);
-		int end_t = max((int)path.back().timestep + 2, window + 1);
+		int end_t = max((int)path.back().timestep + task_delay + 2, window + 1);
 		for (int c = 0; c < 3; c++)
 		{
 			if (cells[c] >= 0 && cells[c] < (int)G.types.size())

@@ -19,6 +19,8 @@ void set_parameters(BasicSystem& system, const boost::program_options::variables
 	system.travel_time_window = vm["travel_time_window"].as<int>();
 	system.consider_rotation = vm["rotation"].as<bool>();
 	system.k_robust = vm["robust"].as<int>();
+	if (vm.count("task_delay"))
+		system.task_delay = vm["task_delay"].as<int>();
 	system.hold_endpoints = vm["hold_endpoints"].as<bool>();
 	system.useDummyPaths = vm["dummy_paths"].as<bool>();
 	if (vm.count("seed"))
@@ -132,7 +134,7 @@ int main(int argc, char** argv)
 		("prioritize_start", po::value<bool>()->default_value(true), "Prioritize waiting at start locations")
 		("suboptimal_bound", po::value<double>()->default_value(1), "Suboptimal bound for ECBS")
 		("log", po::value<bool>()->default_value(false), "save the search trees (and the priority trees)")
-		
+		("task_delay", po::value<int>()->default_value(0), "task service dwell time at goal endpoints")
 		;
 	clock_t start_time = clock();
 	po::variables_map vm;

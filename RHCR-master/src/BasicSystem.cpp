@@ -312,8 +312,13 @@ bool BasicSystem::congested() const
 	if (simulation_window <= 1 || num_of_drives <= 2)
 		return false;
     int wait_agents = 0;
-    for (const auto& path : paths)
+    for (int k = 0; k < num_of_drives; k++)
     {
+        const auto& path = paths[k];
+        // If agent is idle or servicing at a goal endpoint, it is not in a traffic jam
+        if (goal_locations[k].empty() || path[timestep].location == goal_locations[k].front().first)
+            continue;
+
         int t = 0;
         while (t < simulation_window && path[timestep].location == path[timestep + t].location &&
                 path[timestep].orientation == path[timestep + t].orientation)
@@ -357,6 +362,15 @@ list<tuple<int, int, int>> BasicSystem::move()
             {
                 wait_times++;
             }*/
+
+            // set release time for task_delay upon arrival at goal
+            if (!goal_locations[k].empty() && curr.location == goal_locations[k].front().first)
+            {
+                if (task_delay > 0 && goal_locations[k].front().second == 0)
+                {
+                    goal_locations[k].front().second = curr.timestep + task_delay;
+                }
+            }
 
             // remove goals if necessary
             if ((!hold_endpoints || paths[k].size() == t + 1) && !goal_locations[k].empty() && 
