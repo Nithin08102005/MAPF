@@ -135,17 +135,23 @@ int main(int argc, char** argv)
 		("suboptimal_bound", po::value<double>()->default_value(1), "Suboptimal bound for ECBS")
 		("log", po::value<bool>()->default_value(false), "save the search trees (and the priority trees)")
 		("task_delay", po::value<int>()->default_value(0), "task service dwell time at goal endpoints")
+		("capacity_mode", po::value<bool>()->default_value(true), "enable capacity mode")
+		("capacity", po::value<int>()->default_value(3), "robot capacity")
+		("safety_mode", po::value<bool>()->default_value(true), "enable safety reordering")
 		;
 	clock_t start_time = clock();
 	po::variables_map vm;
-	po::store(po::parse_command_line(argc, argv, desc), vm);
-
-	if (vm.count("help")) {
-		std::cout << desc << std::endl;
-		return 1;
+	try {
+		po::store(po::parse_command_line(argc, argv, desc), vm);
+		if (vm.count("help")) {
+			std::cout << desc << std::endl;
+			return 1;
+		}
+		po::notify(vm);
+	} catch (const std::exception& e) {
+		std::cerr << "Command line error: " << e.what() << std::endl;
+		return -1;
 	}
-
-	po::notify(vm);
 
     // check params
     if (vm["hold_endpoints"].as<bool>() or vm["dummy_paths"].as<bool>())
@@ -187,6 +193,12 @@ int main(int argc, char** argv)
 		MAPFSolver* solver = set_solver(G, vm);
 		KivaSystem system(G, *solver);
 		set_parameters(system, vm);
+		if (vm.count("capacity_mode"))
+			system.setCapacityMode(vm["capacity_mode"].as<bool>());
+		if (vm.count("capacity"))
+			system.setAgentCapacity(vm["capacity"].as<int>());
+		if (vm.count("safety_mode"))
+			system.setSafetyMode(vm["safety_mode"].as<bool>());
 		G.preprocessing(system.consider_rotation);
 		system.simulate(vm["simulation_time"].as<int>());
 		return 0;

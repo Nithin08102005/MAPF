@@ -2,10 +2,10 @@ map: kiva_4zone_shaved
 #drives: 8
 seed: 0
 solver: PBS
-time_limit: 30
+time_limit: 60
 simulation_window: 5
-planning_window: 10
-simulation_time: 100
+planning_window: 20
+simulation_time: 300
 robust: 0
 rotate: 1
 use_dummy_paths: 0

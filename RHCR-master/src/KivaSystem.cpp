@@ -88,6 +88,9 @@ static inline int clamp_vertex(const KivaGrid& G, int v)
     return v;
 }
 
+static inline int pick_random_endpoint_except(const KivaGrid& G, int avoid);
+static int find_exterior_travel_cell_for_endpoint(const BasicGraph& G, int raw_ep);
+
 static inline int pick_random_endpoint_except(const KivaGrid& G, int avoid)
 {
     if (G.endpoints.empty())
@@ -724,7 +727,8 @@ void KivaSystem::initialize_goal_locations()
     for (int k = 0; k < num_of_drives; k++)
     {
         int curr = safe_path_at(paths, G, k, 0, consider_rotation).location;
-        int goal = pick_random_endpoint_in_zone(G, k, curr);
+        int raw_g = pick_random_endpoint_in_zone(G, k, curr);
+        int goal = find_exterior_travel_cell_for_endpoint(G, raw_g);
         goal_locations[k].emplace_back(goal, 0);
     }
 }
@@ -735,15 +739,7 @@ void KivaSystem::ensure_goal_exists(int k, int curr)
     if (k < 0 || k >= (int)goal_locations.size()) return;
     if (!goal_locations[k].empty()) return;
     int raw_g = pick_random_endpoint_in_zone(G, k, curr);
-    int g = raw_g;
-    if (G.types[raw_g] == "Endpoint") {
-        for (int nb : G.get_neighbors(raw_g)) {
-            if (G.is_cell_valid_for_robot(nb) && G.is_robot_maneuverable(nb)) {
-                g = nb;
-                break;
-            }
-        }
-    }
+    int g = find_exterior_travel_cell_for_endpoint(G, raw_g);
     goal_locations[k].emplace_back(g, 0);
 }
 
@@ -792,15 +788,7 @@ bool KivaSystem::bundle_on_goal_reached(int k)
     const int raw_target = clamp_vertex(G, front.first);
     const int release_t = front.second;
 
-    int target = raw_target;
-    if (raw_target >= 0 && raw_target < (int)G.types.size() && G.types[raw_target] == "Endpoint") {
-        for (int nb : G.get_neighbors(raw_target)) {
-            if (G.is_cell_valid_for_robot(nb) && G.is_robot_maneuverable(nb)) {
-                target = nb;
-                break;
-            }
-        }
-    }
+    int target = find_exterior_travel_cell_for_endpoint(G, raw_target);
 
     // Scan the last simulation window, not only paths[k][timestep]. If the agent hits the
     // front goal mid-window and the plan already moves them toward the next goal before the
@@ -878,15 +866,7 @@ void KivaSystem::bundle_mirror_to_engine()
         goal_locations[k].clear();
         if (!bundle[k].empty()) {
             int raw_v = clamp_vertex(G, bundle[k].front().first);
-            int v = raw_v;
-            if (G.types[raw_v] == "Endpoint") {
-                for (int nb : G.get_neighbors(raw_v)) {
-                    if (G.is_cell_valid_for_robot(nb) && G.is_robot_maneuverable(nb)) {
-                        v = nb;
-                        break;
-                    }
-                }
-            }
+            int v = find_exterior_travel_cell_for_endpoint(G, raw_v);
             goal_locations[k].push_back({v, bundle[k].front().second});
         }
         if (goal_locations[k].empty()) {
@@ -897,34 +877,46 @@ void KivaSystem::bundle_mirror_to_engine()
     }
 }
 
-// -------------------------- reorder by DVS (light) --------------------------
+static inline int get_dist_h(const BasicGraph& G, int u, int v) {
+    auto it = G.heuristics.find(v);
+    if (it != G.heuristics.end() && u >= 0 && u < (int)it->second.size() && it->second[u] < INT_MAX)
+        return (int)it->second[u];
+    return G.get_Manhattan_distance(u, v);
+}
+
+// -------------------------- reorder by DVS (TSP Tour Minimization) --------------------------
 void KivaSystem::reorder_bundle_by_dvs(int k)
 {
     if (!safety_mode) return;
     if (k < 0 || k >= (int)bundle.size()) return;
     if (bundle[k].size() <= 1) return;
 
-    const int start_v =
-        safe_path_at(paths, G, k, timestep, consider_rotation).location;
+    const int start_v = safe_path_at(paths, G, k, timestep, consider_rotation).location;
 
-    std::vector<std::pair<int,int>> items;
-    items.reserve(bundle[k].size());
-    for (auto &g : bundle[k])
-        items.emplace_back(clamp_vertex(G, g.first), g.second);
+    std::vector<std::pair<int,int>> items(bundle[k].begin(), bundle[k].end());
+    const int N = (int)items.size();
 
-    std::vector<std::tuple<int,int,int>> scored;
-    scored.reserve(items.size());
-    for (int i = 0; i < (int)items.size(); ++i) {
-        int d = G.get_Manhattan_distance(start_v, items[i].first);
-        int jitter = rand() & 0xF;
-        scored.emplace_back(d, jitter, i);
-    }
+    std::vector<int> perm(N);
+    for (int i = 0; i < N; ++i) perm[i] = i;
 
-    std::sort(scored.begin(), scored.end());
+    std::vector<int> best_perm = perm;
+    int best_cost = INT_MAX;
+
+    do {
+        int cost = get_dist_h(G, start_v, items[perm[0]].first);
+        for (int i = 0; i < N - 1; ++i) {
+            cost += get_dist_h(G, items[perm[i]].first, items[perm[i+1]].first);
+        }
+        if (cost < best_cost) {
+            best_cost = cost;
+            best_perm = perm;
+        }
+    } while (std::next_permutation(perm.begin(), perm.end()));
 
     std::deque<std::pair<int,int>> reordered;
-    for (auto &s : scored)
-        reordered.push_back(items[std::get<2>(s)]);
+    for (int idx : best_perm) {
+        reordered.push_back(items[idx]);
+    }
 
     bundle[k] = std::move(reordered);
     bundle_dirty[k] = true;

@@ -106,7 +106,7 @@ Path SIPP::run(const BasicGraph& G, const State& start,
 	if (hold_endpoints && !goal_location.empty())
 		earliest_holding_time = rt.getHoldingTimeFromSIT(goal_location.back().first);
     if (g_crash_log) { (*g_crash_log) << "        [SIPP::run] entering search loop" << std::endl; g_crash_log->flush(); }
-    while (!focal_list.empty() && num_expanded < 3000)
+    while (!focal_list.empty() && num_expanded < 30000)
     {
         SIPPNode* curr = focal_list.top(); focal_list.pop();
         curr->in_focallist = false;
