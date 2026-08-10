@@ -1,0 +1,885 @@
+  [UGL] enter t=0
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=242
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=299
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=948
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1495
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1438
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1516
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=708
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=765
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=603
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1162
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1219
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1870
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=1031 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=799 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=682 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1541 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=802 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=1255 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1312 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1137 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=5
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=299
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=299
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1438
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1438
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=765
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=765
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1219
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1219
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1927
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=975 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=970 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=677 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1487 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=747 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=1260 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1313 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1133 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=10
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=299
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=299
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1438
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1438
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=765
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=765
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1219
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1219
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1927
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=747 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=974 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=905 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1433 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=752 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=1205 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1200 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1418 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=15
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=299
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=299
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1438
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1438
+  [UGL] k=2 pick_random_unblocked g.first=1438
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=765
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=765
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1219
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1219
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1927
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=462 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=979 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1190 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1438 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=757 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=1210 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1205 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1703 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=20
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=299
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=299
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1450
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1450
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=765
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=765
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1219
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1219
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1927
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=292 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=984 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1475 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1443 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=762 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=1215 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1210 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1931 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=25
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=299
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=299
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1450
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1450
+  [UGL] k=2 pick_random_unblocked g.first=1450
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=765
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=765
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1219
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1219
+  [UGL] k=6 pick_random_unblocked g.first=1219
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1927
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=297 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=989 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1471 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1448 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=765 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=1220 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1215 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1927 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=30
+  [UGL] sanitize k=0
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1436
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1436
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
+  [UGL] sanitize k=4
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1440
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1440
+  [UGL] sanitize k=7
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=299 goal_empty=1
+  [UGL] else k=0 calling pick_random_unblocked...
+  [UGL] else k=0 got target_cell=762
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=994 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1466 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1453 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=765 goal_empty=1
+  [UGL] else k=4 calling pick_random_unblocked...
+  [UGL] else k=4 got target_cell=750
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=1225 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1385 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1927 goal_empty=1
+  [UGL] else k=7 calling pick_random_unblocked...
+  [UGL] else k=7 got target_cell=1013
+  [UGL] exit
+  [UGL] enter t=35
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=762
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=762
+  [UGL] k=0 pick_random_unblocked g.first=762
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1436
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1436
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
+  [UGL] k=3 pick_random_unblocked g.first=1459
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=750
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=750
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1440
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1440
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1013
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1013
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=359 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=999 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1461 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1451 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=760 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=1168 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1440 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1931 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=40
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=523
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=523
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1436
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1436
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1238
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1238
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=750
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=750
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1013
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1013
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=529 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=1004 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1456 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1339 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=755 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=883 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1440 goal_empty=1
+  [UGL] else k=6 calling pick_random_unblocked...
+  [UGL] else k=6 got target_cell=1206
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1646 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=45
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=523
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=523
+  [UGL] sanitize k=1
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1436
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1436
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1238
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1238
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=750
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=750
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1206
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1206
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1013
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1013
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=524 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=1005 goal_empty=1
+  [UGL] else k=1 calling pick_random_unblocked...
+  [UGL] else k=1 got target_cell=315
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1451 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1227 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=750 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=598 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1328 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1361 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=50
+  [UGL] sanitize k=0
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=315
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=315
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1436
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1436
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1238
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1238
+  [UGL] sanitize k=4
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=546
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=546
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1206
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1206
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1013
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1013
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=523 goal_empty=1
+  [UGL] else k=0 calling pick_random_unblocked...
+  [UGL] else k=0 got target_cell=307
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=1000 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1446 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1232 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=750 goal_empty=1
+  [UGL] else k=4 calling pick_random_unblocked...
+  [UGL] else k=4 got target_cell=995
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=544 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1212 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1076 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=55
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=307
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=307
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=315
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=315
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1436
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1436
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1238
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1238
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=995
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=995
+  [UGL] sanitize k=5
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1206
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1206
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1013
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1013
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=528 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=940 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1441 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1237 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=755 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=546 goal_empty=1
+  [UGL] else k=5 calling pick_random_unblocked...
+  [UGL] else k=5 got target_cell=328
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1207 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1016 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=60
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=307
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=307
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=315
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=315
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1436
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1436
+  [UGL] sanitize k=3
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=995
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=995
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=328
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=328
+  [UGL] sanitize k=6
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1013
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1013
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=416 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=655 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1436 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1238 goal_empty=1
+  [UGL] else k=3 calling pick_random_unblocked...
+  [UGL] else k=3 got target_cell=1456
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=815 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=551 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1206 goal_empty=1
+  [UGL] else k=6 calling pick_random_unblocked...
+  [UGL] else k=6 got target_cell=1676
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1013 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=65
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=307
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=307
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=315
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=315
+  [UGL] sanitize k=2
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1456
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1456
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=995
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=995
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=328
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=328
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1676
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
+  [UGL] sanitize k=7
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=304 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=370 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1436 goal_empty=1
+  [UGL] else k=2 calling pick_random_unblocked...
+  [UGL] else k=2 got target_cell=980
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1350 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=987 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=381 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1211 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1013 goal_empty=1
+  [UGL] else k=7 calling pick_random_unblocked...
+  [UGL] else k=7 got target_cell=1470
+  [UGL] exit
+  [UGL] enter t=70
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=307
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=307
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=315
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=315
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=980
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=980
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1456
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1456
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=995
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=995
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=328
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=328
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1676
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1470
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1470
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=307 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=315 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1431 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1462 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=992 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=327 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1271 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1018 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=75
+  [UGL] sanitize k=0
+  [UGL] sanitize k=1
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=980
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=980
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1456
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1456
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=995
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=995
+  [UGL] sanitize k=5
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1676
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1470
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1470
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=307 goal_empty=1
+  [UGL] else k=0 calling pick_random_unblocked...
+  [UGL] else k=0 got target_cell=306
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=315 goal_empty=1
+  [UGL] else k=1 calling pick_random_unblocked...
+  [UGL] else k=1 got target_cell=1005
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=1203 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1457 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=995 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=328 goal_empty=1
+  [UGL] else k=5 calling pick_random_unblocked...
+  [UGL] else k=5 got target_cell=557
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1556 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1190 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=80
+  [UGL] sanitize k=0
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=980
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=980
+  [UGL] sanitize k=3
+  [UGL] sanitize k=4
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=557
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=557
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1676
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1470
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1470
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=306 goal_empty=1
+  [UGL] else k=0 calling pick_random_unblocked...
+  [UGL] else k=0 got target_cell=528
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=427 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=975 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1456 goal_empty=1
+  [UGL] else k=3 calling pick_random_unblocked...
+  [UGL] else k=3 got target_cell=1241
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=995 goal_empty=1
+  [UGL] else k=4 calling pick_random_unblocked...
+  [UGL] else k=4 got target_cell=753
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=324 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1672 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1475 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=85
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=528
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=528
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=980
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=980
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1241
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1241
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=753
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=753
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=557
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=557
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1676
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1470
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1470
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=302 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=712 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=980 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1461 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=990 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=552 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1676 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1471 goal_empty=0
+  [UGL] exit
+  [UGL] enter t=90
+  [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=528
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=528
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1241
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1241
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=753
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=753
+  [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=557
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=557
+  [UGL] sanitize k=6
+  [UGL] sanitize k=7
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=530 goal_empty=0
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=997 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=980 goal_empty=1
+  [UGL] else k=2 calling pick_random_unblocked...
+  [UGL] else k=2 got target_cell=1663
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1407 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=986 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=557 goal_empty=0
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1676 goal_empty=1
+  [UGL] else k=6 calling pick_random_unblocked...
+  [UGL] else k=6 got target_cell=1439
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1470 goal_empty=1
+  [UGL] else k=7 calling pick_random_unblocked...
+  [UGL] else k=7 got target_cell=1686
+  [UGL] exit
+  [UGL] enter t=95
+  [UGL] sanitize k=0
+  [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1005
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1663
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1663
+  [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1241
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1241
+  [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=753
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=753
+  [UGL] sanitize k=5
+  [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1439
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1439
+  [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1686
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1686
+  [UGL] sanitize loop done
+  [UGL] non-hold branch
+  [UGL] else k=0 safe_path_at...
+  [UGL] else k=0 curr=528 goal_empty=1
+  [UGL] else k=0 calling pick_random_unblocked...
+  [UGL] else k=0 got target_cell=995
+  [UGL] else k=1 safe_path_at...
+  [UGL] else k=1 curr=1001 goal_empty=0
+  [UGL] else k=2 safe_path_at...
+  [UGL] else k=2 curr=975 goal_empty=0
+  [UGL] else k=3 safe_path_at...
+  [UGL] else k=3 curr=1237 goal_empty=0
+  [UGL] else k=4 safe_path_at...
+  [UGL] else k=4 curr=758 goal_empty=0
+  [UGL] else k=5 safe_path_at...
+  [UGL] else k=5 curr=557 goal_empty=1
+  [UGL] else k=5 calling pick_random_unblocked...
+  [UGL] else k=5 got target_cell=102
+  [UGL] else k=6 safe_path_at...
+  [UGL] else k=6 curr=1671 goal_empty=0
+  [UGL] else k=7 safe_path_at...
+  [UGL] else k=7 curr=1465 goal_empty=0
+  [UGL] exit

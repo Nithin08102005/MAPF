@@ -105,6 +105,31 @@ static inline int pick_random_endpoint_except(const KivaGrid& G, int avoid)
     return clamp_vertex(G, goal);
 }
 
+static inline int get_zone_for_location(const BasicGraph& G, int loc)
+{
+    if (loc < 0 || loc >= G.size()) return 0;
+    int r = loc / G.cols;
+    int c = loc % G.cols;
+    int mid_r = G.rows / 2;
+    int mid_c = G.cols / 2;
+    if (r < mid_r && c < mid_c) return 0; // Zone 0: Top-Left
+    if (r < mid_r && c >= mid_c) return 1; // Zone 1: Top-Right
+    if (r >= mid_r && c < mid_c) return 2; // Zone 2: Bottom-Left
+    return 3;                              // Zone 3: Bottom-Right
+}
+
+static inline int pick_random_endpoint_in_zone(const KivaGrid& G, int agent_id, int avoid)
+{
+    int target_zone = (agent_id >= 0) ? (agent_id % 4) : 0;
+    int ep = pick_random_endpoint_except(G, avoid);
+    int tries = 100;
+    while (get_zone_for_location(G, ep) != target_zone && tries-- > 0)
+    {
+        ep = pick_random_endpoint_except(G, avoid);
+    }
+    return ep;
+}
+
 static inline const State& safe_path_at(std::vector<std::vector<State>>& paths,
                                         const KivaGrid& G,
                                         int k, int t,
@@ -699,7 +724,7 @@ void KivaSystem::initialize_goal_locations()
     for (int k = 0; k < num_of_drives; k++)
     {
         int curr = safe_path_at(paths, G, k, 0, consider_rotation).location;
-        int goal = pick_random_endpoint_except(G, curr);
+        int goal = pick_random_endpoint_in_zone(G, k, curr);
         goal_locations[k].emplace_back(goal, 0);
     }
 }
@@ -709,7 +734,7 @@ void KivaSystem::ensure_goal_exists(int k, int curr)
 {
     if (k < 0 || k >= (int)goal_locations.size()) return;
     if (!goal_locations[k].empty()) return;
-    int raw_g = pick_random_endpoint_except(G, curr);
+    int raw_g = pick_random_endpoint_in_zone(G, k, curr);
     int g = raw_g;
     if (G.types[raw_g] == "Endpoint") {
         for (int nb : G.get_neighbors(raw_g)) {
@@ -906,9 +931,9 @@ void KivaSystem::reorder_bundle_by_dvs(int k)
     m_restitches_total++;
 }
 
-int KivaSystem::generate_endpoint_for(int, int avoid_v) const
+int KivaSystem::generate_endpoint_for(int k, int avoid_v) const
 {
-    return pick_random_endpoint_except(G, avoid_v);
+    return pick_random_endpoint_in_zone(G, k, avoid_v);
 }
 
 void KivaSystem::maybe_autorefill_rest(int k)
@@ -1488,7 +1513,7 @@ static int pick_random_unblocked_endpoint(const KivaGrid& G, int curr_loc, int r
                                            std::vector<std::vector<std::pair<int, int>>>& goal_locations,
                                            int timestep, bool consider_rotation)
 {
-    int raw_next = pick_random_endpoint_except(G, curr_loc);
+    int raw_next = pick_random_endpoint_in_zone(G, requesting_agent, curr_loc);
     int target_cell = find_exterior_travel_cell_for_endpoint(G, raw_next);
 
     int retry_count = 64;
@@ -1498,7 +1523,7 @@ static int pick_random_unblocked_endpoint(const KivaGrid& G, int curr_loc, int r
         {
             return target_cell;
         }
-        raw_next = pick_random_endpoint_except(G, raw_next);
+        raw_next = pick_random_endpoint_in_zone(G, requesting_agent, raw_next);
         target_cell = find_exterior_travel_cell_for_endpoint(G, raw_next);
     }
     return target_cell;

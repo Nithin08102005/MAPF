@@ -18,7 +18,7 @@ def _resolve_data_path(path):
 
 
 class GeneralizedKivaVisualizer:
-    def __init__(self, map_file='kiva_shaved.map', results_file='exp/test/paths.txt'):
+    def __init__(self, map_file='kiva_4zone_shaved.map', results_file='exp/test_4zone/paths.txt'):
         map_file = _resolve_data_path(map_file)
         results_file = _resolve_data_path(results_file)
         print("Loading Generalized Kiva Warehouse MAPF data...")
@@ -149,25 +149,54 @@ class GeneralizedKivaVisualizer:
             self.colors = plt.cm.rainbow(np.linspace(0, 1, self.num_agents))
 
     def setup_adaptive_layout(self):
-        """Setup figure layout based on visualization mode"""
+        """Setup figure layout based on visualization mode with Dark Theme"""
+        plt.style.use('dark_background')
         if self.viz_mode in ["DETAILED", "MEDIUM"]:
-            # Two-panel layout with info
-            self.fig, (self.ax_main, self.ax_info) = plt.subplots(1, 2, figsize=(20, 12))
+            self.fig, (self.ax_main, self.ax_info) = plt.subplots(1, 2, figsize=(22, 12), gridspec_kw={'width_ratios': [3.5, 1]})
             self.use_info_panel = True
         elif self.viz_mode in ["COMPACT", "DENSE"]:
-            # Main plot with minimal info overlay
             self.fig, self.ax_main = plt.subplots(1, 1, figsize=(16, 12))
             self.use_info_panel = False
-        else:  # HEATMAP mode
-            # Full screen visualization
+        else:
             self.fig, self.ax_main = plt.subplots(1, 1, figsize=(18, 14))
             self.use_info_panel = False
+            
+        self.fig.patch.set_facecolor('#101016')
+        self.ax_main.set_facecolor('#161620')
+        if self.use_info_panel:
+            self.ax_info.set_facecolor('#101016')
+
+    def render_zones(self):
+        """Overlay 4 quadrant zones with vibrant dark-mode shading and watermark labels"""
+        mid_x = (self.grid_width - 1) / 2.0
+        mid_y = (self.grid_height - 1) / 2.0
+        
+        zones = [
+            (0, -0.5, mid_x, -0.5, mid_y, '#00b0ff', 'ZONE 0 (Top-Left)', mid_x / 2.0, mid_y / 2.0),
+            (1, mid_x, self.grid_width - 0.5, -0.5, mid_y, '#00e676', 'ZONE 1 (Top-Right)', (mid_x + self.grid_width) / 2.0, mid_y / 2.0),
+            (2, -0.5, mid_x, mid_y, self.grid_height - 0.5, '#ff9100', 'ZONE 2 (Bottom-Left)', mid_x / 2.0, (mid_y + self.grid_height) / 2.0),
+            (3, mid_x, self.grid_width - 0.5, mid_y, self.grid_height - 0.5, '#e040fb', 'ZONE 3 (Bottom-Right)', (mid_x + self.grid_width) / 2.0, (mid_y + self.grid_height) / 2.0),
+        ]
+        
+        for zid, x0, x1, y0, y1, color_hex, title, lx, ly in zones:
+            rect = Rectangle((x0, y0), x1 - x0, y1 - y0, facecolor=color_hex, alpha=0.14, edgecolor=color_hex, linestyle='--', linewidth=1.5, zorder=1)
+            self.ax_main.add_patch(rect)
+            
+            self.ax_main.text(lx, ly, title, ha='center', va='center', fontsize=13, fontweight='bold',
+                              color=color_hex, alpha=0.9, zorder=2,
+                              bbox=dict(boxstyle="round,pad=0.4", facecolor="#101016", edgecolor=color_hex, alpha=0.85, linewidth=1.5))
+            
+        self.ax_main.axvline(mid_x, color='#78909c', linestyle='--', linewidth=2.0, alpha=0.7, zorder=3)
+        self.ax_main.axhline(mid_y, color='#78909c', linestyle='--', linewidth=2.0, alpha=0.7, zorder=3)
 
     def setup_static_warehouse(self):
         """Pre-render static warehouse elements"""
         self.ax_main.set_xlim(-0.5, self.grid_width - 0.5)
-        self.ax_main.set_ylim(-0.5, self.grid_height - 0.5)
+        self.ax_main.set_ylim(self.grid_height - 0.5, -0.5)
         self.ax_main.set_aspect('equal')
+        
+        # Render Zone Layout Background & Overlay
+        self.render_zones()
         
         # **ADAPTIVE WAREHOUSE RENDERING**
         if self.grid_detail == "high":
@@ -195,22 +224,22 @@ class GeneralizedKivaVisualizer:
                 self.ax_main.axhline(y - 0.5, color='lightgray', linewidth=0.2, alpha=0.5)
 
     def render_detailed_warehouse(self):
-        """Full warehouse detail for ≤10 robots"""
+        """Full warehouse detail for ≤10 robots (Dark Theme)"""
         for y in range(self.grid_height):
             for x in range(self.grid_width):
                 cell = self.map_data[y, x]
                 
                 if cell == '@':
-                    rect = Rectangle((x-0.5, y-0.5), 1, 1, facecolor='saddlebrown', edgecolor='black', alpha=0.9)
+                    rect = Rectangle((x-0.5, y-0.5), 1, 1, facecolor='#2a2b38', edgecolor='#3d3f54', alpha=0.9, zorder=2)
                     self.ax_main.add_patch(rect)
                 elif cell == 'e':
-                    rect = Rectangle((x-0.5, y-0.5), 1, 1, facecolor='orange', edgecolor='darkorange', alpha=0.8)
+                    rect = Rectangle((x-0.5, y-0.5), 1, 1, facecolor='#ffab00', edgecolor='#ffd600', alpha=0.85, zorder=2)
                     self.ax_main.add_patch(rect)
-                    self.ax_main.text(x, y, 'E', ha='center', va='center', fontweight='bold', fontsize=6, color='white', zorder=10)
+                    self.ax_main.text(x, y, 'E', ha='center', va='center', fontweight='bold', fontsize=6, color='#101016', zorder=10)
                 elif cell == 'r':
-                    rect = Rectangle((x-0.5, y-0.5), 1, 1, facecolor='lightblue', edgecolor='blue', alpha=0.6)
+                    rect = Rectangle((x-0.5, y-0.5), 1, 1, facecolor='#00b0ff', edgecolor='#80d8ff', alpha=0.4, zorder=2)
                     self.ax_main.add_patch(rect)
-                    self.ax_main.text(x, y, 'R', ha='center', va='center', fontweight='bold', fontsize=6, color='darkblue', zorder=10)
+                    self.ax_main.text(x, y, 'R', ha='center', va='center', fontweight='bold', fontsize=6, color='#ffffff', zorder=10)
 
     def render_medium_warehouse(self):
         """Simplified warehouse for 10-30 robots"""
@@ -340,13 +369,23 @@ class GeneralizedKivaVisualizer:
                 self.ax_main.add_patch(rect)
                 self.agent_artists.append(rect)
                 
-                # Robot ID and task count
+                # Robot ID centered inside robot body, zone badge floating offset above robot
                 if self.show_robot_ids and self.font_size > 0:
                     completed_tasks = self.get_completed_tasks_count(agent_id, timestep)
-                    label = f"{agent_id}[{completed_tasks}]"
-                    text = self.ax_main.text(x, y, label, ha='center', va='center',
-                                           fontweight='bold', fontsize=self.font_size, color='white', zorder=6)
-                    self.agent_artists.append(text)
+                    zone_id = agent_id % 4
+                    
+                    # 1. Clean Robot ID inside robot body (no obscuring background box)
+                    text_id = self.ax_main.text(x, y, f"R{agent_id}", ha='center', va='center',
+                                               fontweight='bold', fontsize=self.font_size, color='#ffffff', zorder=7)
+                    self.agent_artists.append(text_id)
+                    
+                    # 2. Compact Zone & Task floating tag offset above robot
+                    tag_y = y - 0.85  # Offset above top edge (in inverted Y-axis)
+                    tag_label = f"Z{zone_id} [{completed_tasks}]"
+                    text_tag = self.ax_main.text(x, tag_y, tag_label, ha='center', va='center',
+                                               fontweight='bold', fontsize=max(6, self.font_size - 2), color='#ffffff', zorder=8,
+                                               bbox=dict(boxstyle="round,pad=0.15", facecolor="#0a0a0f", edgecolor=color, alpha=0.85, linewidth=1.0))
+                    self.agent_artists.append(text_tag)
                 
                 # Trail
                 if t_int > 0 and self.trail_length > 0:
@@ -363,18 +402,19 @@ class GeneralizedKivaVisualizer:
                 # Status tracking (based on nearest grid point)
                 cell_x, cell_y = int(round(x)), int(round(y))
                 cell_type = self.map_data[cell_y, cell_x] if 0 <= cell_y < self.grid_height and 0 <= cell_x < self.grid_width else '?'
+                zone_id = agent_id % 4
                 if cell_type == 'e':
                     picking_count += 1
                     if self.show_individual_status:
                         completed_tasks = self.get_completed_tasks_count(agent_id, timestep)
-                        robot_status.append(f"R{agent_id}: ({x:.1f},{y:.1f}) PICKING ({completed_tasks} tasks)")
+                        robot_status.append(f"R{agent_id} (Z{zone_id}): ({x:.1f},{y:.1f}) PICKING ({completed_tasks} tasks)")
                     star = self.ax_main.plot(cell_x, cell_y, '*', color='yellow', markersize=max(6, 12-self.num_agents//10), markeredgecolor='black')[0]
                     self.agent_artists.append(star)
                 else:
                     active_count += 1
                     if self.show_individual_status:
                         completed_tasks = self.get_completed_tasks_count(agent_id, timestep)
-                        robot_status.append(f"R{agent_id}: ({x:.1f},{y:.1f}) ACTIVE ({completed_tasks} tasks)")
+                        robot_status.append(f"R{agent_id} (Z{zone_id}): ({x:.1f},{y:.1f}) ACTIVE ({completed_tasks} tasks)")
             else:
                 completed_count += 1
                 if self.show_individual_status:
@@ -475,8 +515,8 @@ Top 8 Robots:
         
         font_size = 9 if self.viz_mode == "DETAILED" else 8
         self.ax_info.text(0.1, 9.8, info_text, fontsize=font_size, ha='left', va='top',
-                         fontfamily='monospace', 
-                         bbox=dict(boxstyle="round,pad=0.3", facecolor="lightcyan", alpha=0.8))
+                         fontfamily='monospace', color='#e0e6ed',
+                         bbox=dict(boxstyle="round,pad=0.4", facecolor="#161622", edgecolor="#00b0ff", alpha=0.95, linewidth=1.5))
 
     def animate(self, frame):
         """Generalized animation function with interpolation"""
