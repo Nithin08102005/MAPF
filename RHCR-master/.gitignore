@@ -1,0 +1,45 @@
+# Build artifacts
+build/
+CMakeFiles/
+*.obj
+*.o
+*.a
+*.ilk
+*.pdb
+*.exe
+*.dll
+*.lib
+*.tlog
+
+# CMake generated files
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Simulation output logs and experiment data
+exp/*/crash_trace.txt
+exp/*/ugl_trace.txt
+exp/*/paths.txt
+exp/*/tasks.txt
+exp/*/solver.csv
+exp/*/config.txt
+
+# Heuristics tables (large precomputed files)
+*.txt.bak
+*_heuristics_table.txt
+*_rotation_heuristics_table.txt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE files
+.vscode/
+.vs/
+*.user
+*.suo
+
+# OS files
+.DS_Store
+Thumbs.db
