@@ -877,14 +877,33 @@ void KivaSystem::bundle_mirror_to_engine()
     }
 }
 
-static inline int get_dist_h(const BasicGraph& G, int u, int v) {
-    auto it = G.heuristics.find(v);
+static inline int get_dist_h(const KivaGrid& G, int u, int v) {
+    int target = find_exterior_travel_cell_for_endpoint(G, v);
+    auto it = G.heuristics.find(target);
     if (it != G.heuristics.end() && u >= 0 && u < (int)it->second.size() && it->second[u] < INT_MAX)
         return (int)it->second[u];
-    return G.get_Manhattan_distance(u, v);
+    return G.get_Manhattan_distance(u, target);
 }
 
-// -------------------------- reorder by DVS (TSP Tour Minimization) --------------------------
+static int get_aisle_traffic_penalty(const KivaGrid& G, std::vector<Path>& paths, int current_agent, int target_raw_v, int current_t) {
+    if (paths.empty()) return 0;
+
+    int target = find_exterior_travel_cell_for_endpoint(G, target_raw_v);
+    int traffic_count = 0;
+
+    for (int i = 0; i < (int)paths.size(); ++i) {
+        if (i == current_agent || paths[i].empty()) continue;
+        const State& st = safe_path_at(paths, G, i, current_t, true);
+        int teammate_loc = clamp_vertex(G, st.location);
+        if (G.get_Manhattan_distance(teammate_loc, target) <= 3) {
+            traffic_count++;
+        }
+    }
+
+    return traffic_count * 5; // 5-timestep penalty per nearby teammate
+}
+
+// -------------------------- reorder by DVS (Dynamic Traffic-Aware Distance) --------------------------
 void KivaSystem::reorder_bundle_by_dvs(int k)
 {
     if (!safety_mode) return;
@@ -903,10 +922,17 @@ void KivaSystem::reorder_bundle_by_dvs(int k)
     int best_cost = INT_MAX;
 
     do {
-        int cost = get_dist_h(G, start_v, items[perm[0]].first);
-        for (int i = 0; i < N - 1; ++i) {
-            cost += get_dist_h(G, items[perm[i]].first, items[perm[i+1]].first);
+        int cost = 0;
+        int prev_v = start_v;
+
+        for (int i = 0; i < N; ++i) {
+            int goal_raw = items[perm[i]].first;
+            int dist = get_dist_h(G, prev_v, goal_raw);
+            int penalty = (timestep > 0) ? get_aisle_traffic_penalty(G, paths, k, goal_raw, timestep) : 0;
+            cost += dist + penalty;
+            prev_v = find_exterior_travel_cell_for_endpoint(G, goal_raw);
         }
+
         if (cost < best_cost) {
             best_cost = cost;
             best_perm = perm;

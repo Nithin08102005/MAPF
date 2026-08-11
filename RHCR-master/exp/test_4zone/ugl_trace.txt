@@ -438,8 +438,8 @@
   [UGL] k=6 find_exterior g.first=1896
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1896
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1245
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=7 find_exterior g.first=1696
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1696
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=85
@@ -459,8 +459,8 @@
   [UGL] k=6 find_exterior g.first=1896
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1896
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1245
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=7 find_exterior g.first=1696
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1696
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=90
@@ -484,8 +484,8 @@
   [UGL] k=6 find_exterior g.first=1896
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1896
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1245
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=7 find_exterior g.first=1696
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1696
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=95
@@ -513,8 +513,8 @@
   [UGL] k=6 find_exterior g.first=1896
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1896
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1245
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=7 find_exterior g.first=1459
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1459
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=100
@@ -542,8 +542,8 @@
   [UGL] k=6 find_exterior g.first=1676
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1696
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1696
+  [UGL] k=7 find_exterior g.first=1459
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1459
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=105
@@ -565,8 +565,8 @@
   [UGL] k=6 find_exterior g.first=1676
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1696
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1696
+  [UGL] k=7 find_exterior g.first=1459
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1459
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=110
@@ -593,8 +593,6 @@
   [UGL] k=6 find_exterior g.first=1676
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1696
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1696
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=115
@@ -609,8 +607,8 @@
   [UGL] k=2 find_exterior g.first=1666
   [UGL] k=2 is_goal_service_cell_conflicting g.first=1666
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1458
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1458
+  [UGL] k=3 find_exterior g.first=1470
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=767
   [UGL] k=4 is_goal_service_cell_conflicting g.first=767
@@ -622,8 +620,8 @@
   [UGL] k=6 find_exterior g.first=1679
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1679
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1696
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1696
+  [UGL] k=7 find_exterior g.first=1244
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=120
@@ -635,9 +633,8 @@
   [UGL] k=1 is_goal_service_cell_conflicting g.first=317
   [UGL] sanitize k=2
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1458
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1458
-  [UGL] k=3 pick_random_unblocked g.first=1458
+  [UGL] k=3 find_exterior g.first=1470
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
   [UGL] sanitize k=4
   [UGL] sanitize k=5
   [UGL] k=5 find_exterior g.first=321
@@ -646,8 +643,8 @@
   [UGL] k=6 find_exterior g.first=1665
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1459
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1459
+  [UGL] k=7 find_exterior g.first=1244
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=125
@@ -659,9 +656,8 @@
   [UGL] k=2 find_exterior g.first=1433
   [UGL] k=2 is_goal_service_cell_conflicting g.first=1433
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1458
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1458
-  [UGL] k=3 pick_random_unblocked g.first=1458
+  [UGL] k=3 find_exterior g.first=1470
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=752
   [UGL] k=4 is_goal_service_cell_conflicting g.first=752
@@ -673,9 +669,8 @@
   [UGL] k=6 find_exterior g.first=1221
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1221
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1459
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1459
-  [UGL] k=7 pick_random_unblocked g.first=1459
+  [UGL] k=7 find_exterior g.first=1244
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=130
@@ -689,9 +684,8 @@
   [UGL] k=2 find_exterior g.first=1433
   [UGL] k=2 is_goal_service_cell_conflicting g.first=1433
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1461
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1461
-  [UGL] k=3 pick_random_unblocked g.first=1461
+  [UGL] k=3 find_exterior g.first=1458
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1458
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=752
   [UGL] k=4 is_goal_service_cell_conflicting g.first=752
@@ -702,9 +696,8 @@
   [UGL] k=6 find_exterior g.first=1221
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1221
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1459
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1459
-  [UGL] k=7 pick_random_unblocked g.first=1459
+  [UGL] k=7 find_exterior g.first=1244
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=135
@@ -716,8 +709,8 @@
   [UGL] k=2 find_exterior g.first=1433
   [UGL] k=2 is_goal_service_cell_conflicting g.first=1433
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1456
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1456
+  [UGL] k=3 find_exterior g.first=1458
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1458
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=752
   [UGL] k=4 is_goal_service_cell_conflicting g.first=752
@@ -728,8 +721,8 @@
   [UGL] k=6 find_exterior g.first=1221
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1221
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1459
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1459
+  [UGL] k=7 find_exterior g.first=1244
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=140
@@ -741,8 +734,6 @@
   [UGL] k=1 is_goal_service_cell_conflicting g.first=555
   [UGL] sanitize k=2
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1470
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=752
   [UGL] k=4 is_goal_service_cell_conflicting g.first=752
@@ -753,6 +744,8 @@
   [UGL] k=6 find_exterior g.first=1210
   [UGL] k=6 is_goal_service_cell_conflicting g.first=1210
   [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1244
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=145
@@ -766,8 +759,6 @@
   [UGL] k=2 find_exterior g.first=1206
   [UGL] k=2 is_goal_service_cell_conflicting g.first=1206
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1470
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=979
   [UGL] k=4 is_goal_service_cell_conflicting g.first=979
@@ -789,8 +780,8 @@
   [UGL] k=2 find_exterior g.first=1206
   [UGL] k=2 is_goal_service_cell_conflicting g.first=1206
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1925
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1925
+  [UGL] k=3 find_exterior g.first=1461
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1461
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=979
   [UGL] k=4 is_goal_service_cell_conflicting g.first=979
@@ -799,8 +790,8 @@
   [UGL] k=5 is_goal_service_cell_conflicting g.first=788
   [UGL] sanitize k=6
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1684
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1684
+  [UGL] k=7 find_exterior g.first=1927
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=155
@@ -808,12 +799,12 @@
   [UGL] k=0 find_exterior g.first=310
   [UGL] k=0 is_goal_service_cell_conflicting g.first=310
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=316
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=316
+  [UGL] k=1 find_exterior g.first=550
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=550
   [UGL] sanitize k=2
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1925
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1925
+  [UGL] k=3 find_exterior g.first=1239
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1239
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=979
   [UGL] k=4 is_goal_service_cell_conflicting g.first=979
@@ -821,49 +812,47 @@
   [UGL] k=5 find_exterior g.first=788
   [UGL] k=5 is_goal_service_cell_conflicting g.first=788
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1665
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
+  [UGL] k=6 find_exterior g.first=1435
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1435
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1684
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1684
+  [UGL] k=7 find_exterior g.first=1927
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=160
   [UGL] sanitize k=0
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=316
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=316
+  [UGL] k=1 find_exterior g.first=778
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=778
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1217
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1217
+  [UGL] k=2 find_exterior g.first=1222
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1222
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1925
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1925
+  [UGL] k=3 find_exterior g.first=1239
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1239
   [UGL] sanitize k=4
   [UGL] sanitize k=5
   [UGL] k=5 find_exterior g.first=788
   [UGL] k=5 is_goal_service_cell_conflicting g.first=788
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1665
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
+  [UGL] k=6 find_exterior g.first=1435
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1435
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1684
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1684
+  [UGL] k=7 find_exterior g.first=1927
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=165
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=297
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=297
+  [UGL] k=0 find_exterior g.first=76
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=76
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=316
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=316
+  [UGL] k=1 find_exterior g.first=778
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=778
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1217
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1217
+  [UGL] k=2 find_exterior g.first=1222
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1222
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1925
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1925
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=751
   [UGL] k=4 is_goal_service_cell_conflicting g.first=751
@@ -871,499 +860,527 @@
   [UGL] k=5 find_exterior g.first=785
   [UGL] k=5 is_goal_service_cell_conflicting g.first=785
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1665
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
+  [UGL] k=6 find_exterior g.first=1435
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1435
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1698
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1698
+  [UGL] k=7 find_exterior g.first=1927
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=170
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=297
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=297
+  [UGL] k=0 find_exterior g.first=76
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=76
   [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1010
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1010
   [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1222
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1222
   [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1471
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1471
+  [UGL] k=3 pick_random_unblocked g.first=1471
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=751
   [UGL] k=4 is_goal_service_cell_conflicting g.first=751
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=547
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=547
+  [UGL] k=5 find_exterior g.first=1017
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=1017
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1665
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1698
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1698
+  [UGL] k=7 find_exterior g.first=1473
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1473
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=175
   [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=76
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=76
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=785
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=785
+  [UGL] k=1 find_exterior g.first=1010
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1010
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1220
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1220
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1700
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1700
-  [UGL] k=3 pick_random_unblocked g.first=1700
+  [UGL] k=3 find_exterior g.first=1471
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1471
+  [UGL] k=3 pick_random_unblocked g.first=1471
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=751
   [UGL] k=4 is_goal_service_cell_conflicting g.first=751
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=547
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=547
+  [UGL] k=5 find_exterior g.first=1017
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=1017
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1901
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1901
+  [UGL] k=6 find_exterior g.first=1445
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1445
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1698
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1698
+  [UGL] k=7 find_exterior g.first=1473
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1473
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=180
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=76
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=76
+  [UGL] k=0 find_exterior g.first=79
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=79
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=785
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=785
+  [UGL] k=1 find_exterior g.first=1002
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1002
   [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1218
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1218
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1700
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1700
+  [UGL] k=3 find_exterior g.first=1471
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1471
+  [UGL] k=3 pick_random_unblocked g.first=1471
   [UGL] sanitize k=4
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=547
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=547
+  [UGL] k=5 find_exterior g.first=1017
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=1017
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1901
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1901
+  [UGL] k=6 find_exterior g.first=1445
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1445
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1927
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] k=7 find_exterior g.first=1473
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1473
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=185
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=76
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=76
+  [UGL] k=0 find_exterior g.first=762
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=762
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=785
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=785
+  [UGL] k=1 find_exterior g.first=1002
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1002
+  [UGL] k=1 pick_random_unblocked g.first=1002
   [UGL] sanitize k=2
   [UGL] k=2 find_exterior g.first=991
   [UGL] k=2 is_goal_service_cell_conflicting g.first=991
+  [UGL] k=2 pick_random_unblocked g.first=991
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1700
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1700
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=528
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=528
+  [UGL] k=4 find_exterior g.first=989
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=989
   [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=1003
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=1003
+  [UGL] k=5 pick_random_unblocked g.first=1003
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1901
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1901
+  [UGL] k=6 find_exterior g.first=1665
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1927
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] k=7 find_exterior g.first=1473
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1473
+  [UGL] k=7 pick_random_unblocked g.first=1473
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=190
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=76
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=76
+  [UGL] k=0 find_exterior g.first=762
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=762
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=785
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=785
+  [UGL] k=1 find_exterior g.first=547
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=547
   [UGL] sanitize k=2
   [UGL] k=2 find_exterior g.first=991
   [UGL] k=2 is_goal_service_cell_conflicting g.first=991
+  [UGL] k=2 pick_random_unblocked g.first=991
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1470
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
+  [UGL] k=3 find_exterior g.first=1925
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1925
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=528
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=528
+  [UGL] k=4 find_exterior g.first=989
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=989
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=550
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=550
+  [UGL] k=5 find_exterior g.first=1003
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=1003
   [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1665
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1927
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] k=7 find_exterior g.first=1473
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1473
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=195
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=79
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=79
+  [UGL] k=0 find_exterior g.first=762
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=762
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=785
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=785
+  [UGL] k=1 find_exterior g.first=547
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=547
   [UGL] sanitize k=2
   [UGL] k=2 find_exterior g.first=991
   [UGL] k=2 is_goal_service_cell_conflicting g.first=991
+  [UGL] k=2 pick_random_unblocked g.first=991
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1470
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
+  [UGL] k=3 find_exterior g.first=1684
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1684
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=528
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=528
+  [UGL] k=4 find_exterior g.first=989
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=989
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=331
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=331
+  [UGL] k=5 find_exterior g.first=1003
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=1003
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1896
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1896
+  [UGL] k=6 find_exterior g.first=1665
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1927
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1927
+  [UGL] k=7 find_exterior g.first=1462
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1462
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=200
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=297
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=297
+  [UGL] k=0 find_exterior g.first=762
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=762
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=1010
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=1010
+  [UGL] k=1 find_exterior g.first=547
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=547
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=984
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=984
+  [UGL] k=2 find_exterior g.first=991
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=991
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1470
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
+  [UGL] k=3 find_exterior g.first=1684
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1684
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=524
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=524
+  [UGL] k=4 find_exterior g.first=979
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=979
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=331
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=331
+  [UGL] k=5 find_exterior g.first=1003
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=1003
   [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1674
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1674
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1244
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
+  [UGL] k=7 find_exterior g.first=1462
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1462
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=205
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=297
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=297
+  [UGL] k=0 find_exterior g.first=762
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=762
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=1010
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=1010
+  [UGL] k=1 find_exterior g.first=547
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=547
   [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1672
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1672
+  [UGL] k=2 pick_random_unblocked g.first=1672
   [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1684
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1684
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=533
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=533
+  [UGL] k=4 find_exterior g.first=979
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=979
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=331
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=331
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1445
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1445
+  [UGL] k=6 find_exterior g.first=1674
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1674
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1244
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=210
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=297
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=297
+  [UGL] k=0 find_exterior g.first=754
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=754
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=1010
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=1010
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=977
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=977
+  [UGL] k=2 find_exterior g.first=1672
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1672
   [UGL] sanitize k=3
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=533
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=533
+  [UGL] k=4 find_exterior g.first=522
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=522
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=784
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=784
+  [UGL] k=5 find_exterior g.first=554
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=554
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1445
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1445
+  [UGL] k=6 find_exterior g.first=1902
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1902
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1244
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
+  [UGL] k=7 find_exterior g.first=1694
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1694
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=215
   [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=754
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=754
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=1013
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=1013
   [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1672
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1672
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1229
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1229
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=761
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=761
+  [UGL] k=4 find_exterior g.first=522
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=522
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=784
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=784
+  [UGL] k=5 find_exterior g.first=554
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=554
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1445
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1445
+  [UGL] k=6 find_exterior g.first=1902
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1902
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1244
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1244
+  [UGL] k=7 find_exterior g.first=1694
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1694
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=220
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=537
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=537
+  [UGL] k=0 find_exterior g.first=982
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=982
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=1017
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=1017
+  [UGL] k=1 find_exterior g.first=321
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=321
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=989
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=989
+  [UGL] k=2 find_exterior g.first=1672
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1672
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1229
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1229
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=761
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=761
+  [UGL] k=4 find_exterior g.first=522
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=522
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=784
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=784
+  [UGL] k=5 find_exterior g.first=554
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=554
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1209
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1209
+  [UGL] k=6 find_exterior g.first=1902
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1902
   [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1686
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1686
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=225
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=537
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=537
+  [UGL] k=0 find_exterior g.first=982
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=982
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=560
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=560
+  [UGL] k=1 find_exterior g.first=321
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=321
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=989
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=989
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1229
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1229
+  [UGL] k=3 find_exterior g.first=1459
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1459
   [UGL] sanitize k=4
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=784
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=784
+  [UGL] k=5 find_exterior g.first=554
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=554
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1209
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1209
+  [UGL] k=6 find_exterior g.first=1450
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1450
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1240
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1240
+  [UGL] k=7 find_exterior g.first=1686
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1686
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=230
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=537
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=537
+  [UGL] k=0 find_exterior g.first=982
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=982
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=560
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=560
+  [UGL] k=1 find_exterior g.first=321
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=321
   [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1667
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1667
   [UGL] sanitize k=3
+  [UGL] k=3 find_exterior g.first=1916
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1916
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=299
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=299
+  [UGL] k=4 find_exterior g.first=298
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=298
   [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=554
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=554
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1209
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1209
+  [UGL] k=6 find_exterior g.first=1450
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1450
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1233
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1233
+  [UGL] k=7 find_exterior g.first=1699
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1699
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=235
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=537
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=537
+  [UGL] k=0 find_exterior g.first=978
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=978
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=560
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=560
+  [UGL] k=1 find_exterior g.first=318
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=318
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1219
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1219
+  [UGL] k=2 find_exterior g.first=1901
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1901
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1245
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=3 find_exterior g.first=1916
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1916
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=299
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=299
+  [UGL] k=4 find_exterior g.first=298
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=298
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=1003
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=1003
+  [UGL] k=5 find_exterior g.first=98
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=98
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1446
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1446
+  [UGL] k=6 find_exterior g.first=1450
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1450
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1233
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1233
-  [UGL] k=7 pick_random_unblocked g.first=1233
+  [UGL] k=7 find_exterior g.first=1699
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1699
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=240
   [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=294
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=294
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=548
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=548
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1219
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1219
+  [UGL] k=2 find_exterior g.first=1901
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1901
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1245
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=3 find_exterior g.first=1916
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1916
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=299
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=299
+  [UGL] k=4 find_exterior g.first=298
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=298
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=1003
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=1003
+  [UGL] k=5 find_exterior g.first=98
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=98
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1446
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1446
+  [UGL] k=6 find_exterior g.first=1450
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1450
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1233
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1233
+  [UGL] k=7 find_exterior g.first=1699
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1699
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=245
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=765
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=765
+  [UGL] k=0 find_exterior g.first=294
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=294
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=548
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=548
+  [UGL] k=1 find_exterior g.first=1000
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1000
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1219
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1219
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1245
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=3 find_exterior g.first=1916
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1916
   [UGL] sanitize k=4
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=1003
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=1003
+  [UGL] k=5 find_exterior g.first=98
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=98
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1446
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1446
+  [UGL] k=6 find_exterior g.first=1665
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1233
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1233
+  [UGL] k=7 find_exterior g.first=1699
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1699
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=250
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=765
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=765
+  [UGL] k=0 find_exterior g.first=294
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=294
   [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=1000
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1000
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1439
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1439
+  [UGL] k=2 find_exterior g.first=1905
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1905
   [UGL] sanitize k=3
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=295
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=295
+  [UGL] k=4 find_exterior g.first=311
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=311
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=999
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=999
+  [UGL] k=5 find_exterior g.first=329
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=329
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1446
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1446
+  [UGL] k=6 find_exterior g.first=1665
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
   [UGL] sanitize k=7
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=255
   [UGL] sanitize k=0
+  [UGL] k=0 find_exterior g.first=294
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=294
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=1005
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] k=1 find_exterior g.first=1000
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1000
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1439
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1439
+  [UGL] k=2 find_exterior g.first=1891
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1891
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1470
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
+  [UGL] k=3 find_exterior g.first=1925
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1925
   [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=311
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=311
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=87
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=87
+  [UGL] k=5 find_exterior g.first=329
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=329
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1446
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1446
+  [UGL] k=6 find_exterior g.first=1665
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1227
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1227
+  [UGL] k=7 find_exterior g.first=1471
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1471
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=260
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=761
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=761
+  [UGL] k=0 find_exterior g.first=299
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=299
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=1005
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] k=1 find_exterior g.first=1000
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=1000
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1439
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1439
+  [UGL] k=2 find_exterior g.first=1891
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1891
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1470
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
+  [UGL] k=3 find_exterior g.first=1925
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1925
   [UGL] sanitize k=4
   [UGL] k=4 find_exterior g.first=311
   [UGL] k=4 is_goal_service_cell_conflicting g.first=311
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=87
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=87
+  [UGL] k=5 find_exterior g.first=329
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=329
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1449
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1449
+  [UGL] k=6 find_exterior g.first=1665
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1665
   [UGL] sanitize k=7
+  [UGL] k=7 find_exterior g.first=1471
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1471
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=265
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=766
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=766
+  [UGL] k=0 find_exterior g.first=294
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=294
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=1005
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=1005
+  [UGL] k=1 find_exterior g.first=771
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=771
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1667
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1667
+  [UGL] k=2 find_exterior g.first=1891
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1891
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1470
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1470
+  [UGL] k=3 find_exterior g.first=1695
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1695
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=311
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=311
+  [UGL] k=4 find_exterior g.first=764
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=764
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=87
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=87
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1435
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1435
+  [UGL] k=6 find_exterior g.first=1662
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1662
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1912
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1912
+  [UGL] k=7 find_exterior g.first=1471
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1471
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=270
@@ -1371,24 +1388,24 @@
   [UGL] k=0 find_exterior g.first=751
   [UGL] k=0 is_goal_service_cell_conflicting g.first=751
   [UGL] sanitize k=1
+  [UGL] k=1 find_exterior g.first=771
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=771
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1667
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1667
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1245
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=3 find_exterior g.first=1695
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1695
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=311
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=311
+  [UGL] k=4 find_exterior g.first=764
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=764
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=87
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=87
+  [UGL] k=5 find_exterior g.first=317
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=317
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1435
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1435
+  [UGL] k=6 find_exterior g.first=1210
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1210
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1912
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1912
+  [UGL] k=7 find_exterior g.first=1460
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1460
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=275
@@ -1396,20 +1413,24 @@
   [UGL] k=0 find_exterior g.first=751
   [UGL] k=0 is_goal_service_cell_conflicting g.first=751
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=557
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=557
   [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1666
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1666
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1245
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=3 find_exterior g.first=1695
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1695
   [UGL] sanitize k=4
+  [UGL] k=4 find_exterior g.first=764
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=764
   [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=317
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=317
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1435
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1435
+  [UGL] k=6 find_exterior g.first=1210
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1210
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1912
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1912
+  [UGL] k=7 find_exterior g.first=1460
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1460
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=280
@@ -1417,100 +1438,100 @@
   [UGL] k=0 find_exterior g.first=751
   [UGL] k=0 is_goal_service_cell_conflicting g.first=751
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=557
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=557
+  [UGL] k=1 find_exterior g.first=777
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=777
   [UGL] sanitize k=2
+  [UGL] k=2 find_exterior g.first=1666
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1666
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1245
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1245
+  [UGL] k=3 find_exterior g.first=1004
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1004
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=754
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=754
+  [UGL] k=4 find_exterior g.first=764
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=764
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=322
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=322
+  [UGL] k=5 find_exterior g.first=317
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=317
   [UGL] sanitize k=6
+  [UGL] k=6 find_exterior g.first=1210
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1210
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1912
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1912
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=285
   [UGL] sanitize k=0
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=557
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=557
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1676
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1676
+  [UGL] k=2 find_exterior g.first=1666
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1666
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1929
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1929
+  [UGL] k=3 find_exterior g.first=1004
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1004
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=754
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=754
+  [UGL] k=4 find_exterior g.first=764
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=764
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=322
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=322
+  [UGL] k=5 find_exterior g.first=99
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=99
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1439
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1439
+  [UGL] k=6 find_exterior g.first=1210
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1210
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1457
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1457
+  [UGL] k=7 find_exterior g.first=1234
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1234
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=290
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=978
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=978
+  [UGL] k=0 find_exterior g.first=761
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=761
+  [UGL] k=0 pick_random_unblocked g.first=761
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=557
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=557
+  [UGL] k=1 find_exterior g.first=785
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=785
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1676
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1676
-  [UGL] k=2 pick_random_unblocked g.first=1676
+  [UGL] k=2 find_exterior g.first=1439
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1439
+  [UGL] k=2 pick_random_unblocked g.first=1439
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1929
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1929
+  [UGL] k=3 find_exterior g.first=1004
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1004
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=754
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=754
   [UGL] sanitize k=5
-  [UGL] k=5 find_exterior g.first=322
-  [UGL] k=5 is_goal_service_cell_conflicting g.first=322
+  [UGL] k=5 find_exterior g.first=99
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=99
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1676
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
-  [UGL] k=6 pick_random_unblocked g.first=1676
+  [UGL] k=6 find_exterior g.first=1438
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=1438
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1457
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1457
+  [UGL] k=7 find_exterior g.first=1234
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1234
   [UGL] sanitize loop done
   [UGL] capacity_mode done
   [UGL] enter t=295
   [UGL] sanitize k=0
-  [UGL] k=0 find_exterior g.first=978
-  [UGL] k=0 is_goal_service_cell_conflicting g.first=978
+  [UGL] k=0 find_exterior g.first=761
+  [UGL] k=0 is_goal_service_cell_conflicting g.first=761
   [UGL] sanitize k=1
-  [UGL] k=1 find_exterior g.first=333
-  [UGL] k=1 is_goal_service_cell_conflicting g.first=333
+  [UGL] k=1 find_exterior g.first=785
+  [UGL] k=1 is_goal_service_cell_conflicting g.first=785
   [UGL] sanitize k=2
-  [UGL] k=2 find_exterior g.first=1449
-  [UGL] k=2 is_goal_service_cell_conflicting g.first=1449
+  [UGL] k=2 find_exterior g.first=1439
+  [UGL] k=2 is_goal_service_cell_conflicting g.first=1439
   [UGL] sanitize k=3
-  [UGL] k=3 find_exterior g.first=1929
-  [UGL] k=3 is_goal_service_cell_conflicting g.first=1929
+  [UGL] k=3 find_exterior g.first=1004
+  [UGL] k=3 is_goal_service_cell_conflicting g.first=1004
   [UGL] sanitize k=4
-  [UGL] k=4 find_exterior g.first=754
-  [UGL] k=4 is_goal_service_cell_conflicting g.first=754
+  [UGL] k=4 find_exterior g.first=767
+  [UGL] k=4 is_goal_service_cell_conflicting g.first=767
   [UGL] sanitize k=5
+  [UGL] k=5 find_exterior g.first=99
+  [UGL] k=5 is_goal_service_cell_conflicting g.first=99
   [UGL] sanitize k=6
-  [UGL] k=6 find_exterior g.first=1676
-  [UGL] k=6 is_goal_service_cell_conflicting g.first=1676
+  [UGL] k=6 find_exterior g.first=978
+  [UGL] k=6 is_goal_service_cell_conflicting g.first=978
   [UGL] sanitize k=7
-  [UGL] k=7 find_exterior g.first=1457
-  [UGL] k=7 is_goal_service_cell_conflicting g.first=1457
+  [UGL] k=7 find_exterior g.first=1234
+  [UGL] k=7 is_goal_service_cell_conflicting g.first=1234
   [UGL] sanitize loop done
   [UGL] capacity_mode done
